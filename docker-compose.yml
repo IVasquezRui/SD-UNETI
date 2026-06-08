@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  # 1. Base de Datos (MariaDB)
+  db:
+    image: mariadb:10.11
+    container_name: SD-UNETI_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: D15c1pl1n4r142026#
+      MYSQL_DATABASE: wordpress_db
+      MYSQL_USER: uneti
+      MYSQL_PASSWORD: uneti123
+    volumes:
+      - ./db:/var/lib/mysql
+    ports:
+      - "3306:3306" # Por si quieren conectar TablePlus/DBeaver desde sus PCs via Tailscale
+
+  # 2. WordPress Headless (Backend / API)
+  wordpress:
+    depends_on:
+      - db
+    image: wordpress:latest
+    container_name: SD-UNETI_WPHbackend
+    restart: always
+    ports:
+      - "8080:80" # URL: http://IP_TAILSCALE:8080
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: uneti
+      WORDPRESS_DB_PASSWORD: uneti123
+      WORDPRESS_DB_NAME: wordpress_db
+    volumes:
+      - ./wordpress:/var/www/html
+
+  # 3. Next.js + React (Frontend entorno de desarrollo)
+  frontend:
+    image: node:20-alpine
+    container_name: SD-UNETI_frontend
+    restart: always
+    working_dir: /app
+    ports:
+      - "3000:3000" # URL: http://IP_TAILSCALE:3000
+    volumes:
+      - ./frontend:/app
+    # Ejecuta el proyecto si existe; si no, mantiene el contenedor vivo para desarrollo
+    command: sh -c "if [ -f package.json ]; then npm install && npm run dev; else tail -f /dev/null; fi"
+    environment:
+      - NEXT_PUBLIC_WORDPRESS_API_URL=http://wordpress/wp-json

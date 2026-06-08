@@ -1,0 +1,94 @@
+Roadmap: Landing Page UNETI (WordPress Headless + Next.js)
+
+🟩 Fase 1: Infraestructura y Entorno Colaborativo (Fundamentos)
+
+[x] VM en Proxmox: Ubuntu Server 24.04 LTS configurado.
+
+[x] Red VPN (Tailscale): Accesos SSH configurados para el equipo de desarrollo.
+
+[x] Instalación de Motor de Contenedores: Instalar Docker y Docker Compose en la VM.
+
+[] Repositorio GitHub (Estructura):
+Crear repo unificado (o dos repos: uno para WP y otro para Next.js).
+Definir política de ramas (ej. main para producción, dev para pruebas en la VM).
+
+[] "Primera Base" (El docker-compose.yml maestro):
+Definir contenedor: db (MariaDB/MySQL).
+Definir contenedor: wordpress (Backend - Puerto interno ej. 8080).
+Definir contenedor: nextjs (Frontend - Puerto interno ej. 3000).
+Definir proxy inverso local (ej. Nginx Proxy Manager o Traefik) para rutear los PATHs e IPs locales dentro de la VM.
+
+
+
+🟦 Fase 2: Backend (El Motor de Contenido)
+Preparar WordPress para que actúe SÓLO como administrador de datos (API).
+
+[ ] Instalación Limpia de WordPress: Borrar temas por defecto y plugins innecesarios.
+
+[ ] Habilitar modo Headless (API):
+Recomendación: Instalar el plugin WPGraphQL. Next.js se comunica mucho mejor y más rápido con GraphQL que con la REST API tradicional de WP.
+Instalar plugin para desactivar el frontend nativo de WP (para evitar contenido duplicado).
+
+[ ] Modelado de Datos (Estructura UNETI):
+Instalar ACF (Advanced Custom Fields) o CPT UI (Custom Post Types).
+
+Crear los tipos de contenido: "Noticias", "Áreas Innovadoras", "Testimonios".
+Exponer estos nuevos campos a la API de GraphQL.
+
+[ ] Seguridad de la API: Configurar CORS para que WP solo acepte peticiones de la IP/Dominio de su contenedor frontend (Next.js).
+
+
+
+
+🟧 Fase 3: Frontend Moderno (La Interfaz del Usuario)
+Donde los desarrolladores frontend brillarán usando las nuevas tecnologías.
+
+[ ] Inicialización de Next.js: npx create-next-app@latest (Seleccionar: TypeScript, Tailwind CSS, App Router).
+
+[ ] Integración de shadcn/ui: Inicializar components.json e instalar los componentes base (Botones, Tarjetas, Formularios, Carruseles).
+
+[ ] Sistema de Diseño (Theming): Configurar el archivo tailwind.config.ts con la paleta de colores oficial de la UNETI (los azules, naranjas, morados que vimos en la sesión anterior).
+
+[ ] Conexión Backend-Frontend: Configurar Apollo Client o fetch API para consumir los datos de WPGraphQL.
+
+[ ] Desarrollo de Vistas (Maquetación):
+Componente Hero (Inicio).
+
+Sección de Áreas Innovadoras.
+Noticias dinámicas conectadas a WP.
+
+
+
+
+🟨 Fase 4: Integración, QA y Optimización
+Hacer que la página sea ultrarrápida y amigable para los buscadores.
+
+[ ] Configurar ISR / SSG (Next.js): Asegurar que las páginas se generen estáticamente para que carguen en milisegundos, y configurar On-Demand Revalidation (para que cuando alguien publique una noticia en WP, Next.js actualice la página automáticamente).
+
+[ ] Optimización de SEO: Configurar la Metadata API de Next.js. Las páginas deben tener títulos y descripciones dinámicas generadas desde WP.
+
+[ ] Pruebas de Rendimiento: Correr Google Lighthouse en la VM. Optimizar imágenes (next/image).
+
+
+
+
+🟥 Fase 5: Producción y Migración al Servidor Principal UNETI
+El gran día del lanzamiento.
+
+
+[ ] CI/CD (Integración Continua): Configurar GitHub Actions para que al hacer push a la rama main, se construya (build) el frontend automáticamente.
+
+
+[ ] Migración de Base de Datos:
+Exportar base de datos del WP de Proxmox (desarrollo).
+Importar al servidor de producción.
+Hacer un "Search and Replace" (Buscar y Reemplazar) de las URLs locales por el dominio oficial uneti.edu.ve.
+
+
+[ ] Despliegue en Producción:
+Levantar los contenedores en el servidor principal de UNETI.
+Configurar el Nginx principal, certificados SSL (Let's Encrypt).
+Definir variables de entorno (.env.production) con las URLs finales y contraseñas seguras.
+
+
+[ ] Go Live: Cambio de DNS apuntando al nuevo servidor.
