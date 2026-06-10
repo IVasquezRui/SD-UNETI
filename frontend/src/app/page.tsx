@@ -1,62 +1,55 @@
 import Image from "next/image";
+import Link from "next/link";
+import { getClient } from "@/lib/apollo-client";
+import { GET_GENERAL_SETTINGS } from "@/lib/queries";
 
-export default function Home() {
+export const revalidate = 60; // Revalidate every minute
+
+export default async function Home() {
+  const client = getClient();
+  let title = "UNETI Headless CMS";
+  let description = "Bienvenidos al nuevo portal";
+
+  try {
+    const { data } = await client.query({
+      query: GET_GENERAL_SETTINGS,
+    });
+    if (data?.generalSettings) {
+      title = data.generalSettings.title || title;
+      description = data.generalSettings.description || description;
+    }
+  } catch (error) {
+    console.error("Failed to fetch general settings", error);
+  }
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div className="flex flex-col flex-1 items-center justify-center bg-white font-sans">
+      <main className="flex flex-1 w-full max-w-5xl flex-col items-center justify-center py-32 px-8 sm:items-center">
+        
+        {/* Hero Section */}
+        <div className="flex flex-col items-center gap-6 text-center">
+          <h1 className="text-4xl sm:text-6xl font-bold tracking-tight text-[#162953]">
+            {title}
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="max-w-2xl text-lg sm:text-xl leading-8 text-slate-600">
+            {description}
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
+
+        <div className="flex flex-col gap-4 mt-12 sm:flex-row">
+          <Link
+            href="/beta_sduneti"
+            className="flex h-12 w-full items-center justify-center rounded-md bg-[#ef5b2b] px-8 text-white transition-colors hover:bg-[#d9481d] md:w-auto font-medium shadow-sm"
+          >
+            Ver Página Beta
+          </Link>
           <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+            className="flex h-12 w-full items-center justify-center rounded-md border border-slate-200 bg-white px-8 transition-colors hover:border-[#162953] hover:text-[#162953] text-slate-700 md:w-auto font-medium shadow-sm"
+            href="http://wp.uneti.local/wp-admin"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
+            Ir a WordPress Admin
           </a>
         </div>
       </main>

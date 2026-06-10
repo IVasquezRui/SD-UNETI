@@ -30,6 +30,7 @@ if (!function_exists('getenv_docker')) {
 		if ($fileEnv = getenv($env . '_FILE')) {
 			return rtrim(file_get_contents($fileEnv), "\r\n");
 		}
+	
 		else if (($val = getenv($env)) !== false) {
 			return $val;
 		}
@@ -127,6 +128,9 @@ if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strpos($_SERVER['HTTP_X_FORWARD
 if ($configExtra = getenv_docker('WORDPRESS_CONFIG_EXTRA', '')) {
 	eval($configExtra);
 }
+
+define('WP_HOME', 'http://wp.uneti.local');
+define('WP_SITEURL', 'http://wp.uneti.local');
 
 /* That's all, stop editing! Happy publishing. */
 
