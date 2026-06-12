@@ -23,8 +23,8 @@ export const GET_PAGES = gql`
 `;
 
 export const GET_PAGE_BY_SLUG = gql`
-  query GetPageBySlug($id: ID!) {
-    page(id: $id, idType: URI) {
+  query GetPageBySlug($uri: ID!) {
+    page(id: $uri, idType: URI) {
       id
       title
       content

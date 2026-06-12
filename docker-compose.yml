@@ -74,7 +74,7 @@ services:
     environment:
       - NEXT_PUBLIC_WORDPRESS_API_URL=${NEXT_PUBLIC_WORDPRESS_API_URL:-http://wordpress/wp-json}
       - NEXT_PUBLIC_WORDPRESS_GRAPHQL_URL=${NEXT_PUBLIC_WORDPRESS_GRAPHQL_URL:-http://wp.uneti.local/graphql}
-      - WORDPRESS_GRAPHQL_URL=${WORDPRESS_GRAPHQL_URL:-http://SD-UNETI_WPHbackend/graphql}
+      - WORDPRESS_GRAPHQL_URL=${WORDPRESS_GRAPHQL_URL:-http://wordpress/graphql}
     networks:
       - uneti_network
     # NOTA: Nginx Proxy Manager ruteará el tráfico al puerto 3000 interno de este contenedor.

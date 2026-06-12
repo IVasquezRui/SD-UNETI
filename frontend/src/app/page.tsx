@@ -11,7 +11,7 @@ export default async function Home() {
   let description = "Bienvenidos al nuevo portal";
 
   try {
-    const { data } = await client.query({
+    const { data } = await client.query<{ generalSettings?: { title?: string; description?: string } }>({
       query: GET_GENERAL_SETTINGS,
     });
     if (data?.generalSettings) {
@@ -38,7 +38,7 @@ export default async function Home() {
 
         <div className="flex flex-col gap-4 mt-12 sm:flex-row">
           <Link
-            href="/beta_sduneti"
+            href="http://netx.uneti.local/beta_sduneti"
             className="flex h-12 w-full items-center justify-center rounded-md bg-[#ef5b2b] px-8 text-white transition-colors hover:bg-[#d9481d] md:w-auto font-medium shadow-sm"
           >
             Ver Página Beta

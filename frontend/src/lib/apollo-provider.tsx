@@ -1,6 +1,6 @@
 "use client";
 
-import { ApolloProvider } from "@apollo/client";
+import { ApolloProvider } from "@apollo/client/react";
 import { getClient } from "./apollo-client";
 
 // This component is only needed if you use Client Components that need to fetch data.
