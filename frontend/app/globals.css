@@ -1,0 +1,12 @@
+/*
+ * Tailwind v4 sin preflight: la base visual la aporta el template demo-elearning
+ * (vendors.min.css + style.css + responsive.css + elearning.css) cargado desde /public/assets/css.
+ * Así los estilos del template siempre ganan sobre las utilidades de Tailwind.
+ */
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+@theme inline {
+  --color-base-color: #ff7f46;
+  --color-dark-gray: #0f2239;
+}

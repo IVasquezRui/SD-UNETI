@@ -1,0 +1,70 @@
+services:
+  # Base de Datos: MariaDB (Versión LTS reciente)
+  db:
+    image: mariadb:11.4
+    container_name: wp_mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: wordpress_db
+      MYSQL_USER: wp_user
+      MYSQL_PASSWORD: wp_password
+    volumes:
+      - ./db_data:/var/lib/mysql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - frontend_net
+
+  # CMS: WordPress (Última versión estable)
+  wordpress:
+    image: wordpress:latest
+    container_name: wp_site
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wp_user
+      WORDPRESS_DB_PASSWORD: wp_password
+      WORDPRESS_DB_NAME: wordpress_db
+      WORDPRESS_CONFIG_EXTRA: |
+        define( 'WP_HOME', 'http://localhost:8080' );
+        define( 'WP_SITEURL', 'http://localhost:8080' );
+        define( 'WP_MEMORY_LIMIT', '512M' );
+        define( 'DISALLOW_FILE_EDIT', true );
+        define( 'FS_METHOD', 'direct' );
+    volumes:
+      - ./wp_data:/var/www/html
+    networks:
+      - frontend_net
+
+  # Frontend Headless: Next.js (App Router) + TypeScript + Tailwind ejecutado con Bun
+  frontend:
+    image: oven/bun:1-alpine
+    container_name: next_frontend
+    restart: always
+    working_dir: /app
+    command: sh -c "bun install && bun run dev"
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+      WATCHPACK_POLLING: "true"
+      # URLs públicas que consume el navegador
+      NEXT_PUBLIC_WP_URL: http://localhost:8080
+      NEXT_PUBLIC_GRAPHQL_URL: http://localhost:8080/graphql
+      # URL interna (resolución por DNS de Docker dentro de frontend_net)
+      WP_INTERNAL_URL: http://wordpress
+    volumes:
+      - ./frontend:/app
+    depends_on:
+      - wordpress
+    networks:
+      - frontend_net
+
+networks:
+  frontend_net:
+    name: frontend_net
+    driver: bridge

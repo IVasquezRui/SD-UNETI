@@ -1,0 +1,14 @@
+# Dependencias y compilaciones
+node_modules/
+.next/
+dist/
+
+# Entornos y datos volátiles de Docker
+.env
+.env.*
+wp_data/
+db_data/
+lookdown/
+
+# Archivos locales del proyecto
+.DS_Store
