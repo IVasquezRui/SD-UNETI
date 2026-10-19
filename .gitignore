@@ -12,3 +12,6 @@ lookdown/
 
 # Archivos locales del proyecto
 .DS_Store
+
+# Reglas locales del asistente (pueden contener credenciales)
+.clinerules

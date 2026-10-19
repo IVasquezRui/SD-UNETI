@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import TemplateScripts from "./components/TemplateScripts";
+import ScriptsPlantilla from "./componentes/ScriptsPlantilla";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
   title: "UNETI | Universidad Nacional Experimental de las Telecomunicaciones e Informática",
   description:
     "Sitio oficial de la UNETI: formación gratuita en telecomunicaciones, informática y tecnologías emergentes. PNF en Telecomunicaciones y PNF en Informática.",
@@ -27,7 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         data-mobile-nav-bg-color="#0f2239"
       >
         {children}
-        <TemplateScripts />
+        <ScriptsPlantilla />
       </body>
     </html>
   );
