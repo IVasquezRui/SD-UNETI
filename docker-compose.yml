@@ -11,7 +11,16 @@ services:
       MYSQL_PASSWORD: wp_password
     volumes:
       - ./db_data:/var/lib/mysql
-      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      # Se monta el directorio completo: el bind de un archivo suelto falla con
+      # el runtime actual de Docker. El entrypoint solo ejecuta init.sql cuando
+      # el volumen de datos está vacío, por lo que no se recrea la base existente.
+      - ./database:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
     networks:
       - frontend_net
 
@@ -21,7 +30,8 @@ services:
     container_name: wp_site
     restart: always
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     ports:
       - "8080:80"
     environment:
@@ -37,6 +47,9 @@ services:
         define( 'FS_METHOD', 'direct' );
     volumes:
       - ./wp_data:/var/www/html
+      # Plugin propio para comentarios y scripts operativos del proyecto.
+      - ./scripts/wordpress/mu-plugins:/var/www/html/wp-content/mu-plugins:ro
+      - ./scripts/wordpress:/opt/uneti-scripts:ro
     networks:
       - frontend_net
 
@@ -57,10 +70,12 @@ services:
       NEXT_PUBLIC_GRAPHQL_URL: http://localhost:8080/graphql
       # URL interna (resolución por DNS de Docker dentro de frontend_net)
       WP_INTERNAL_URL: http://wordpress
+      WP_GRAPHQL_URL: http://wordpress/graphql
     volumes:
       - ./frontend:/app
     depends_on:
-      - wordpress
+      wordpress:
+        condition: service_started
     networks:
       - frontend_net
 

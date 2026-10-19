@@ -1,50 +1,50 @@
-import AboutSection from "./components/AboutSection";
-import ActivitiesSection from "./components/ActivitiesSection";
-import ArticlesSection from "./components/ArticlesSection";
-import CoursesSection from "./components/CoursesSection";
-import FaqSection from "./components/FaqSection";
-import HeroSection from "./components/HeroSection";
-import InnovationSection from "./components/InnovationSection";
-import SiteFooter from "./components/SiteFooter";
-import SiteHeader from "./components/SiteHeader";
-import SupportSection from "./components/SupportSection";
-import TestimonialsSection from "./components/TestimonialsSection";
-import VideoSection from "./components/VideoSection";
-import { HOME_ACTIVITIES, HOME_FAQ } from "./lib/institutional";
+import SeccionNosotros from "./componentes/SeccionNosotros";
+import SeccionActividades from "./componentes/SeccionActividades";
+import SeccionArticulos from "./componentes/SeccionArticulos";
+import SeccionCarreras from "./componentes/SeccionCarreras";
+import SeccionPreguntas from "./componentes/SeccionPreguntas";
+import PortadaPrincipal from "./componentes/PortadaPrincipal";
+import SeccionInnovacion from "./componentes/SeccionInnovacion";
+import PieSitio from "./componentes/PieSitio";
+import EncabezadoSitio from "./componentes/EncabezadoSitio";
+import SeccionSoporte from "./componentes/SeccionSoporte";
+import SeccionTestimonios from "./componentes/SeccionTestimonios";
+import SeccionVideo from "./componentes/SeccionVideo";
+import { ACTIVIDADES_INICIO, PREGUNTAS_INICIO } from "./lib/institucional";
 
-export default function Home() {
+export default function Inicio() {
   return (
     <>
-      <SiteHeader />
+      <EncabezadoSitio />
       <main>
-        <HeroSection />
-        <SupportSection />
-        <AboutSection />
-        <CoursesSection />
-        <FaqSection
+        <PortadaPrincipal />
+        <SeccionSoporte />
+        <SeccionNosotros />
+        <SeccionCarreras />
+        <SeccionPreguntas
           id="preguntas"
           eyebrow="Preguntas y respuestas"
           title="Nuestros estudiantes nos preguntan."
           description="Estos son los puntos que nuestros estudiantes nos han estado preguntando con más frecuencia."
           image="/assets/images/uneti/preguntasyrespuestas.png"
           imageAlt="Estudiantes de la UNETI"
-          items={HOME_FAQ}
+          items={PREGUNTAS_INICIO}
         />
-        <InnovationSection />
-        <TestimonialsSection />
-        <ActivitiesSection
+        <SeccionInnovacion />
+        <SeccionTestimonios />
+        <SeccionActividades
           id="actividades"
           eyebrow="Vida universitaria"
           title="Nuestras mejores actividades"
           description="Las actividades están hechas para ayudar a nuestros estudiantes y profesores a crecer juntos de manera profesional. Te presentamos algunas de ellas que están esperando por ti."
-          items={HOME_ACTIVITIES}
+          items={ACTIVIDADES_INICIO}
           image="/assets/images/uneti/activities_bg.jpg"
           imageAlt="Actividades de la UNETI"
         />
-        <VideoSection />
-        <ArticlesSection />
+        <SeccionVideo />
+        <SeccionArticulos />
       </main>
-      <SiteFooter />
+      <PieSitio />
     </>
   );
 }
