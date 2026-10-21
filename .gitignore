@@ -6,12 +6,20 @@ dist/
 # Entornos y datos volátiles de Docker
 .env
 .env.*
+!.env.example
 wp_data/
 db_data/
 lookdown/
+
+# Temporales del seed
+.seed-stage-*/
+.seed-backup-*/
+__pycache__/
+*.pyc
 
 # Archivos locales del proyecto
 .DS_Store
 
 # Reglas locales del asistente (pueden contener credenciales)
 .clinerules
+Documents/reglasclineextension.txt

@@ -1,0 +1,31 @@
+{
+    "title": "UNETI",
+    "description": "",
+    "locale": "es_VE",
+    "timezone": "",
+    "gmtOffset": -4,
+    "dateFormat": "j \\d\\e F \\d\\e Y",
+    "timeFormat": "H:i",
+    "startOfWeek": 1,
+    "postsPerPage": 10,
+    "permalinkStructure": "/%postname%/",
+    "defaultCommentStatus": "open",
+    "threadComments": 1,
+    "threadCommentsDepth": 5,
+    "requireNameEmail": 1,
+    "showAvatars": 1,
+    "commentModeration": 0,
+    "commentRegistration": 0,
+    "defaultCategory": {
+        "slug": "sin-categoria",
+        "name": "Sin categoría"
+    },
+    "author": {
+        "key": "redaccion",
+        "login": "redaccion",
+        "displayName": "Redacción UNETI",
+        "email": "redaccion@example.com",
+        "description": "Equipo de Comunicaciones de la Universidad Nacional Experimental de las Telecomunicaciones e Informática.",
+        "role": "author"
+    }
+}

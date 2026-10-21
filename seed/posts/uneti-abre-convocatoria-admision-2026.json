@@ -1,0 +1,52 @@
+{
+    "key": "uneti-abre-convocatoria-admision-2026",
+    "slug": "uneti-abre-convocatoria-admision-2026",
+    "title": "UNETI abre la convocatoria de admisión 2026",
+    "excerpt": "El proceso de ingreso a los PNF en Informática y Telecomunicaciones inicia con el registro en el Sistema Nacional de Ingreso y acompañamiento académico.",
+    "content": "<p>La Universidad Nacional Experimental de las Telecomunicaciones e Informática (UNETI) abrió la convocatoria de admisión para el año académico 2026. La oferta incluye los Programas Nacionales de Formación en Informática y en Telecomunicaciones, ambos con salidas progresivas como Técnico Medio, TSU e Ingeniero.</p><h2>Requisitos y pasos</h2><p>Las personas aspirantes deben registrarse en el Sistema Nacional de Ingreso, consignar el título de bachiller, las notas certificadas, la cédula de identidad y una fotografía reciente. El equipo de admisiones acompaña cada etapa con orientación académica y vocacional.</p><ul><li>Registro en el Sistema Nacional de Ingreso.</li><li>Consignación de documentos en formato digital.</li><li>Orientación sobre modalidad, prácticas y salidas profesionales.</li><li>Confirmación de ingreso y acceso al campus virtual.</li></ul><p>La UNETI mantiene su compromiso con una educación gratuita, multimodal y centrada en el aprender haciendo, con proyectos que responden a las necesidades del país.</p>",
+    "status": "publish",
+    "date": "2026-10-17 09:00:00",
+    "dateGmt": "2026-10-17 13:00:00",
+    "commentStatus": "open",
+    "categories": [
+        "admision"
+    ],
+    "tags": [
+        "admision",
+        "ingreso",
+        "pnf"
+    ],
+    "featuredMedia": "admisiones-2026",
+    "comments": [
+        {
+            "key": "uneti-abre-convocatoria-admision-2026-comment-0c685c97be17e46f",
+            "author": "Ana Lucía Torres",
+            "email": "ana.torres@example.com",
+            "content": "Felicitaciones al equipo de admisiones por la orientación recibida en el proceso.",
+            "date": "2026-10-18 13:30:21",
+            "dateGmt": "2026-10-18 17:30:21",
+            "approved": 1,
+            "parent": null
+        },
+        {
+            "key": "uneti-abre-convocatoria-admision-2026-comment-eaabd39fcfe6c15b",
+            "author": "José Manuel Pérez",
+            "email": "jose.perez@example.com",
+            "content": "Gracias por mantener informada a la comunidad. La modalidad multimodal es una gran oportunidad para quienes trabajamos.",
+            "date": "2026-10-18 14:30:21",
+            "dateGmt": "2026-10-18 18:30:21",
+            "approved": 1,
+            "parent": null
+        },
+        {
+            "key": "uneti-abre-convocatoria-admision-2026-comment-03315db7c069c2eb",
+            "author": "María Fernanda Rojas",
+            "email": "maria.rojas@example.com",
+            "content": "Excelente noticia. ¿La convocatoria aplica también para quienes ya culminaron el bachillerato en años anteriores?",
+            "date": "2026-10-18 15:30:21",
+            "dateGmt": "2026-10-18 19:30:21",
+            "approved": 1,
+            "parent": null
+        }
+    ]
+}

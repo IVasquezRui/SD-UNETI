@@ -1,0 +1,107 @@
+name: Seed portable
+
+on:
+  push:
+    paths:
+      - "seed/**"
+      - "scripts/seed/**"
+      - "scripts/wordpress/**"
+      - "frontend/**"
+      - "docker-compose.yml"
+      - ".env.example"
+      - ".github/workflows/seed.yml"
+  pull_request:
+    paths:
+      - "seed/**"
+      - "scripts/seed/**"
+      - "scripts/wordpress/**"
+      - "frontend/**"
+      - "docker-compose.yml"
+      - ".env.example"
+      - ".github/workflows/seed.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: seed-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  seed:
+    name: Bootstrap + verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Crear .env de CI
+        run: |
+          cat > .env <<'EOF'
+          COMPOSE_PROJECT_NAME=uneti-ci
+          MYSQL_ROOT_PASSWORD=ci-root-password
+          MYSQL_DATABASE=wordpress_db
+          MYSQL_USER=wp_user
+          MYSQL_PASSWORD=ci-wordpress-password
+          DB_DATA_DIR=/tmp/uneti-ci/db_data
+          WORDPRESS_PORT=8080
+          WORDPRESS_URL=http://localhost:8080
+          WORDPRESS_TITLE=UNETI
+          WORDPRESS_ADMIN_USER=admin
+          WORDPRESS_ADMIN_PASSWORD=ci-admin-password
+          WORDPRESS_ADMIN_EMAIL=admin@example.com
+          WP_DATA_DIR=/tmp/uneti-ci/wp_data
+          FRONTEND_PORT=3000
+          MARIADB_IMAGE=mariadb:11.4.13
+          WORDPRESS_IMAGE=wordpress:7.1.3
+          BUN_IMAGE=oven/bun:1.4.3-alpine
+          MARIADB_CONTAINER_NAME=uneti-ci-db
+          WORDPRESS_CONTAINER_NAME=uneti-ci-wp
+          FRONTEND_CONTAINER_NAME=uneti-ci-frontend
+          NETWORK_NAME=uneti-ci-net
+          EOF
+
+      - name: Validar fixtures
+        run: python3 scripts/seed/seed.py validate
+
+      - name: Levantar MariaDB y WordPress
+        run: docker compose up -d db wordpress
+
+      - name: Bootstrap, importación y verificación
+        run: python3 scripts/seed/seed.py bootstrap
+
+      - name: Comprobar idempotencia
+        run: |
+          python3 scripts/seed/seed.py import
+          python3 scripts/seed/seed.py verify
+
+      - name: Build de producción del frontend
+        run: |
+          docker compose run --rm --no-deps frontend \
+            sh -c 'bun install --frozen-lockfile && bun run build'
+
+      - name: Recolectar logs
+        if: failure()
+        run: |
+          docker compose ps > seed-ci.log
+          docker compose logs --no-color >> seed-ci.log
+
+      - name: Publicar logs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seed-ci-logs
+          path: seed-ci.log
+          if-no-files-found: ignore
+
+      - name: Bajar entorno
+        if: always()
+        run: docker compose down -v --remove-orphans
