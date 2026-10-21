@@ -127,7 +127,7 @@ docker compose start frontend
 ├── database/                  Documentación; sin dump SQL
 ├── docker-compose.yml         MariaDB + WordPress + Next.js
 ├── Documents/                 Arquitectura, ADR, estado y plan doc-as-code
-└── lookdown/                  Grafo de conocimiento para agentes
+└── lookdown/                  Grafo local para agentes (excluido de Git)
 ```
 
 ## Modelo de contenido
