@@ -1,6 +1,6 @@
 ## Diagnóstico técnico
 
-> **Estado de implementación (20/10/2026):** fases 1 y 2 implementadas y validadas en un entorno limpio con puerto alternativo `8081`. Fase 3: workflow CI implementado en `.github/workflows/seed.yml`; regeneración de `lookdown/` pendiente.
+> **Estado de implementación (20/10/2026):** fases 1 y 2 implementadas y validadas en un entorno limpio con puerto alternativo `8081`. Fase 3: workflow CI implementado en `.github/workflows/seed.yml`; `lookdown/` regenerado localmente con 975 nodos (excluido de Git).
 
 | # | Hallazgo | Evidencia | Consecuencia |
 |---|---|---|---|
@@ -174,7 +174,7 @@ El entrypoint oficial omite copiar directorios de `wp-content/*/*/` que ya exist
 |---|---|---|---|
 | Fase 1 | Seed portable de noticias, imágenes y comentarios | `seed/`, `seed.py`, `export.php`, `importar.php`, montaje de WPGraphQL, `seed/CREDITS.md` | Media |
 | Fase 2 | Bootstrap limpio y portabilidad de infraestructura | `bootstrap.php`, eliminación de `database/init.sql`, `.env.example`, URLs/puertos/nombres configurables, pinning de imágenes | Media |
-| Fase 3 | Validación continua y documentación | Workflow CI de clon limpio, `seed.py validate/verify`, actualización de `Documents/PROGRESS.md` y `Documents/Soberanía Digital 2026.md`, ADR-011, regeneración de `lookdown/` | Media-baja. Workflow implementado; regeneración de `lookdown/` pendiente |
+| Fase 3 | Validación continua y documentación | Workflow CI de clon limpio, `seed.py validate/verify`, actualización de `Documents/PROGRESS.md` y `Documents/Soberanía Digital 2026.md`, ADR-011, regeneración de `lookdown/` | Media-baja. Workflow implementado; `lookdown/` regenerado localmente (975 nodos) |
 | Fase 4 | Limpieza opcional | Podar `wp_content/themes` y `languages`, evaluar Git LFS, backup operativo separado del repositorio | Baja |
 
 ## Criterios de aceptación
