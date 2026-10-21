@@ -1,0 +1,150 @@
+{
+    "categories": [
+        {
+            "slug": "academico",
+            "name": "Académico",
+            "description": "",
+            "parent": ""
+        },
+        {
+            "slug": "admision",
+            "name": "Admisión",
+            "description": "",
+            "parent": ""
+        },
+        {
+            "slug": "formacion",
+            "name": "Formación",
+            "description": "",
+            "parent": ""
+        },
+        {
+            "slug": "innovacion",
+            "name": "Innovación",
+            "description": "",
+            "parent": ""
+        },
+        {
+            "slug": "investigacion",
+            "name": "Investigación",
+            "description": "",
+            "parent": ""
+        },
+        {
+            "slug": "vida-universitaria",
+            "name": "Vida universitaria",
+            "description": "",
+            "parent": ""
+        }
+    ],
+    "tags": [
+        {
+            "slug": "admision",
+            "name": "Admisión",
+            "description": "",
+            "parent": ""
+        },
+        {
+            "slug": "ciberseguridad",
+            "name": "Ciberseguridad",
+            "description": "",
+            "parent": ""
+        },
+        {
+            "slug": "ciencia",
+            "name": "Ciencia",
+            "description": "",
+            "parent": ""
+        },
+        {
+            "slug": "comunidad",
+            "name": "Comunidad",
+            "description": "",
+            "parent": ""
+        },
+        {
+            "slug": "diplomado",
+            "name": "Diplomado",
+            "description": "",
+            "parent": ""
+        },
+        {
+            "slug": "fibra-optica",
+            "name": "Fibra óptica",
+            "description": "",
+            "parent": ""
+        },
+        {
+            "slug": "formacion",
+            "name": "Formación",
+            "description": "",
+            "parent": ""
+        },
+        {
+            "slug": "formacion-docente",
+            "name": "Formación docente",
+            "description": "",
+            "parent": ""
+        },
+        {
+            "slug": "informatica",
+            "name": "Informática",
+            "description": "",
+            "parent": ""
+        },
+        {
+            "slug": "ingreso",
+            "name": "Ingreso",
+            "description": "",
+            "parent": ""
+        },
+        {
+            "slug": "investigacion",
+            "name": "Investigación",
+            "description": "",
+            "parent": ""
+        },
+        {
+            "slug": "laboratorio",
+            "name": "Laboratorio",
+            "description": "",
+            "parent": ""
+        },
+        {
+            "slug": "pnf",
+            "name": "PNF",
+            "description": "",
+            "parent": ""
+        },
+        {
+            "slug": "podcast",
+            "name": "Podcast",
+            "description": "",
+            "parent": ""
+        },
+        {
+            "slug": "proyecto-sociotecnologico",
+            "name": "Proyecto sociotecnológico",
+            "description": "",
+            "parent": ""
+        },
+        {
+            "slug": "tecnologia",
+            "name": "Tecnología",
+            "description": "",
+            "parent": ""
+        },
+        {
+            "slug": "telecomunicaciones",
+            "name": "Telecomunicaciones",
+            "description": "",
+            "parent": ""
+        },
+        {
+            "slug": "vida-universitaria",
+            "name": "Vida universitaria",
+            "description": "",
+            "parent": ""
+        }
+    ]
+}

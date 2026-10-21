@@ -2,7 +2,7 @@
 
 > Documento de estado del MVP de la plataforma headless de la Universidad Nacional Experimental de las Telecomunicaciones e Informática.
 >
-> **Última actualización:** 18 de octubre de 2026
+> **Última actualización:** 20 de octubre de 2026
 >
 > **Rama de integración:** `main`
 >
@@ -21,7 +21,7 @@ La solución cubre:
 - Comentarios persistidos en la tabla nativa `wp_comments` de MariaDB.
 - Vista de carreras con detalle completo de los PNF en Informática y Telecomunicaciones.
 - Entorno Docker con MariaDB, WordPress, WPGraphQL y Next.js.
-- Datos demo idempotentes para noticias y comentarios.
+- Seed portable e idempotente para noticias, imágenes, taxonomías y comentarios.
 
 ### URLs del entorno local
 
@@ -170,14 +170,15 @@ También se renombraron componentes, hooks, librerías, tipos y constantes al es
 
 - `docker-compose.yml` con MariaDB, WordPress y Next.js.
 - MariaDB con healthcheck y volumen persistente `db_data`.
-- `database/init.sql` montado como directorio de inicialización.
+- Base creada desde cero; no se versiona un dump SQL con usuarios ni sesiones.
 - WordPress espera a que MariaDB esté saludable.
 - Red interna `frontend_net`; Next.js usa `http://wordpress/graphql` para GraphQL y `http://wordpress` para REST.
 - Mu-plugin montado desde `scripts/wordpress/mu-plugins`.
+- WPGraphQL versionado en `wp_content/plugins/wp-graphql` y montado en el contenedor.
 - Scripts operativos disponibles en `/opt/uneti-scripts` dentro del contenedor WordPress.
-- Script idempotente `scripts/wordpress/seed-noticias.php` para 6 noticias y 3 comentarios demo.
+- Seed portable en `seed/` y orquestador `scripts/seed/seed.py` (export, import, bootstrap, validate, verify).
 - `wp_data/`, `db_data/`, `node_modules/`, `.next/` y `lookdown/` excluidos del repositorio.
-- Grafo de memoria `lookdown/` regenerable con `bun build_graph.js`.
+- Credenciales, puertos, URLs y nombres de contenedor configurables mediante `.env`.
 
 ---
 
@@ -185,9 +186,10 @@ También se renombraron componentes, hooks, librerías, tipos y constantes al es
 
 ```text
 wordpress-headless/
+├── .env.example                    # Variables de entorno documentadas
 ├── docker-compose.yml
 ├── database/
-│   └── init.sql
+│   └── README.md                   # Sin dump; bootstrap desde seed/
 ├── demo-elearning/                 # Plantilla original de referencia
 ├── frontend/
 │   ├── app/
@@ -212,12 +214,21 @@ wordpress-headless/
 │       ├── images/carreras/
 │       ├── images/uneti/
 │       └── js/
-├── scripts/wordpress/
-│   ├── mu-plugins/uneti-comentarios.php
-│   └── seed-noticias.php
+├── scripts/
+│   ├── seed/seed.py                # Orquestador Python (stdlib)
+│   └── wordpress/
+│       ├── bootstrap.php           # Instalación limpia + WPGraphQL
+│       ├── mu-plugins/uneti-comentarios.php
+│       └── seed/                   # lib, export, importar, verify
+├── seed/                           # Fixtures portables (JSON + imágenes)
+│   ├── manifest.json
+│   ├── site.json
+│   ├── taxonomies.json
+│   ├── media.json
+│   ├── posts/
+│   └── media/AAAA/MM/
 ├── wp_content/                     # Copia versionada de soporte de wp-content
-├── implementation_plan.md          # Plan histórico de la primera iteración
-└── PROGRESS.md
+└── Documents/PROGRESS.md
 ```
 
 > `wp_content/` es una copia de referencia versionada. El WordPress en ejecución utiliza `wp_data/`, que no se publica por contener datos y archivos volátiles.
@@ -255,9 +266,9 @@ wordpress-headless/
 - Comentarios demo visibles: **3**, todos en la noticia de convocatoria 2026.
 - Posts de ejemplo `hola-mundo` y `noticia-de-prueba-institucional`: en borrador.
 - Imágenes destacadas de las noticias: alojadas en `wp_data/wp-content/uploads/2026/10/`.
-- El seed es idempotente: actualiza por slug y evita duplicar comentarios demo.
+- El seed es idempotente: busca por `_uneti_seed_key`, adopta por slug/archivo/autor+contenido y evita duplicados.
 
-> `database/init.sql` contiene la estructura y datos base de WordPress, pero no las 6 noticias del seed. En una instalación nueva debe ejecutarse el script de siembra después de cargar WordPress.
+> `seed/` es la fuente de verdad del contenido. `wp_data/` y `db_data/` son estados locales desechables. Para reconstruir el sitio: `python3 scripts/seed/seed.py bootstrap`.
 
 ---
 
@@ -267,8 +278,12 @@ wordpress-headless/
 |---|---|
 | `bunx tsc --noEmit` | Sin errores |
 | `bun run lint` | 0 errores; 6 advertencias por hojas de estilo manuales del template |
-| `bun run build` | Compilación exitosa; 22 tareas de generación estática |
+| `bun run build` | Exitoso: 22 rutas prerenderizadas. El fallo de `/_global-error` era causado por `NODE_ENV=development` fijado en el servicio `frontend`; eliminado del compose |
 | `docker compose config` | Configuración válida |
+| `python3 scripts/seed/seed.py validate` | 6 posts, 6 media, 3 comentarios, checksums correctos |
+| `python3 scripts/seed/seed.py import` | Idempotente: segunda ejecución sin duplicados |
+| `python3 scripts/seed/seed.py verify` | 6 posts publicados, 3 comentarios, 6 imágenes HTTP 200 `image/jpeg`, GraphQL activo |
+| `seed.py bootstrap` en entorno limpio (`8081`) | WordPress instalado, WPGraphQL activo, 6 posts, 0 páginas, 3 comentarios |
 | `GET /` | 200 |
 | `GET /noticias` | 200 |
 | `GET /noticias/uneti-abre-convocatoria-admision-2026` | 200 |
@@ -302,13 +317,12 @@ El comentario y la noticia temporales usados para validar el flujo fueron elimin
 
 ## 9. Deuda técnica y riesgos conocidos
 
-- Credenciales de desarrollo embebidas en `docker-compose.yml`; deben migrarse a `.env` o Docker secrets antes de producción.
-- `wordpress:latest` no está fijado por digest; una actualización podría cambiar el comportamiento del CMS.
+- Las credenciales de desarrollo viven en `.env` (ignorado); para producción deben migrarse a Docker secrets o un gestor externo.
+- Las imágenes están fijadas por tag (`mariadb:11.4.13`, `wordpress:7.1.3`, `oven/bun:1.4.3-alpine`); falta fijarlas por digest.
 - Los comentarios se autoaprueban y no tienen CAPTCHA, rate limiting ni moderación previa.
 - El formulario de contacto solo registra el lead en logs; falta persistencia, correo o integración CRM.
-- Los archivos multimedia del seed viven en `wp_data/` (ignorado). En un clon limpio hay que cargarlos o ampliar el seed para copiarlos desde el repositorio.
-- WPGraphQL debe instalarse/activarse en una instalación nueva; `wp_content/` conserva una copia de referencia.
-- No existen pruebas E2E automatizadas.
+- Las imágenes de `seed/media/` no tienen fuente/licencia documentada; ver `seed/CREDITS.md`.
+- Existe workflow CI de clon limpio (`.github/workflows/seed.yml`); faltan pruebas E2E automatizadas.
 - La navegación con recarga completa es una limitación deliberada del template, no una SPA.
 - La caché SSE se mantiene en memoria por conexión; para escalar horizontalmente se requeriría pub/sub.
 - Falta validación visual final en navegadores reales y pruebas de accesibilidad.
@@ -318,38 +332,41 @@ El comentario y la noticia temporales usados para validar el flujo fueron elimin
 
 ## 10. Próximos pasos recomendados
 
-1. Externalizar secretos y fijar versiones/digests de imágenes Docker.
+1. Fijar imágenes Docker por digest y mover secretos a Docker secrets.
 2. Añadir moderación, rate limiting y protección anti-spam a comentarios.
 3. Persistir los leads de contacto y notificar por correo o CRM.
-4. Hacer reproducible el seed multimedia desde el repositorio.
+4. Completar `seed/CREDITS.md` o reemplazar las imágenes sin licencia.
 5. Incorporar Playwright para navegación, comentarios y SSE.
 6. Revisar accesibilidad, SEO técnico y rendimiento de imágenes.
 7. Preparar despliegue productivo con reverse proxy, TLS, backups y monitoreo.
-8. Evaluar CDN o `next/image` para los activos del template.
 
 ---
 
 ## 11. Operación
 
 ```bash
-# Levantar el entorno
+# Preparar variables y levantar el entorno
+cp .env.example .env
 docker compose up -d
 
 # Ver estado
 docker compose ps
 
-# Cargar noticias y comentarios demo
-docker exec wp_site php /opt/uneti-scripts/seed-noticias.php
+# Instalar/restaurar el sitio desde seed/ y verificar
+python3 scripts/seed/seed.py bootstrap
+
+# Alternativas
+python3 scripts/seed/seed.py validate
+python3 scripts/seed/seed.py import
+python3 scripts/seed/seed.py verify
+python3 scripts/seed/seed.py export
 
 # Verificar tipos y lint
 docker exec next_frontend bunx tsc --noEmit
 docker exec next_frontend bun run lint
 
-# Compilar
-docker exec next_frontend bun run build
-
 # Regenerar el grafo de memoria
-docker run --rm -v "$PWD:/app" -w /app --entrypoint bun oven/bun:1-alpine build_graph.js
+docker run --rm -v "$PWD:/app" -w /app --entrypoint bun oven/bun:1.4.3-alpine build_graph.js
 ```
 
 ---
@@ -365,6 +382,7 @@ docker run --rm -v "$PWD:/app" -w /app --entrypoint bun oven/bun:1-alpine build_
 - [x] Detalle de noticias con SEO y relacionadas.
 - [x] Carreras PNF con información completa.
 - [x] Entorno Docker operativo y documentado.
-- [x] Datos demo y validaciones técnicas.
+- [x] Seed portable e idempotente; validaciones de posts, comentarios e imágenes.
+- [x] `bun run build` de producción sin errores.
 - [ ] Pruebas E2E automatizadas.
 - [ ] Endurecimiento de seguridad y despliegue productivo.

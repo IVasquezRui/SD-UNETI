@@ -1,0 +1,21 @@
+{
+    "key": "estudiantes-informatica-plataforma-proyectos-comunitarios",
+    "slug": "estudiantes-informatica-plataforma-proyectos-comunitarios",
+    "title": "Estudiantes de Informática crean plataforma para gestionar proyectos comunitarios",
+    "excerpt": "El proyecto sociotecnológico permite registrar, priorizar y hacer seguimiento a iniciativas de organizaciones comunitarias de Caracas.",
+    "content": "<p>Un equipo de estudiantes del PNF en Informática presentó una plataforma web para registrar y hacer seguimiento a los proyectos de organizaciones comunitarias. La solución fue desarrollada como parte del proyecto sociotecnológico del trayecto III y ya se encuentra en fase piloto.</p><p>La aplicación permite crear fichas de proyecto, asignar responsables, registrar avances y generar reportes sencillos para las asambleas comunitarias. El equipo trabajó con metodologías ágiles y realizó talleres de levantamiento de requerimientos en territorio.</p><h2>Tecnología con pertinencia social</h2><p>El desarrollo utiliza software libre, una base de datos relacional y una interfaz adaptable a teléfonos móviles. Docentes del programa destacaron que el valor del proyecto está en haber partido de una necesidad real y en haberla traducido en una solución sostenible.</p><p>La siguiente etapa incluye capacitación a las organizaciones y la incorporación de nuevos módulos para la gestión de inventarios y actividades formativas.</p>",
+    "status": "publish",
+    "date": "2026-10-16 15:30:00",
+    "dateGmt": "2026-10-16 19:30:00",
+    "commentStatus": "open",
+    "categories": [
+        "innovacion"
+    ],
+    "tags": [
+        "comunidad",
+        "informatica",
+        "proyecto-sociotecnologico"
+    ],
+    "featuredMedia": "innovacion-comunitaria",
+    "comments": []
+}
