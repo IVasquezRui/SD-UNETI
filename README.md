@@ -35,10 +35,10 @@ Navegador
 | Capa | Tecnología | Versión |
 |---|---|---|
 | Frontend | Next.js / React | `16.4.2` / `19.3.0` |
-| Runtime frontend | Bun | `1.4.3` |
+| Runtime frontend | Bun | `1.4.4` |
 | Lenguaje | TypeScript | `^5` |
 | Estilos | Template `demo-elearning` + `uneti.css` | — |
-| CMS | WordPress | `7.1.3` |
+| CMS | WordPress | `7.1.3` (PHP 8.5) |
 | API de contenido | WPGraphQL | `2.24.2` |
 | Base de datos | MariaDB | `11.4.13` |
 | Orquestación | Docker Compose | 3 servicios |
@@ -50,7 +50,7 @@ Navegador
 - Git.
 - Docker Engine con Docker Compose v2.
 - Python 3.10+ (solo biblioteca estándar).
-- Opcional: Bun `1.4.3` si se ejecuta el frontend fuera de Docker.
+- Opcional: Bun `1.4.4` si se ejecuta el frontend fuera de Docker.
 
 ### Levantar el entorno
 
@@ -72,7 +72,7 @@ python3 scripts/seed/seed.py bootstrap
 | Servicio | URL |
 |---|---|
 | Portal Next.js | `http://localhost:3000` |
-| WordPress | `http://localhost:8080` |
+| WordPress |  (PHP 8.5) (PHP 8.5)`http://localhost:8080` |
 | Administración | `http://localhost:8080/wp-admin` |
 | WPGraphQL | `http://localhost:8080/graphql` |
 | API de comentarios | `http://localhost:8080/wp-json/uneti/v1/comentarios/{slug}` |
