@@ -24,7 +24,7 @@ services:
 
   # CMS: WordPress Headless (versión fijada)
   wordpress:
-    image: ${WORDPRESS_IMAGE:-wordpress:7.1.3}
+    image: ${WORDPRESS_IMAGE:-wordpress:7.1.3-php8.5-apache}
     container_name: ${WORDPRESS_CONTAINER_NAME:-wp_site}
     restart: always
     depends_on:
@@ -55,7 +55,7 @@ services:
 
   # Frontend Headless: Next.js (App Router) + TypeScript + Tailwind con Bun
   frontend:
-    image: ${BUN_IMAGE:-oven/bun:1.4.3-alpine}
+    image: ${BUN_IMAGE:-oven/bun:1.4.4-alpine}
     container_name: ${FRONTEND_CONTAINER_NAME:-next_frontend}
     restart: always
     working_dir: /app
@@ -69,6 +69,8 @@ services:
       # URLs públicas que consume el navegador
       NEXT_PUBLIC_WP_URL: ${WORDPRESS_URL:-http://localhost:8080}
       NEXT_PUBLIC_GRAPHQL_URL: ${WORDPRESS_URL:-http://localhost:8080}/graphql
+      NEXT_PUBLIC_SISU_URL: ${SISU_URL:-http://localhost:8000}
+      NEXT_PUBLIC_SIS_URL: ${SIS_URL:-http://localhost:8080}
       # URL interna (resolución por DNS de Docker dentro de frontend_net)
       WP_INTERNAL_URL: http://wordpress
       WP_GRAPHQL_URL: http://wordpress/graphql

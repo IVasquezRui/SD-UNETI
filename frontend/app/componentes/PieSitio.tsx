@@ -3,7 +3,12 @@ import { NAVEGACION_PIE } from "../lib/navegacion";
 import FormularioBoletin from "./FormularioBoletin";
 import LogotipoSitio from "./LogotipoSitio";
 
+const SISU_URL = process.env.NEXT_PUBLIC_SISU_URL ?? "http://localhost:8000";
+const SIS_URL = process.env.NEXT_PUBLIC_SIS_URL ?? "http://localhost:8080";
+
 const ENLACES_RAPIDOS = [
+  { label: "Asistente SISU", href: SISU_URL },
+  { label: "Acceso al SIS-UNETI", href: SIS_URL },
   { label: "Mesa de Ayuda", href: CONTACTO.helpDesk },
   { label: "Campus Virtual", href: CONTACTO.campus },
   { label: "UNETI 360", href: CONTACTO.uneti360 },
