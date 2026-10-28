@@ -4,6 +4,7 @@ import SeccionPreguntas from "../componentes/SeccionPreguntas";
 import TituloPagina from "../componentes/TituloPagina";
 import PieSitio from "../componentes/PieSitio";
 import EncabezadoSitio from "../componentes/EncabezadoSitio";
+import ContadorAnimado from "../componentes/ContadorAnimado";
 import { ACTIVIDADES_NOSOTROS, PREGUNTAS_NOSOTROS, VALORES } from "../lib/institucional";
 
 export const metadata: Metadata = {
@@ -19,8 +20,8 @@ export default function NosotrosPage() {
       <main>
         <TituloPagina
           title="Acerca de la UNETI"
-          subtitle="6+ años innovando en educación tecnológica."
-          image="/assets/images/uneti/about_top_bg.jpg"
+          subtitle="8+ años innovando en educación tecnológica."
+          image="/assets/images/uneti/about-top.webp"
           crumbs={[{ label: "Inicio", href: "/" }, { label: "Sobre Nosotros" }]}
           particleId="about-page-particles"
         />
@@ -31,17 +32,25 @@ export default function NosotrosPage() {
               <div className="col-lg-6 col-md-10 md-mb-40px">
                 <div className="uneti-about-collage">
                   <img
-                    src="/assets/images/uneti/about_2_img_1.jpg"
+                    src="/assets/images/uneti/nosotros-principal.webp"
                     alt="Comunidad universitaria de la UNETI"
                     className="uneti-about-main"
+                    width={1280}
+                    height={576}
+                    loading="lazy"
+                    decoding="async"
                   />
                   <img
-                    src="/assets/images/uneti/about_2_img_2.jpg"
+                    src="/assets/images/uneti/nosotros-equipo.webp"
                     alt="Formación en telecomunicaciones e informática"
                     className="uneti-about-small"
+                    width={1200}
+                    height={800}
+                    loading="lazy"
+                    decoding="async"
                   />
                   <div className="uneti-about-years">
-                    <strong>6+</strong>
+                    <strong>8+</strong>
                     <span>Años innovando</span>
                   </div>
                 </div>
@@ -62,11 +71,9 @@ export default function NosotrosPage() {
                 </p>
                 <div className="row row-cols-2 g-3 mt-30px">
                   <div className="col">
-                    <h3
-                      className="vertical-counter alt-font text-dark-gray fw-600 mb-0"
-                      data-text="+"
-                      data-to="7000"
-                    ></h3>
+                    <h3 className="uneti-counter-value alt-font text-dark-gray fw-600 mb-0">
+                      <ContadorAnimado valor={7000} sufijo="+" />
+                    </h3>
                     <span className="fs-15">Estudiantes confían en UNETI</span>
                   </div>
                   <div className="col">
@@ -135,8 +142,8 @@ export default function NosotrosPage() {
           eyebrow="Conoce nuestra casa de estudios"
           title="Misión, visión y modelo educativo"
           description="Los fundamentos que orientan la formación, la investigación y la gestión de la UNETI."
-          image="/assets/images/uneti/about_2_img_2.jpg"
-          imageAlt="Laboratorio de la UNETI"
+          image="/assets/images/uneti/faq-estudiantes.webp"
+          imageAlt="Estudiante de la UNETI"
           items={PREGUNTAS_NOSOTROS}
         />
 
@@ -146,7 +153,7 @@ export default function NosotrosPage() {
           title="Estamos felices de crear e innovar siempre."
           description="Actividades académicas, culturales y deportivas que complementan la formación de nuestros estudiantes y docentes."
           items={ACTIVIDADES_NOSOTROS}
-          image="/assets/images/uneti/actividad.png"
+          image="/assets/images/uneti/actividades-taller.webp"
           imageAlt="Actividades de la UNETI"
           reverse
         />

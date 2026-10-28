@@ -3,21 +3,92 @@ import { NAVEGACION_PIE } from "../lib/navegacion";
 import FormularioBoletin from "./FormularioBoletin";
 import LogotipoSitio from "./LogotipoSitio";
 
-const SISU_URL = process.env.NEXT_PUBLIC_SISU_URL ?? "http://localhost:8000";
-const SIS_URL = process.env.NEXT_PUBLIC_SIS_URL ?? "http://localhost:8080";
-
 const ENLACES_RAPIDOS = [
-  { label: "Asistente SISU", href: SISU_URL },
-  { label: "Acceso al SIS-UNETI", href: SIS_URL },
-  { label: "Mesa de Ayuda", href: CONTACTO.helpDesk },
-  { label: "Campus Virtual", href: CONTACTO.campus },
-  { label: "UNETI 360", href: CONTACTO.uneti360 },
+  { label: "SIS-UNETI", href: CONTACTO.sis },
+  { label: "Asistente SISU", href: CONTACTO.sisu },
+  { label: "Admisiones", href: "/admisiones" },
+  { label: "Contacto", href: "/contacto" },
+  { label: "Instagram", href: CONTACTO.instagram },
   { label: "Canal UNETI Educativo", href: CONTACTO.youtube },
 ];
+
+const MOMENTOS = [
+  {
+    src: "/assets/images/uneti/hero-uneti.webp",
+    alt: "Encuentro de egresados de la UNETI",
+  },
+  {
+    src: "/assets/images/uneti/actividades-taller.webp",
+    alt: "Taller de formación tecnológica en la UNETI",
+  },
+  {
+    src: "/assets/images/uneti/nosotros-equipo.webp",
+    alt: "Equipo docente y estudiantes de la UNETI",
+  },
+  {
+    src: "/assets/images/uneti/faq-estudiantes.webp",
+    alt: "Estudiante de la UNETI en el campus",
+  },
+];
+
+function esEnlaceExterno(href: string) {
+  return href.startsWith("http");
+}
 
 export default function PieSitio() {
   return (
     <>
+      <section className="uneti-prefooter" aria-labelledby="uneti-instagram-title">
+        <div className="container">
+          <div className="uneti-prefooter-card">
+            <div className="uneti-prefooter-card__copy">
+              <span className="uneti-section-eyebrow text-white mb-15px">Comunidad UNETI</span>
+              <h2 id="uneti-instagram-title" className="alt-font text-white fw-600 mb-15px">
+                La vida unetista también pasa por Instagram.
+              </h2>
+              <p className="text-white opacity-7 mb-30px">
+                Talleres, encuentros, logros y momentos de nuestra comunidad. Síguenos y sé parte
+                de la conversación.
+              </p>
+              <a
+                href={CONTACTO.instagram}
+                target="_blank"
+                rel="noreferrer"
+                className="uneti-prefooter-card__link"
+              >
+                <i className="bi bi-instagram" aria-hidden="true"></i>
+                @unetivzla
+                <i className="bi bi-arrow-up-right" aria-hidden="true"></i>
+              </a>
+            </div>
+
+            <div className="uneti-prefooter-grid">
+              {MOMENTOS.map((momento) => (
+                <a
+                  href={CONTACTO.instagram}
+                  target="_blank"
+                  rel="noreferrer"
+                  key={momento.src}
+                  aria-label={`Ver la comunidad UNETI en Instagram: ${momento.alt}`}
+                >
+                  <img
+                    src={momento.src}
+                    alt={momento.alt}
+                    width={600}
+                    height={600}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <span aria-hidden="true">
+                    <i className="bi bi-instagram"></i>
+                  </span>
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       <footer id="site-footer" className="bg-gradient-aztec-green position-relative">
         <div
           className="background-position-center-top h-100 w-100 position-absolute left-0px top-0"
@@ -66,26 +137,23 @@ export default function PieSitio() {
                 <ul className="small-icon light fw-500">
                   <li>
                     <a
-                      className="facebook"
-                      href="https://www.facebook.com/"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Fb.
-                    </a>
-                  </li>
-                  <li>
-                    <a
                       className="instagram"
-                      href="https://www.instagram.com/"
+                      href={CONTACTO.instagram}
                       target="_blank"
                       rel="noreferrer"
+                      aria-label="Instagram de la UNETI"
                     >
                       Ig.
                     </a>
                   </li>
                   <li>
-                    <a className="youtube" href={CONTACTO.youtube} target="_blank" rel="noreferrer">
+                    <a
+                      className="youtube"
+                      href={CONTACTO.youtube}
+                      target="_blank"
+                      rel="noreferrer"
+                      aria-label="Canal de YouTube de UNETI Educativo"
+                    >
                       Yt.
                     </a>
                   </li>
@@ -98,7 +166,12 @@ export default function PieSitio() {
               <ul className="uneti-footer-links p-0 list-unstyled">
                 {ENLACES_RAPIDOS.map((link) => (
                   <li key={link.label}>
-                    <a href={link.href} target="_blank" rel="noreferrer">
+                    <a
+                      href={link.href}
+                      {...(esEnlaceExterno(link.href)
+                        ? { target: "_blank", rel: "noreferrer" }
+                        : {})}
+                    >
                       {link.label}
                     </a>
                   </li>
@@ -164,14 +237,6 @@ export default function PieSitio() {
           </div>
         </div>
       </footer>
-      <div className="scroll-progress d-none d-xxl-block">
-        <a href="#" className="scroll-top" aria-label="Ir arriba">
-          <span className="scroll-text">Ir arriba</span>
-          <span className="scroll-line">
-            <span className="scroll-point"></span>
-          </span>
-        </a>
-      </div>
     </>
   );
 }

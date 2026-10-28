@@ -1,15 +1,25 @@
 import { CONTACTO } from "../lib/institucional";
+import BotonVideo from "./BotonVideo";
 
 export default function SeccionVideo() {
   return (
-    <section className="position-relative overflow-hidden">
+    <section className="uneti-video-section position-relative overflow-hidden">
       <div className="container">
         <div className="uneti-video-banner position-relative overflow-hidden p-9 sm-p-7 text-center">
+          <img
+            src="/assets/images/uneti/video-comunidad.webp"
+            alt=""
+            className="uneti-video-banner__media"
+            width={1280}
+            height={576}
+            loading="lazy"
+            decoding="async"
+          />
+          <div className="uneti-video-banner__shade" aria-hidden="true"></div>
+
           <div className="row justify-content-center position-relative z-index-1">
             <div className="col-lg-9">
-              <span className="uneti-section-eyebrow text-white mb-20px">
-                UNETI Educativo
-              </span>
+              <span className="uneti-section-eyebrow text-white mb-20px">UNETI Educativo</span>
               <h2 className="alt-font text-white fw-600 ls-minus-2px mb-20px">
                 Conéctate a nuestro canal educativo.
               </h2>
@@ -17,14 +27,12 @@ export default function SeccionVideo() {
                 Mantente informado de nuestras transmisiones educativas, talleres y actividades
                 académicas.
               </p>
-              <a
-                href={CONTACTO.youtubeVideo}
-                className="uneti-video-play popup-youtube mb-25px"
-                aria-label="Reproducir video de UNETI Educativo"
-              >
-                <i className="fa-solid fa-play"></i>
-              </a>
-              <div>
+              <BotonVideo
+                videoId="gB9PsUUKqL8"
+                titulo="Video institucional de UNETI Educativo"
+                etiqueta="Reproducir video de UNETI Educativo"
+              />
+              <div className="mt-25px">
                 <a
                   href={CONTACTO.youtube}
                   target="_blank"

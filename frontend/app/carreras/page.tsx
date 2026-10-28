@@ -25,7 +25,7 @@ const VENTAJAS = [
   {
     icono: "bi bi-laptop",
     titulo: "Modalidad multimodal",
-    texto: "Encuentros presenciales, campus virtual y proyectos en territorio.",
+    texto: "Encuentros presenciales, mediación digital y proyectos en territorio.",
   },
   {
     icono: "bi bi-tools",
@@ -42,6 +42,7 @@ export default function CarrerasPage() {
         <TituloPagina
           title="Nuestras carreras"
           subtitle="Dos Programas Nacionales de Formación para transformar la tecnología del país."
+          image="/assets/images/uneti/nosotros-equipo.webp"
           crumbs={[{ label: "Inicio", href: "/" }, { label: "Carreras" }]}
           particleId="carreras-page-particles"
         />

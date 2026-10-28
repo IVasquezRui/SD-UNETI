@@ -321,7 +321,7 @@ Criterios de salida para la etapa Proxmox/Tailscale:
 - **`fetch` nativo:** no se introducen clientes GraphQL pesados ni Axios.
 - **Persistencia nativa:** los comentarios usan `wp_comments` en lugar de una tabla paralela.
 - **Contenido académico estático en el MVP:** las carreras viven en TypeScript para no sobredimensionar el CMS antes de definir un modelo editorial.
-- **Recarga completa deliberada:** la navegación interna usa `<a>` para reinicializar el runtime jQuery del template y evitar errores de hidratación.
+- **Recarga completa deliberada:** la navegación interna usa `<a>` por simplicidad del MVP; ya no existe runtime jQuery que reinicializar.
 - **SSE con respaldo:** actualización en vivo sin WebSockets ni infraestructura adicional; polling cada 30 segundos si `EventSource` falla.
 
 ### 6.2 Diagrama de contexto
@@ -435,11 +435,12 @@ Tailwind v4 se usa sin preflight: se importan `theme.css` y `utilities.css`, per
 Decisiones de compatibilidad:
 
 - Los assets se sirven desde `frontend/public/assets`.
-- Los scripts del template se inicializan mediante `ScriptsPlantilla`.
-- La navegación interna usa `<a>` para forzar recarga completa y reinicializar swipers, partículas y contadores.
+- No se carga `ScriptsPlantilla` ni el runtime `jquery.js` + `vendors.min.js` + `main.js`; la interacción vive en componentes React.
+- La navegación interna usa `<a>` por simplicidad del MVP; no depende de reinicializar plugins del template.
 - No se migra `<img>` a `next/image` mientras el template dependa de atributos como `data-at2x` y de su propio comportamiento de carga.
-- Los IDs de partículas son únicos por página para evitar colisiones.
-- El hero usa una sola capa visual con `banner_bg.png` y degradado; se eliminó la imagen duplicada.
+- Las partículas son CSS deterministas, sin IDs ni inicialización de canvas.
+- El hero usa `hero-uneti.webp` como capa separada con `object-fit: cover`, degradado y `object-position` que preserva a las personas.
+- El selector de iconos del template se restringió a tokens completos para que `[class*=ti-]` no afecte clases `uneti-*`.
 
 ### 6.8 Límites de confianza
 
@@ -938,7 +939,7 @@ El grafo `lookdown/` está excluido de Git y se regenera localmente.
 | R-10 | Rendimiento no medido | Medio | Media | Lighthouse móvil y presupuesto de rendimiento | Abierto |
 | R-11 | Caché SSE en memoria por conexión | Medio | Baja en MVP | Pub/sub si se escala horizontalmente | Aceptado |
 | R-12 | Navegación con recarga completa | Bajo | N/A | Limitación deliberada por compatibilidad con el template | Aceptado |
-| R-13 | Dependencia del runtime jQuery del template | Medio | Media | Documentar, aislar y probar actualizaciones | Aceptado |
+| R-13 | Dependencia del runtime jQuery del template | Medio | Media | Eliminada: interacciones en React | Mitigado |
 | R-14 | Licencias de plantilla, imágenes y librerías sin revisar | Medio | Media | Auditoría legal antes de publicación | Abierto |
 | R-15 | Concentración de conocimiento en pocas personas | Alto | Media | Documentación, onboarding y entorno reproducible | Mitigación parcial |
 | R-16 | Sin staging ni CI/CD | Medio | Alta | Crear staging y pipeline de validaciones | Abierto |
@@ -1124,9 +1125,9 @@ Para reducir el riesgo de dependencia de personas:
 #### ADR-003 — Navegación con recarga completa
 
 - **Estado:** aceptado.
-- **Contexto:** el runtime jQuery del template muta el DOM, envuelve secciones y clona `#navbarNav`.
+- **Contexto:** se prioriza simplicidad y se eliminó el runtime jQuery que mutaba el DOM.
 - **Decisión:** usar `<a>` para navegación interna y recarga completa.
-- **Consecuencias:** se evitan errores de hidratación y se reinicializan swipers, partículas y contadores; no se obtiene navegación SPA.
+- **Consecuencias:** no se obtiene navegación SPA, pero el DOM de React permanece estable y no hay errores de hidratación por plugins externos.
 
 #### ADR-004 — SSE con polling de respaldo
 

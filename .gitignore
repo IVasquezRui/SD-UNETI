@@ -20,6 +20,9 @@ __pycache__/
 # Archivos locales del proyecto
 .DS_Store
 
+# Fotografías originales entregadas por UNETI (se publican derivados WebP en uneti/)
+frontend/public/assets/images/uneti_new/
+
 # Reglas locales del asistente (pueden contener credenciales)
 .clinerules
 Documents/reglasclineextension.txt

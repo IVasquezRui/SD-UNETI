@@ -1,4 +1,5 @@
 import { CANALES_SOPORTE } from "../lib/institucional";
+import Reveal from "./Reveal";
 
 export default function SeccionSoporte() {
   return (
@@ -6,22 +7,19 @@ export default function SeccionSoporte() {
       <div className="container">
         <div className="row justify-content-center text-center mb-5">
           <div className="col-lg-8">
-            <span className="uneti-section-eyebrow mb-15px">Somos UNETI</span>
+            <span className="uneti-section-eyebrow mb-15px">Ecosistema UNETI</span>
             <h2 className="alt-font text-dark-gray fw-600 ls-minus-3px mb-15px">
               Estamos listos para atender tu solicitud.
             </h2>
             <p className="mb-0">
-              Elige el canal que necesites: mesa de ayuda, teléfono, campus virtual o nuestra
-              plataforma UNETI 360.
+              Accede al SIS-UNETI, conversa con SISU, consulta el proceso de admisión o comunícate
+              con nuestro equipo.
             </p>
           </div>
         </div>
-        <div
-          className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-0"
-          data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 150, "easing": "easeOutQuad" }'
-        >
-          {CANALES_SOPORTE.map((channel) => (
-            <div className="col" key={channel.title}>
+        <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-0">
+          {CANALES_SOPORTE.map((channel, indice) => (
+            <Reveal className="col" delay={indice * 80} key={channel.title}>
               <div className="uneti-support-card p-30px lg-p-25px text-center text-lg-start">
                 <span className={`uneti-icon-tone uneti-tone-${channel.tone} mb-20px`}>
                   <i className={channel.icon}></i>
@@ -39,7 +37,7 @@ export default function SeccionSoporte() {
                   <i className="fa-solid fa-arrow-right ms-5px fs-12"></i>
                 </a>
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>

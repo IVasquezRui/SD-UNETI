@@ -29,13 +29,13 @@ const PASOS = [
     number: "03",
     title: "Orientación académica",
     description:
-      "Un docente del programa te orienta sobre la modalidad multimodal, las prácticas profesionales y las salidas profesionales.",
+      "Un docente del programa te orienta sobre la modalidad híbrida, las prácticas profesionales y las salidas profesionales.",
   },
   {
     number: "04",
     title: "Confirma tu ingreso",
     description:
-      "Recibe la confirmación, accede al campus virtual y comienza tu formación como unetista.",
+      "Recibe la confirmación, accede al SIS-UNETI y comienza tu formación como unetista.",
   },
 ];
 
@@ -65,17 +65,11 @@ export default function AdmisionesPage() {
         <TituloPagina
           title="Admisiones"
           subtitle="Inicia tu proceso de ingreso a la UNETI."
+          image="/assets/images/uneti/nosotros-principal.webp"
           crumbs={[{ label: "Inicio", href: "/" }, { label: "Admisiones" }]}
         />
 
         <section className="bg-tranquil position-relative overlap-height">
-          <div
-            className="position-absolute left-minus-200px top-25"
-            data-bottom-top="transform: translateY(-80px)"
-            data-top-bottom="transform: translateY(80px)"
-          >
-            <img src="/assets/images/demo-elearning-bg-04.png" alt="" />
-          </div>
           <div className="container overlap-gap-section">
             <div className="row justify-content-center align-items-start">
               <div className="col-lg-6 lg-mb-40px">
@@ -85,10 +79,7 @@ export default function AdmisionesPage() {
                 <h2 className="alt-font text-dark-gray fw-600 ls-minus-3px mb-30px">
                   Pasos para ingresar a la UNETI
                 </h2>
-                <div
-                  className="row g-3"
-                  data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 200, "easing": "easeOutQuad" }'
-                >
+                <div className="row g-3">
                   {PASOS.map((step) => (
                     <div className="col-12" key={step.number}>
                       <div className="d-flex bg-white border-radius-6px p-30px md-p-25px">
@@ -107,7 +98,7 @@ export default function AdmisionesPage() {
                 </div>
                 <div className="bg-dark-gray border-radius-6px p-30px mt-30px">
                   <span className="d-block fs-18 fw-600 text-white mb-10px">
-                    Documents checklist
+                    Documentos requeridos
                   </span>
                   <ul className="p-0 m-0 list-style-02 text-white">
                     <li className="mb-5px">Título de bachiller o documento equivalente</li>
