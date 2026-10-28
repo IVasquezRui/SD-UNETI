@@ -8,7 +8,7 @@ import { CONTACTO, CANALES_SOPORTE } from "../lib/institucional";
 export const metadata: Metadata = {
   title: "Contacto | UNETI",
   description:
-    "Contacta a la UNETI: mesa de ayuda, teléfonos, correo institucional, campus virtual y ubicación en Caracas.",
+    "Contacta a la UNETI: SIS-UNETI, asistente SISU, admisiones, teléfonos, correo institucional y ubicación en Caracas.",
 };
 
 export default function ContactoPage() {
@@ -19,7 +19,7 @@ export default function ContactoPage() {
         <TituloPagina
           title="Contáctanos"
           subtitle="Estamos listos para atenderte."
-          image="/assets/images/uneti/work_bg.jpg"
+          image="/assets/images/uneti/contacto-estudiantes.webp"
           crumbs={[{ label: "Inicio", href: "/" }, { label: "Contacto" }]}
           particleId="contact-page-particles"
         />
@@ -125,7 +125,13 @@ export default function ContactoPage() {
                       {channel.title}
                     </h3>
                     <p className="fs-15 fw-400 mb-15px">{channel.description}</p>
-                    <a href={channel.href} className="fw-600 text-dark-gray fs-15">
+                    <a
+                      href={channel.href}
+                      className="fw-600 text-dark-gray fs-15"
+                      {...(channel.href.startsWith("http")
+                        ? { target: "_blank", rel: "noreferrer" }
+                        : {})}
+                    >
                       {channel.cta}
                     </a>
                   </div>

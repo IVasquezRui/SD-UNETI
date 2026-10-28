@@ -38,8 +38,8 @@ export type ResumenNoticia = {
   comentarios: number;
 };
 
-const IMAGEN_RESPALDO = "/assets/images/uneti/about_2_img_1.jpg";
-const AVATAR_RESPALDO = "/assets/images/uneti/client_img_1.png";
+const IMAGEN_RESPALDO = "/assets/images/uneti/nosotros-principal.webp";
+const AVATAR_RESPALDO = "/assets/images/uneti/testimonio-juan.webp";
 
 const ENTIDADES: Record<string, string> = {
   "&amp;": "&",

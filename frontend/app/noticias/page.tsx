@@ -3,6 +3,7 @@ import EncabezadoSitio from "../componentes/EncabezadoSitio";
 import PieSitio from "../componentes/PieSitio";
 import SeccionNoticiasEnVivo from "../componentes/SeccionNoticiasEnVivo";
 import TituloPagina from "../componentes/TituloPagina";
+import { CONTACTO } from "../lib/institucional";
 import { obtenerNoticias } from "../lib/noticias";
 
 export const metadata: Metadata = {
@@ -21,6 +22,7 @@ export default async function NoticiasPage() {
         <TituloPagina
           title="Últimas noticias"
           subtitle="Información publicada y actualizada desde el CMS de la UNETI."
+          image="/assets/images/uneti/nosotros-fondo.webp"
           crumbs={[{ label: "Inicio", href: "/" }, { label: "Noticias" }]}
           particleId="noticias-page-particles"
         />
@@ -61,12 +63,12 @@ export default async function NoticiasPage() {
                     <span className="text-dark-gray fw-500 fs-20 xs-fs-18 ls-minus-05px">
                       Mantente en contacto.{" "}
                       <a
-                        href="https://www.facebook.com/"
+                        href={CONTACTO.instagram}
                         target="_blank"
                         rel="noreferrer"
                         className="text-decoration-line-bottom-medium text-dark-gray fw-600"
                       >
-                        Síguenos en Facebook
+                        Síguenos en Instagram
                       </a>
                     </span>
                   </div>

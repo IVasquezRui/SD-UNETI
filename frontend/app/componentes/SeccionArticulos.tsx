@@ -1,3 +1,4 @@
+import { CONTACTO } from "../lib/institucional";
 import { obtenerNoticias } from "../lib/noticias";
 import SeccionNoticiasEnVivo from "./SeccionNoticiasEnVivo";
 
@@ -20,10 +21,7 @@ export default async function SeccionArticulos() {
               Contenido publicado desde WordPress y actualizado en vivo.
             </p>
           </div>
-          <div
-            className="col-lg-4 text-center text-md-end"
-            data-anime='{ "translateX": [-50, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 300, "easing": "easeOutQuad" }'
-          >
+          <div className="col-lg-4 text-center text-md-end">
             <a
               href="/noticias"
               className="btn btn-link btn-hover-animation-switch btn-extra-large text-dark-gray fw-600"
@@ -71,12 +69,12 @@ export default async function SeccionArticulos() {
                 <span className="text-dark-gray fw-500 fs-20 xs-fs-18 ls-minus-05px">
                   Mantente en contacto.{" "}
                   <a
-                    href="https://www.facebook.com/"
+                    href={CONTACTO.instagram}
                     target="_blank"
                     rel="noreferrer"
                     className="text-decoration-line-bottom-medium text-dark-gray fw-600"
                   >
-                    Síguenos en Facebook
+                    Síguenos en Instagram
                   </a>
                 </span>
               </div>

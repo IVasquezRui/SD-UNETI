@@ -26,8 +26,8 @@ export default function Inicio() {
           eyebrow="Preguntas y respuestas"
           title="Nuestros estudiantes nos preguntan."
           description="Estos son los puntos que nuestros estudiantes nos han estado preguntando con más frecuencia."
-          image="/assets/images/uneti/preguntasyrespuestas.png"
-          imageAlt="Estudiantes de la UNETI"
+          image="/assets/images/uneti/faq-estudiantes.webp"
+          imageAlt="Estudiante de la UNETI"
           items={PREGUNTAS_INICIO}
         />
         <SeccionInnovacion />
@@ -38,7 +38,7 @@ export default function Inicio() {
           title="Nuestras mejores actividades"
           description="Las actividades están hechas para ayudar a nuestros estudiantes y profesores a crecer juntos de manera profesional. Te presentamos algunas de ellas que están esperando por ti."
           items={ACTIVIDADES_INICIO}
-          image="/assets/images/uneti/activities_bg.jpg"
+          image="/assets/images/uneti/actividades-taller.webp"
           imageAlt="Actividades de la UNETI"
         />
         <SeccionVideo />

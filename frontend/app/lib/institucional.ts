@@ -9,6 +9,9 @@ export type InfoContacto = {
   helpDesk: string;
   campus: string;
   uneti360: string;
+  sisu: string;
+  sis: string;
+  instagram: string;
   youtube: string;
   youtubeVideo: string;
 };
@@ -76,42 +79,45 @@ export const CONTACTO: InfoContacto = {
   helpDesk: "https://www.uneti.edu.ve/ayuda/",
   campus: "https://www.uneti.edu.ve/campus/",
   uneti360: "https://uneti360.unetieduca.edu.ve/",
+  sisu: process.env.NEXT_PUBLIC_SISU_URL ?? "http://localhost:8000",
+  sis: process.env.NEXT_PUBLIC_SIS_URL ?? "http://localhost:8080",
+  instagram: "https://www.instagram.com/unetivzla",
   youtube: "https://www.youtube.com/@UNETIEducativo",
   youtubeVideo: "https://www.youtube.com/watch?v=gB9PsUUKqL8",
 };
 
 export const CANALES_SOPORTE: CanalSoporte[] = [
   {
-    icon: "bi bi-life-preserver",
-    title: "Mesa de Ayuda",
-    description: "Si necesitas comunicarte con nosotros, abre un ticket.",
-    href: CONTACTO.helpDesk,
-    cta: "Abrir ticket",
-    tone: "light-blue",
-  },
-  {
-    icon: "bi bi-telephone",
-    title: "Contacto Telefónico",
-    description: "Estamos listos para atenderte a través de:",
-    href: CONTACTO.phoneHref,
-    cta: "0212-505-1402",
+    icon: "bi bi-mortarboard",
+    title: "SIS-UNETI",
+    description: "Gestiona tu matrícula, notas, constancias y trámites académicos.",
+    href: CONTACTO.sis,
+    cta: "Entrar al SIS-UNETI",
     tone: "blue",
   },
   {
-    icon: "bi bi-laptop",
-    title: "Campus Virtual",
-    description: "Ingresa a nuestro campus virtual.",
-    href: CONTACTO.campus,
-    cta: "Ir al campus",
+    icon: "bi bi-chat-square-dots",
+    title: "Asistente SISU",
+    description: "Resuelve dudas académicas y administrativas en cualquier momento.",
+    href: CONTACTO.sisu,
+    cta: "Conversar con SISU",
     tone: "green",
   },
   {
-    icon: "bi bi-globe2",
-    title: "UNETI 360",
-    description: "Ingresa a nuestra plataforma UNETI 360.",
-    href: CONTACTO.uneti360,
-    cta: "Explorar",
+    icon: "bi bi-journal-check",
+    title: "Admisiones",
+    description: "Consulta requisitos, fechas y opciones de ingreso a la UNETI.",
+    href: "/admisiones",
+    cta: "Iniciar admisión",
     tone: "orange",
+  },
+  {
+    icon: "bi bi-telephone",
+    title: "Atención telefónica",
+    description: "Habla con nuestro equipo de lunes a viernes.",
+    href: CONTACTO.phoneHref,
+    cta: "Llamar ahora",
+    tone: "light-blue",
   },
 ];
 
@@ -256,7 +262,7 @@ export const AREAS_INNOVACION: AreaInnovacion[] = [
     title: "Blockchain / Cripto",
     description:
       "Estamos a la vanguardia de las últimas tendencias en tecnología y educación. Hemos desarrollado un innovador programa enfocado en blockchain y criptomonedas para potenciar tus habilidades en áreas de gran demanda laboral.",
-    image: "/assets/images/uneti/blockchain.png",
+    image: "/assets/images/uneti/innovacion-blockchain.webp",
     href: "/contacto",
   },
   {
@@ -264,7 +270,7 @@ export const AREAS_INNOVACION: AreaInnovacion[] = [
     title: "Metaverso / Aula Inmersiva",
     description:
       "Creemos que la educación del futuro es inmersiva. Estamos desarrollando innovadores espacios educativos en realidad virtual y metaversos para ofrecer una experiencia de aprendizaje única.",
-    image: "/assets/images/uneti/metaverso.png",
+    image: "/assets/images/uneti/innovacion-metaverso.webp",
     href: "/contacto",
   },
   {
@@ -272,7 +278,7 @@ export const AREAS_INNOVACION: AreaInnovacion[] = [
     title: "IA como Herramienta Tecno-pedagógica",
     description:
       "La inteligencia artificial está transformando la manera de educar y aprender. En UNETI queremos prepararte para usar la IA de forma efectiva en tus lecciones y cursos.",
-    image: "/assets/images/uneti/iapedagogia.png",
+    image: "/assets/images/uneti/innovacion-ia.webp",
     href: "/contacto",
   },
   {
@@ -280,7 +286,7 @@ export const AREAS_INNOVACION: AreaInnovacion[] = [
     title: "Modelado en 3D",
     description:
       "El modelado y diseño 3D son habilidades altamente valoradas en la industria tecnológica y creativa actual. En UNETI queremos que explotes tu talento y te conviertas en un experto en la creación de modelos y mundos 3D.",
-    image: "/assets/images/uneti/modelado3d.png",
+    image: "/assets/images/uneti/innovacion-3d.webp",
     href: "/contacto",
   },
 ];
@@ -292,7 +298,7 @@ export const TESTIMONIOS: Testimonio[] = [
     role: "Estudiante",
     quote:
       "Gracias a los cursos de modelado 3D en Blender dictados por la UNETI pude conseguir un empleo como freelance. Los recomiendo ampliamente.",
-    image: "/assets/images/uneti/client_img_1.png",
+    image: "/assets/images/uneti/testimonio-juan.webp",
     rating: 5,
   },
   {
@@ -301,7 +307,7 @@ export const TESTIMONIOS: Testimonio[] = [
     role: "Estudiante",
     quote:
       "Estudié marketing digital en UNETI y ahora manejo exitosamente las redes sociales de la empresa donde trabajo. Las clases virtuales son muy interactivas.",
-    image: "/assets/images/uneti/client_img_2.png",
+    image: "/assets/images/uneti/testimonio-maria.webp",
     rating: 5,
   },
   {
@@ -310,7 +316,7 @@ export const TESTIMONIOS: Testimonio[] = [
     role: "Estudiante",
     quote:
       "Realicé el diplomado en criptoeconomía y blockchain en UNETI y quedé muy satisfecho. Aprendí sobre Bitcoin, criptoactivos, NFTs, DeFi y más. Los profesores expertos resolvieron todas mis dudas y ahora me siento listo para iniciar proyectos blockchain.",
-    image: "/assets/images/uneti/client_img_3.png",
+    image: "/assets/images/uneti/testimonio-samuel.webp",
     rating: 5,
   },
 ];

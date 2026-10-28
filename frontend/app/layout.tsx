@@ -1,6 +1,6 @@
+/* eslint-disable @next/next/no-css-tags -- el orden de cascada del template se controla con <link> */
 import type { Metadata } from "next";
 import "./globals.css";
-import ScriptsPlantilla from "./componentes/ScriptsPlantilla";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
@@ -22,13 +22,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="stylesheet" href="/assets/css/elearning.css" />
         <link rel="stylesheet" href="/assets/css/uneti.css" />
       </head>
-      <body
-        data-mobile-nav-trigger-alignment="right"
-        data-mobile-nav-style="modern"
-        data-mobile-nav-bg-color="#0f2239"
-      >
+      <body>
         {children}
-        <ScriptsPlantilla />
       </body>
     </html>
   );

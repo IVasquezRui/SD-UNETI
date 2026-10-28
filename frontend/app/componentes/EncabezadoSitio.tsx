@@ -1,66 +1,87 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { CONTACTO } from "../lib/institucional";
 import { NAVEGACION_PRINCIPAL } from "../lib/navegacion";
 import LogotipoSitio from "./LogotipoSitio";
 
 export default function EncabezadoSitio() {
+  const pathname = usePathname();
+  const [menuAbierto, setMenuAbierto] = useState(false);
+  const [desplazado, setDesplazado] = useState(false);
+
+  useEffect(() => {
+    const alDesplazar = () => setDesplazado(window.scrollY > 12);
+    alDesplazar();
+    window.addEventListener("scroll", alDesplazar, { passive: true });
+    return () => window.removeEventListener("scroll", alDesplazar);
+  }, []);
+
+  useEffect(() => {
+    if (!menuAbierto) return;
+
+    const alPresionarTecla = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMenuAbierto(false);
+    };
+
+    document.addEventListener("keydown", alPresionarTecla);
+    return () => document.removeEventListener("keydown", alPresionarTecla);
+  }, [menuAbierto]);
+
+  const esActivo = (href: string) =>
+    href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
+
   return (
-    <header>
-      <nav
-        className="navbar navbar-expand-lg header-transparent bg-transparent header-reverse"
-        data-header-hover="light"
-      >
-        <div className="container-fluid">
-          <div className="col-auto col-lg-2 me-lg-0 me-auto">
-            <a className="navbar-brand" href="/" aria-label="UNETI inicio">
-              <LogotipoSitio variant="light" className="default-logo" />
-              <LogotipoSitio variant="dark" className="alt-logo" />
-              <LogotipoSitio variant="dark" className="mobile-logo" />
-            </a>
-          </div>
-          <div className="col-auto menu-order position-static">
-            <button
-              className="navbar-toggler float-start"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarNav"
-              aria-controls="navbarNav"
-              aria-label="Abrir navegación"
-            >
-              <span className="navbar-toggler-line"></span>
-              <span className="navbar-toggler-line"></span>
-              <span className="navbar-toggler-line"></span>
-              <span className="navbar-toggler-line"></span>
-            </button>
-            <div className="collapse navbar-collapse" id="navbarNav">
-              <ul className="navbar-nav alt-font">
-                {NAVEGACION_PRINCIPAL.map((item) => (
-                  <li className="nav-item" key={item.href}>
-                    <a href={item.href} className="nav-link">
-                      {item.etiqueta}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-          <div className="col-auto col-lg-3 text-end d-none d-sm-flex align-items-center justify-content-end">
-            <div className="header-icon">
-              <div>
-                <div className="alt-font fw-500 lg-fs-15">
-                  <a href={CONTACTO.phoneHref} className="widget-text text-white-hover">
-                    <i className="feather icon-feather-phone-call me-10px lg-me-5px"></i>
-                    {CONTACTO.phones[0]}
+    <header className={`uneti-header${desplazado ? " is-scrolled" : ""}`}>
+      <nav className="navbar navbar-expand-lg uneti-header__nav" aria-label="Navegación principal">
+        <div className="container">
+          <a className="navbar-brand uneti-header__brand" href="/" aria-label="UNETI, ir al inicio">
+            <LogotipoSitio variant="dark" />
+          </a>
+
+          <button
+            className="navbar-toggler uneti-header__toggler"
+            type="button"
+            onClick={() => setMenuAbierto((abierto) => !abierto)}
+            aria-controls="navbarNav"
+            aria-expanded={menuAbierto}
+            aria-label={menuAbierto ? "Cerrar navegación" : "Abrir navegación"}
+          >
+            <span className="navbar-toggler-line"></span>
+            <span className="navbar-toggler-line"></span>
+            <span className="navbar-toggler-line"></span>
+            <span className="navbar-toggler-line"></span>
+          </button>
+
+          <div
+            className={`collapse navbar-collapse uneti-header__menu${menuAbierto ? " show" : ""}`}
+            id="navbarNav"
+          >
+            <ul className="navbar-nav alt-font mx-auto">
+              {NAVEGACION_PRINCIPAL.map((item) => (
+                <li className="nav-item" key={item.href}>
+                  <a
+                    href={item.href}
+                    className={`nav-link${esActivo(item.href) ? " active" : ""}`}
+                    aria-current={esActivo(item.href) ? "page" : undefined}
+                    onClick={() => setMenuAbierto(false)}
+                  >
+                    {item.etiqueta}
                   </a>
-                </div>
-              </div>
-            </div>
+                </li>
+              ))}
+            </ul>
+
             <a
-              href={CONTACTO.helpDesk}
+              href={CONTACTO.sis}
+              className="uneti-header__sis"
               target="_blank"
               rel="noreferrer"
-              className="btn btn-small btn-base-color btn-rounded fw-600 ms-25px d-none d-xl-inline-flex"
+              onClick={() => setMenuAbierto(false)}
             >
-              Mesa de Ayuda
+              Explora el SIS-UNETI
+              <i className="bi bi-arrow-up-right ms-2" aria-hidden="true"></i>
             </a>
           </div>
         </div>

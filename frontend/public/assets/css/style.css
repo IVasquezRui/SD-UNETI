@@ -150,7 +150,8 @@ video {
 .fa, .fa-brands, .fa-classic, .fa-regular, .fa-solid, .fab, .far, .fas {
   width: auto;
 }
-[class*=line-icon], [class*=" line-icon"], [class*=bi-], [class*=feather], [class*=ti-] {
+/* Se restringe a tokens completos: [class*=ti-] también aplicaba a clases como uneti-* */
+[class^=line-icon], [class*=" line-icon"], [class^=bi-], [class*=" bi-"], [class^=feather], [class*=" feather"], [class^=ti-], [class*=" ti-"] {
   display: inline-block;
 }
 .form-control, .form-control.is-invalid, .was-validated .form-control:invalid {

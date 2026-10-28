@@ -72,13 +72,13 @@ Next.js es la única capa de presentación. WordPress actúa exclusivamente como
 
 - Plantilla `demo-elearning` integrada desde `frontend/public/assets`.
 - Hojas de estilo cargadas en el mismo orden de cascada que el HTML original: `vendors.min.css`, `icon.min.css`, `style.css`, `responsive.css`, `elearning.css` y `uneti.css`.
-- Scripts del template inicializados mediante `ScriptsPlantilla`.
-- Navegación interna con etiquetas `<a>` y recarga completa de documento.
-  - Decisión necesaria porque `main.js` muta el DOM, envuelve secciones en `.page-layout` y clona `#navbarNav`.
-  - Evita errores de hidratación entre el HTML inicial de React 19 y el DOM modificado por jQuery.
-- IDs únicos de partículas por página para evitar colisiones del bootstrap del template.
-- Corrección del hero: se eliminó la imagen superpuesta duplicada `estudiantes.png`; la portada usa `banner_bg.png` con degradado y una sola capa visual.
-- CSS institucional propio `uneti.css` con paleta UNETI, tarjetas, noticias, comentarios, carreras, trayectos, laboratorios, FAQ y responsive.
+- Se retiró `ScriptsPlantilla` y todo el runtime jQuery/Crafto (`jquery.js`, `vendors.min.js`, `main.js`); el DOM ya no se muta después de la hidratación.
+- Cabecera, carrusel de testimonios/galería, acordeón FAQ, contadores, partículas y modal de YouTube se reimplementaron como componentes React accesibles.
+- Navegación interna con etiquetas `<a>` y recarga completa de documento; ya no es una dependencia del template, sino una decisión de simplicidad del MVP.
+- La cabecera usa un único logotipo, navegación activa, menú móvil controlado por estado y CTA al SIS-UNETI.
+- Se corrigió el selector de iconos del template (`[class*=ti-]` coincidía con clases `uneti-*`) para evitar `display:inline-block` accidentales.
+- El hero usa `hero-uneti.webp` como capa separada con `object-fit: cover`, degradado y `object-position` que preserva a las personas.
+- CSS institucional propio `uneti.css` con paleta UNETI, hero, cabecera, banda de aliados, testimonios con retratos, pre-footer de Instagram, tarjetas, noticias, comentarios, carreras, trayectos, laboratorios, FAQ y responsive.
 
 ### 3.2 Rutas y nomenclatura en español
 
