@@ -10,6 +10,7 @@ type PropiedadesTituloPagina = {
   title: string;
   subtitle?: string;
   image?: string;
+  imagePosition?: string;
   crumbs?: MigaPan[];
   children?: ReactNode;
   particleId?: string;
@@ -19,6 +20,7 @@ export default function TituloPagina({
   title,
   subtitle,
   image,
+  imagePosition = "center",
   crumbs,
   children,
   particleId = "page-title-particles",
@@ -26,7 +28,9 @@ export default function TituloPagina({
   return (
     <section
       className="uneti-page-header"
-      style={{ backgroundImage: `url(${image ?? "/assets/images/uneti/nosotros-principal.webp"})` }}
+      style={{
+        backgroundPosition: imagePosition,
+        backgroundImage: `url(${image ?? "/assets/images/uneti/nosotros-principal.webp"})` }}
     >
       <div className="uneti-page-header__overlay" aria-hidden="true"></div>
       <ParticulasDecorativas id={particleId} className="uneti-page-header__particles" />

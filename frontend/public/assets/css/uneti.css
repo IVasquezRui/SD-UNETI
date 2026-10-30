@@ -2611,8 +2611,184 @@ header.uneti-header .uneti-header__nav {
   }
 }
 
+/* ==========================================
+   Cursos — página /cursos
+   ========================================== */
+.uneti-course-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 34px 30px 30px;
+  border: 1px solid rgba(15, 34, 57, 0.07);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 12px 32px rgba(15, 34, 57, 0.07);
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
+}
+
+.uneti-course-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 22px 48px rgba(15, 34, 57, 0.13);
+}
+
+.uneti-course-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.uneti-course-card__level {
+  color: var(--uneti-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.uneti-course-card__summary {
+  margin-bottom: 10px;
+  color: var(--uneti-ink);
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.uneti-course-card__topics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 18px;
+  margin: 18px 0 22px;
+  padding: 0;
+  list-style: none;
+}
+
+.uneti-course-card__topics li {
+  position: relative;
+  padding-left: 18px;
+  color: #4d5b70;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.uneti-course-card__topics li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 7px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--base-color);
+}
+
+.uneti-course-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 28px;
+  margin: auto 0 18px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(15, 34, 57, 0.08);
+}
+
+.uneti-course-card__meta div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.uneti-course-card__meta dt {
+  color: var(--uneti-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.uneti-course-card__meta dd {
+  margin: 0;
+  color: var(--uneti-ink);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.uneti-course-card__result {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  color: #4d5b70;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.uneti-course-card__result i {
+  color: #009e9c;
+  font-size: 17px;
+  line-height: 1.4;
+}
+
+.uneti-course-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  color: var(--uneti-ink);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.uneti-course-card__cta i {
+  transition: transform 0.25s ease;
+}
+
+.uneti-course-card__cta:hover {
+  color: var(--base-color);
+}
+
+.uneti-course-card__cta:hover i {
+  transform: translateX(4px);
+}
+
+.uneti-course-steps {
+  display: grid;
+  gap: 24px;
+}
+
+.uneti-course-steps li {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.uneti-course-steps__number {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(255, 127, 70, 0.14);
+  color: var(--base-color);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+@media (max-width: 767px) {
+  .uneti-course-card {
+    padding: 28px 24px 26px;
+  }
+
+  .uneti-course-card__topics {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .uneti-reveal,
+  .uneti-course-card,
   .uneti-reveal--visible,
   .uneti-hero__content,
   .uneti-page-header__content,

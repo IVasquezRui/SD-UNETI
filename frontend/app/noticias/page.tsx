@@ -23,6 +23,7 @@ export default async function NoticiasPage() {
           title="Últimas noticias"
           subtitle="Información publicada y actualizada desde el CMS de la UNETI."
           image="/assets/images/uneti/nosotros-fondo.webp"
+          imagePosition="center 30%"
           crumbs={[{ label: "Inicio", href: "/" }, { label: "Noticias" }]}
           particleId="noticias-page-particles"
         />

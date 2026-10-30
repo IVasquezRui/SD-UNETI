@@ -21,7 +21,7 @@ export default function NosotrosPage() {
         <TituloPagina
           title="Acerca de la UNETI"
           subtitle="8+ años innovando en educación tecnológica."
-          image="/assets/images/uneti/about-top.webp"
+          image="/assets/images/uneti/nosotros-graduados.webp"
           crumbs={[{ label: "Inicio", href: "/" }, { label: "Sobre Nosotros" }]}
           particleId="about-page-particles"
         />

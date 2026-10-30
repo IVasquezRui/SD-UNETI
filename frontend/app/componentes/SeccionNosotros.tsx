@@ -63,11 +63,11 @@ export default function SeccionNosotros() {
                 decoding="async"
               />
               <img
-                src="/assets/images/uneti/nosotros-equipo.webp"
-                alt="Docentes y estudiantes de la UNETI"
+                src="/assets/images/uneti/nosotros-estudiantes.webp"
+                alt="Estudiantes de la UNETI durante una actividad académica"
                 className="uneti-about-small"
-                width={1200}
-                height={800}
+                width={1280}
+                height={853}
                 loading="lazy"
                 decoding="async"
               />
