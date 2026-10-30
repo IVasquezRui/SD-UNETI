@@ -96,11 +96,11 @@ export const CANALES_SOPORTE: CanalSoporte[] = [
     tone: "blue",
   },
   {
-    icon: "bi bi-chat-square-dots",
-    title: "Asistente SISU",
-    description: "Resuelve dudas académicas y administrativas en cualquier momento.",
-    href: CONTACTO.sisu,
-    cta: "Conversar con SISU",
+    icon: "bi bi-journal-code",
+    title: "Cursos UNETI",
+    description: "Blockchain, inteligencia artificial, criptografía y vibe coding.",
+    href: "/cursos",
+    cta: "Ver los cursos",
     tone: "green",
   },
   {

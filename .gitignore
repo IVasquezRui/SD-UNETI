@@ -26,3 +26,9 @@ frontend/public/assets/images/uneti_new/
 # Reglas locales del asistente (pueden contener credenciales)
 .clinerules
 Documents/reglasclineextension.txt
+
+# Navegacion local del agente (lookdown): nunca se versiona
+build_graph.py
+build_graph.js
+AGENTS.md
+.cursor/

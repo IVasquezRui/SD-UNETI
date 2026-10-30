@@ -14,25 +14,25 @@ const PROGRAMAS = ["PNF en Telecomunicaciones", "PNF en Informática"];
 
 const PASOS = [
   {
-    number: "01",
+    number: "1",
     title: "Regístrate en el Sistema Nacional de Ingreso",
     description:
       "La UNETI se rige por los estándares de la OPSU. Regístrate ante el SNI y selecciona nuestros Programas Nacionales de Formación.",
   },
   {
-    number: "02",
+    number: "2",
     title: "Consigna tus documentos",
     description:
       "Título de bachiller, notas certificadas, cédula de identidad y una foto reciente en formato digital.",
   },
   {
-    number: "03",
+    number: "3",
     title: "Orientación académica",
     description:
       "Un docente del programa te orienta sobre la modalidad híbrida, las prácticas profesionales y las salidas profesionales.",
   },
   {
-    number: "04",
+    number: "4",
     title: "Confirma tu ingreso",
     description:
       "Recibe la confirmación, accede al SIS-UNETI y comienza tu formación como unetista.",

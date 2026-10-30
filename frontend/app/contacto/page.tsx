@@ -20,6 +20,7 @@ export default function ContactoPage() {
           title="Contáctanos"
           subtitle="Estamos listos para atenderte."
           image="/assets/images/uneti/contacto-estudiantes.webp"
+          imagePosition="center 30%"
           crumbs={[{ label: "Inicio", href: "/" }, { label: "Contacto" }]}
           particleId="contact-page-particles"
         />

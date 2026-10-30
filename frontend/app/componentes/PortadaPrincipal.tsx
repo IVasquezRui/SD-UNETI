@@ -11,11 +11,11 @@ export default function PortadaPrincipal() {
   return (
     <section id="hero" className="uneti-hero">
       <img
-        src="/assets/images/uneti/hero-uneti.webp"
-        alt="Egresados y estudiantes de la UNETI compartiendo en un encuentro académico"
+        src="/assets/images/uneti/hero-estudiantes.webp"
+        alt="Estudiantes de la UNETI durante un encuentro académico"
         className="uneti-hero__media"
-        width={1246}
-        height={864}
+        width={1280}
+        height={960}
         loading="eager"
         decoding="async"
       />
