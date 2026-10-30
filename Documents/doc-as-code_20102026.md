@@ -1,6 +1,8 @@
 ## Diagnóstico técnico
 
 > **Estado de implementación (20/10/2026):** fases 1 y 2 implementadas y validadas en un entorno limpio con puerto alternativo `8081`. Fase 3: workflow CI implementado en `.github/workflows/seed.yml`; `lookdown/` regenerado localmente con 975 nodos (excluido de Git).
+>
+> **Actualización (29/10/2026):** Fase 4 cerrada. **Fase 5 en curso**: renovación UI/UX, ruta `/cursos` y organigrama institucional. Detalle y pendientes en `Documents/fase-5-ui-ux-2026.md`.
 
 | # | Hallazgo | Evidencia | Consecuencia |
 |---|---|---|---|
@@ -176,6 +178,7 @@ El entrypoint oficial omite copiar directorios de `wp-content/*/*/` que ya exist
 | Fase 2 | Bootstrap limpio y portabilidad de infraestructura | `bootstrap.php`, eliminación de `database/init.sql`, `.env.example`, URLs/puertos/nombres configurables, pinning de imágenes | Media |
 | Fase 3 | Validación continua y documentación | Workflow CI de clon limpio, `seed.py validate/verify`, actualización de `Documents/PROGRESS.md` y `Documents/Soberanía Digital 2026.md`, ADR-011, regeneración de `lookdown/` | Media-baja. Workflow implementado; `lookdown/` regenerado localmente (975 nodos) |
 | Fase 4 | Limpieza opcional | Podar `wp_content/themes` y `languages`, evaluar Git LFS, backup operativo separado del repositorio | Baja |
+| Fase 5 | Renovación UI/UX 2026 | Retiro del runtime jQuery y reimplementación React, corrección del selector `[class*=ti-]`, imágenes WebP institucionales, `imagePosition` en cabeceras, ruta `/cursos` con `TarjetaCurso`, organigrama en `/nosotros`, verificación Playwright | Media. Completados el bloque visual y `/cursos`; pendientes el hero nuevo, el organigrama y la verificación (ver `Documents/fase-5-ui-ux-2026.md`) |
 
 ## Criterios de aceptación
 

@@ -2,7 +2,7 @@
 
 > Documento de estado del MVP de la plataforma headless de la Universidad Nacional Experimental de las Telecomunicaciones e Informática.
 >
-> **Última actualización:** 20 de octubre de 2026
+> **Última actualización:** 29 de octubre de 2026
 >
 > **Rama de integración:** `main`
 >
@@ -235,6 +235,19 @@ wordpress-headless/
 
 ---
 
+### 3.8 Renovación UI/UX 2026 (en curso)
+
+La Fase 5 del proyecto (`Documents/fase-5-ui-ux-2026.md`) renueva la capa pública del portal:
+
+- Se retiró el runtime jQuery de la plantilla y sus interacciones se reimplementaron como componentes React (`EncabezadoSitio`, `CarruselSimple`, `ContadorAnimado`, `SeccionPreguntas`, `BotonVideo`, `Reveal`, `ParticulasDecorativas`).
+- Se corrigió el selector `[class*=ti-]` de `style.css`, que afectaba a todas las clases `uneti-*` e invalidaba rejillas completas.
+- Portada y collage institucional renovados con fotografía de la comunidad UNETI; derivados WebP en `uneti/` y originales fuera de Git (`uneti_new/`).
+- `TituloPagina` admite `imagePosition`; `/noticias` y `/contacto` usan encuadres propios. Los pasos de admisión se renumeraron a `1–4`.
+- Nueva ruta `/cursos` con cuatro rutas de formación corta, datos en `lib/cursos.ts` y tarjeta `TarjetaCurso.tsx`.
+- Pendiente: nueva fotografía del hero, organigrama institucional animado en `/nosotros` y verificación Playwright en escritorio y móvil.
+
+---
+
 ## 5. Contrato de datos y endpoints
 
 | Tipo | Recurso | Consumidor |
@@ -339,6 +352,8 @@ El comentario y la noticia temporales usados para validar el flujo fueron elimin
 5. Incorporar Playwright para navegación, comentarios y SSE.
 6. Revisar accesibilidad, SEO técnico y rendimiento de imágenes.
 7. Preparar despliegue productivo con reverse proxy, TLS, backups y monitoreo.
+8. Cerrar la Fase 5 (`Documents/fase-5-ui-ux-2026.md`): nueva fotografía del hero, organigrama institucional en `/nosotros` y verificación Playwright en escritorio y móvil.
+9. Ejecutar la Fase 6 con reverse proxy, TLS, backups y monitoreo en un entorno productivo.
 
 ---
 

@@ -83,3 +83,21 @@ Antes de modificar, crear o analizar cualquier archivo en el proyecto, DEBES seg
 Bien sabes que existe el la carpeta lookdown y el script js que "indexa" la gran mayoría de archivos tanto en Wordpress como en el Frontend.
 
 Lo que quiero que hagas acontinuación es que pienses bien en cómo sería la boveda/archivo de grafo como mapa para un agente de codigo (ejemplo -> tu),  idonea para guiarte y utilizar menos tokens y menos flujo de trabajo "buscando archivos" que estaran plasmados en ese mapa de grafos .md... Puede ser con fases, reglamentos, segmentación de información, etc... LO que mejor se adapte a gastar menos tokens y ayude a un agente de codigo como tu a desarrollar de forma más eficiente. Algo como un harness quiero que hagas en la carpeta @lookdown para que gastes menos tokens, seas tu u otro agente más rentable al basarte en la información precisa que exista allí, y que sea un script python multi-lenguaje ya que vas a mapear en este proyecto archivos con lenguajes y extensiones como .js, .ts, .php, .sql, .jpg, entre otros relevantes.
+
+# 8 - Fase 5 — Renovación UI/UX 2026 (en curso)
+
+> Documento de fase: `Documents/fase-5-ui-ux-2026.md`.
+
+- [x] Retirar el runtime jQuery y reimplementar las interacciones como componentes React.
+- [x] Corregir el selector `[class*=ti-]` de `style.css` que rompía las clases `uneti-*`.
+- [x] Renovar portada, collage de Nosotros y cabeceras de Carreras con imágenes WebP institucionales.
+- [x] Añadir `imagePosition` a `TituloPagina` y renumerar los pasos de admisión (`1–4`).
+- [x] Crear la ruta `/cursos` (`lib/cursos.ts`, `TarjetaCurso.tsx`, `app/cursos/page.tsx`) y su CSS.
+- [ ] Sustituir el hero por `UNETI-STUDENTS/WhatsApp Image 2026-10-29 at 10.33.46 (1).jpeg` con variante móvil.
+- [ ] Construir el organigrama institucional animado en `/nosotros` a partir de `organigrama-uneti-2026.pdf`.
+- [ ] Verificar `/`, `/nosotros`, `/carreras`, `/cursos`, `/admisiones`, `/contacto` y `/noticias` a 1440 px y 390 px.
+- [ ] Auditar accesibilidad (contraste, foco, `prefers-reduced-motion`) y peso de imágenes.
+
+# 9 - Fase 6 — Despliegue productivo
+
+- Reverse proxy, TLS, backups y monitoreo (ver `PROGRESS.md` §10).
