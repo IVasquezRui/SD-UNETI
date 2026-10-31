@@ -2,7 +2,7 @@
 
 > Documento de estado del MVP de la plataforma headless de la Universidad Nacional Experimental de las Telecomunicaciones e Informática.
 >
-> **Última actualización:** 29 de octubre de 2026
+> **Última actualización:** 31 de octubre de 2026
 >
 > **Rama de integración:** `main`
 >
@@ -75,7 +75,7 @@ Next.js es la única capa de presentación. WordPress actúa exclusivamente como
 - Se retiró `ScriptsPlantilla` y todo el runtime jQuery/Crafto (`jquery.js`, `vendors.min.js`, `main.js`); el DOM ya no se muta después de la hidratación.
 - Cabecera, carrusel de testimonios/galería, acordeón FAQ, contadores, partículas y modal de YouTube se reimplementaron como componentes React accesibles.
 - Navegación interna con etiquetas `<a>` y recarga completa de documento; ya no es una dependencia del template, sino una decisión de simplicidad del MVP.
-- La cabecera usa un único logotipo, navegación activa, menú móvil controlado por estado y CTA al SIS-UNETI.
+- La cabecera usa un único logotipo, navegación activa, menú móvil controlado por estado y CTA al Campus Virtual.
 - Se corrigió el selector de iconos del template (`[class*=ti-]` coincidía con clases `uneti-*`) para evitar `display:inline-block` accidentales.
 - El hero usa `hero-uneti.webp` como capa separada con `object-fit: cover`, degradado y `object-position` que preserva a las personas.
 - CSS institucional propio `uneti.css` con paleta UNETI, hero, cabecera, banda de aliados, testimonios con retratos, pre-footer de Instagram, tarjetas, noticias, comentarios, carreras, trayectos, laboratorios, FAQ y responsive.
@@ -86,7 +86,7 @@ Next.js es la única capa de presentación. WordPress actúa exclusivamente como
 |---|---|
 | `/` | Inicio institucional |
 | `/nosotros` | Información institucional, misión, visión, valores e hitos |
-| `/admisiones` | Proceso de admisión, requisitos, becas y formularios |
+| `/admisiones` | Proceso de admisión, requisitos y formulario animado |
 | `/contacto` | Canales de atención, ubicación y formulario |
 | `/noticias` | Listado dinámico de noticias |
 | `/noticias/[slug]` | Detalle de noticia y comentarios |
@@ -417,5 +417,38 @@ docker run --rm -v "$PWD:/app" -w /app --entrypoint node node:26.13.0-slim build
 - [x] Entorno Docker operativo y documentado.
 - [x] Seed portable e idempotente; validaciones de posts, comentarios e imágenes.
 - [x] `npm run build` de producción sin errores.
-- [ ] Pruebas E2E automatizadas.
-- [ ] Endurecimiento de seguridad y despliegue productivo.
+- [x] Prueba E2E del formulario de admisiones en CI, con verificación en MariaDB.
+- [x] Workflows separados de despliegue, WordPress, frontend, QA y pentesting.
+- [x] Endurecimiento básico de Next.js, WordPress y MariaDB; despliegue productivo con TLS y backups pendiente.
+- [x] Sin enlaces a SISU/SIS-UNETI ni contenido de becas en las páginas públicas.
+
+---
+
+## 13. Actualización 2026-10-31
+
+### Interfaz y contenido
+
+- Se intercambiaron los heroes de `/` y `/contacto`.
+- El CTA de la cabecera pasó a **“Ir al Campus Virtual”**.
+- `/nosotros` incorpora:
+  - Flashcards de color con volteo accesible para los cuatro valores.
+  - Storytelling con pasos sticky, progreso y parallax.
+  - Ruta Aspirante / Estudiante / Empresa.
+  - Modalidad híbrida, requisitos técnicos y CTA al Campus Virtual.
+  - Sedes Altagracia y Núcleo CANTV San Martín.
+- Se retiraron los enlaces y menciones a SISU/SIS-UNETI del frontend y las variables `SISU_URL`/`SIS_URL`.
+- Se retiró toda la información y los formularios de becas.
+- Se alineó la oferta de carreras con el mini proyecto: TSU en 2 años e Ingeniería en 4 años, sin “Técnico Medio”.
+
+### Formularios
+
+- Nuevo `FormularioAdmision` de tres pasos con animaciones, validación, honeypot y folio.
+- Nuevo `FormularioContacto` conectado a WordPress.
+- CPT `solicitud_uneti` con taxonomía `estado_solicitud`, metadatos, panel de administración y exportación CSV.
+- Endpoint `POST /wp-json/uneti/v1/solicitudes` protegido por token.
+
+### Infraestructura y CI
+
+- Endurecimiento de Next.js, WordPress (mu-plugin, Apache y PHP) y MariaDB.
+- Workflows `01`–`08` con QA y pentests, optimizados para el plan gratuito.
+- Documentos [`solicitudes-wordpress-2026.md`](solicitudes-wordpress-2026.md) y [`ci-cd-2026.md`](ci-cd-2026.md).

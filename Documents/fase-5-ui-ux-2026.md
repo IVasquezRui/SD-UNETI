@@ -118,6 +118,16 @@ Las fotografías de las autoridades se reutilizan desde `sis-uneti-frontend/publ
 
 ---
 
+## 7. Actualización 2026-10-31
+
+- Se retiraron los enlaces y menciones a SISU/SIS-UNETI del portal; el acceso visible es **“Ir al Campus Virtual”**.
+- Se retiró la información y el formulario de becas.
+- `/nosotros` se renovó con flashcards y storytelling parallax.
+- El formulario de admisiones ahora persiste en el CPT `solicitud_uneti` de WordPress.
+- La estrategia de CI/CD y pentesting se documenta en [`ci-cd-2026.md`](ci-cd-2026.md).
+
+---
+
 ## 7. Referencias
 
 - `Documents/PROGRESS.md` — estado funcional del MVP.

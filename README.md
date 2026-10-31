@@ -2,6 +2,9 @@
 
 [![MVP](https://img.shields.io/badge/estado-MVP%20v1.0-0B5FFF)](Documents/PROGRESS.md)
 [![Seed portable](https://github.com/IVasquezRui/SD-UNETI/actions/workflows/seed.yml/badge.svg)](https://github.com/IVasquezRui/SD-UNETI/actions/workflows/seed.yml)
+[![Despliegue](https://github.com/IVasquezRui/SD-UNETI/actions/workflows/01-despliegue.yml/badge.svg)](https://github.com/IVasquezRui/SD-UNETI/actions/workflows/01-despliegue.yml)
+[![Frontend](https://github.com/IVasquezRui/SD-UNETI/actions/workflows/03-frontend.yml/badge.svg)](https://github.com/IVasquezRui/SD-UNETI/actions/workflows/03-frontend.yml)
+[![Formulario](https://github.com/IVasquezRui/SD-UNETI/actions/workflows/04-formulario.yml/badge.svg)](https://github.com/IVasquezRui/SD-UNETI/actions/workflows/04-formulario.yml)
 [![Next.js](https://img.shields.io/badge/Next.js-16.4.3-000000)](https://nextjs.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-26.13.0%20LTS-339933)](https://nodejs.org/)
 [![WordPress](https://img.shields.io/badge/WordPress-7.1.4-21759B)](https://wordpress.org/)
@@ -18,16 +21,22 @@ Navegador
    │
    ├── HTML / SSE ─────────────► Next.js :3000
    │                                │
-   │                                ├── WPGraphQL ──────► WordPress :8080
-   │                                │                        │
-   │                                └── REST comentarios ───┤
-   │                                                         ▼
-   └───────────────────────────────────────────────────► MariaDB :3306
+   │                                ├── WPGraphQL ──────────► WordPress :8080
+   │                                │                          │
+   │                                ├── REST comentarios ─────┤
+   │                                │                          │
+   │                                └── POST /api/admisiones ─┤
+   │                                       (token servidor)   ▼
+   └─────────────────────────────────────────────────────► MariaDB :3306
+                                                               │
+                                    wp_posts + wp_postmeta ◄───┘
+                                    (CPT solicitud_uneti)
 ```
 
 - **Frontend:** Next.js 16 con App Router, React 19, TypeScript y el sistema visual del template `demo-elearning`.
 - **Backend CMS:** WordPress headless con WPGraphQL; no renderiza el sitio público.
-- **Persistencia:** MariaDB para posts, medios, taxonomías y comentarios nativos (`wp_comments`).
+- **Persistencia:** MariaDB para posts, medios, taxonomías, comentarios nativos (`wp_comments`) y solicitudes (`solicitud_uneti`).
+- **Formularios:** el frontend valida y envía a un endpoint REST propio de WordPress, que guarda la solicitud como CPT privado con metadatos y estado.
 - **Contenido reproducible:** `seed/` contiene fixtures JSON, imágenes originales y un manifiesto con checksums.
 - **Infraestructura:** Docker Compose con imágenes fijadas por etiqueta.
 
@@ -41,6 +50,7 @@ Navegador
 | Estilos | Template `demo-elearning` + `uneti.css` | — |
 | CMS | WordPress | `7.1.4` (PHP 8.5) |
 | API de contenido | WPGraphQL | `2.26.0` |
+| Solicitudes | CPT + REST + CSV | `solicitud_uneti` |
 | Base de datos | MariaDB | `11.8.9` |
 | Orquestación | Docker Compose | 3 servicios |
 
@@ -60,13 +70,16 @@ git clone https://github.com/IVasquezRui/SD-UNETI.git
 cd SD-UNETI
 
 cp .env.example .env
-# Edita .env: contraseñas, correo del administrador y URL pública.
+# Edita .env: contraseñas, correo del administrador, URL pública y UNETI_FORM_TOKEN.
+# Genera secretos con: openssl rand -hex 32
 
 docker compose up -d
 python3 scripts/seed/seed.py bootstrap
 ```
 
 `bootstrap` instala WordPress si la base está vacía, activa WPGraphQL, importa las 6 noticias con sus imágenes y comentarios, y ejecuta `verify`. El proceso es idempotente: puede repetirse sin duplicar contenido.
+
+El usuario administrador por defecto es `admin`; la contraseña es la que definas en `WORDPRESS_ADMIN_PASSWORD` dentro de `.env`. No hay credenciales productivas versionadas.
 
 ### Frontend fuera de Docker
 
@@ -89,6 +102,8 @@ El build de producción (`npm run build`) debe ejecutarse con WordPress arriba y
 | Administración | `http://localhost:8080/wp-admin` |
 | WPGraphQL | `http://localhost:8080/graphql` |
 | API de comentarios | `http://localhost:8080/wp-json/uneti/v1/comentarios/{slug}` |
+| API de solicitudes | `http://localhost:8080/wp-json/uneti/v1/solicitudes` |
+| Panel de solicitudes | `http://localhost:8080/wp-admin/edit.php?post_type=solicitud_uneti` |
 
 ## Seed portable
 
@@ -148,6 +163,7 @@ docker compose start frontend
 - **Noticias:** posts publicados en WordPress, con excerpt, contenido HTML, imagen destacada, categorías, etiquetas y autor genérico.
 - **Medios:** originales en `seed/media/AAAA/MM/`; WordPress genera las variantes y miniaturas.
 - **Comentarios:** almacenados en `wp_comments`; el frontend los consume por la API REST propia y los publica con moderación nativa.
+- **Solicitudes:** el CPT privado `solicitud_uneti` guarda admisiones y mensajes de contacto en `wp_posts`/`wp_postmeta`, con estado en la taxonomía `estado_solicitud` y exportación CSV.
 - **Carreras:** contenido estático en TypeScript para los PNF en Informática y Telecomunicaciones.
 - **Tiempo real:** SSE con respaldo por polling para reflejar noticias nuevas sin WebSockets.
 
@@ -161,12 +177,28 @@ docker compose start frontend
 
 ## Integración continua
 
-El workflow [`.github/workflows/seed.yml`](.github/workflows/seed.yml) se ejecuta en cada cambio de `seed/`, `scripts/`, `frontend/` o `docker-compose.yml`. Valida los fixtures, levanta MariaDB y WordPress, ejecuta `bootstrap`, comprueba la idempotencia con una segunda importación, corre `verify` y construye el frontend en producción. Si falla, publica los logs de los contenedores como artefacto.
+Los workflows viven en `.github/workflows/` y están separados por responsabilidad para mantener el consumo dentro del plan gratuito:
+
+| Workflow | Propósito |
+|---|---|
+| `seed.yml` | Fixtures, bootstrap, idempotencia y `verify`. |
+| `01-despliegue.yml` | Levanta los contenedores con `.env`, siembra y ejecuta QA local. |
+| `02-wordpress.yml` | Lint PHP, CPT, REST, WPGraphQL y endurecimiento. |
+| `03-frontend.yml` | `npm ci`, TypeScript y ESLint con Node 26. |
+| `04-formulario.yml` | Envío real del formulario y verificación en `wp_posts`/`wp_postmeta`. |
+| `05-qa.yml` | QA manual contra una URL pública ya desplegada. |
+| `06-pentest-nextjs.yml` | Cabeceras, archivos expuestos, API y Nuclei. |
+| `07-pentest-wordpress.yml` | Enumeración, XML-RPC, archivos sensibles, WPScan y Nuclei. |
+| `08-pentest-mariadb.yml` | Exposición del puerto, privilegios, acceso remoto y `local_infile`. |
+
+Los pentests se ejecutan manualmente y una vez al mes (días 1, 8 y 15) para no consumir minutos en cada push. Los reportes se publican como artefacto y en el resumen del job. El detalle y el presupuesto están en [`Documents/ci-cd-2026.md`](Documents/ci-cd-2026.md).
 
 ## Documentación
 
 - [`Documents/Soberanía Digital 2026.md`](Documents/Soberanía%20Digital%202026.md): arquitectura, ADR, calidad, seguridad y roadmap.
 - [`Documents/PROGRESS.md`](Documents/PROGRESS.md): estado del MVP y validaciones ejecutadas.
+- [`Documents/solicitudes-wordpress-2026.md`](Documents/solicitudes-wordpress-2026.md): CPT, endpoint, administración y exportación.
+- [`Documents/ci-cd-2026.md`](Documents/ci-cd-2026.md): workflows, presupuesto del plan gratuito y pentests.
 - [`Documents/doc-as-code_20102026.md`](Documents/doc-as-code_20102026.md): plan del seed portable y criterios de aceptación.
 - [`Documents/nextSteps.md`](Documents/nextSteps.md): siguientes fases.
 - [`seed/README.md`](seed/README.md): contrato de los fixtures.
@@ -176,8 +208,9 @@ El workflow [`.github/workflows/seed.yml`](.github/workflows/seed.yml) se ejecut
 
 1. Crea una rama desde `main`.
 2. Mantén los cambios de contenido en `seed/` y los cambios de presentación en `frontend/`.
-3. Ejecuta `python3 scripts/seed/seed.py validate`, `npx tsc --noEmit`, `npm run lint` y `npm run build`.
-4. No incluyas secretos, volúmenes (`db_data/`, `wp_data/`) ni artefactos de build.
+3. Ejecuta `python3 scripts/seed/seed.py validate`, `npx tsc --noEmit`, `npm run lint` y `npm run build` con WordPress arriba.
+4. Valida los scripts con `bash -n scripts/ci/*.sh` y `node --check scripts/ci/*.mjs`.
+5. No incluyas secretos, volúmenes (`db_data/`, `wp_data/`), reportes de pentest ni artefactos de build.
 5. Actualiza la documentación y los créditos de imágenes cuando incorpores activos.
 
 ## Licencia
