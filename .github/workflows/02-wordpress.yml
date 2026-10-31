@@ -1,0 +1,93 @@
+name: 02 · Pruebas de WordPress
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - "scripts/wordpress/**"
+      - "scripts/ci/**"
+      - "seed/**"
+      - "docker-compose.yml"
+      - ".env.example"
+      - ".github/workflows/02-wordpress.yml"
+  pull_request:
+    paths:
+      - "scripts/wordpress/**"
+      - "scripts/ci/**"
+      - "seed/**"
+      - "docker-compose.yml"
+      - ".env.example"
+      - ".github/workflows/02-wordpress.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: wordpress-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  wordpress:
+    name: Lint PHP + bootstrap + REST
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Preparar entorno
+        uses: ./.github/actions/preparar-entorno
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Levantar MariaDB y WordPress
+        run: docker compose up -d db wordpress
+
+      - name: Esperar WordPress
+        run: bash scripts/ci/esperar-servicio.sh http://localhost:8080/wp-login.php 90
+
+      - name: Validar sintaxis PHP
+        run: |
+          docker compose exec -T wordpress sh -c '
+            find /var/www/html/wp-content/mu-plugins /opt/uneti-scripts -name "*.php" -print0 \
+              | xargs -0 -n1 php -l
+          '
+
+      - name: Bootstrap e importación
+        run: python3 scripts/seed/seed.py bootstrap
+
+      - name: Pruebas funcionales de WordPress
+        run: bash scripts/ci/probar-wordpress.sh
+
+      - name: Recolectar logs
+        if: failure()
+        run: |
+          docker compose ps > wordpress.log
+          docker compose logs --no-color >> wordpress.log
+
+      - name: Publicar resumen
+        if: always()
+        run: |
+          if ls reportes/*.md >/dev/null 2>&1; then
+            cat reportes/*.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Publicar reportes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wordpress-reportes
+          path: |
+            reportes/
+            wordpress.log
+          retention-days: 5
+          if-no-files-found: ignore
+
+      - name: Bajar entorno
+        if: always()
+        run: docker compose down -v --remove-orphans

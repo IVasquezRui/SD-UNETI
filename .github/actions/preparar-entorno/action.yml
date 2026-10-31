@@ -1,0 +1,21 @@
+name: Preparar entorno CI
+description: Crea el .env efímero con credenciales de prueba para los contenedores.
+
+inputs:
+  token:
+    description: Token compartido entre Next.js y WordPress
+    required: false
+    default: ci-form-token
+
+runs:
+  using: composite
+  steps:
+    - name: Crear .env
+      shell: bash
+      run: |
+        bash scripts/ci/crear-entorno.sh
+        if [ "${{ inputs.token }}" != "ci-form-token" ]; then
+          sed -i "s/^UNETI_FORM_TOKEN=.*/UNETI_FORM_TOKEN=${{ inputs.token }}/" .env
+        fi
+        echo "::add-mask::${{ inputs.token }}"
+        echo "Entorno de CI preparado."

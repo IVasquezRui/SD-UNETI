@@ -1,0 +1,45 @@
+name: 05 · QA del frontend desplegado
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: URL pública del frontend a verificar
+        required: true
+        default: https://www.uneti.edu.ve
+
+permissions:
+  contents: read
+
+concurrency:
+  group: qa-externo
+  cancel-in-progress: false
+
+jobs:
+  qa:
+    name: Rutas, contenido y enlaces
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: QA del frontend
+        run: bash scripts/ci/qa-frontend.sh "${{ inputs.base_url }}"
+
+      - name: Publicar resumen
+        if: always()
+        run: |
+          if ls reportes/*.md >/dev/null 2>&1; then
+            cat reportes/*.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Publicar reporte
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-frontend-reporte
+          path: reportes/
+          retention-days: 5
+          if-no-files-found: ignore
