@@ -2,6 +2,7 @@
 node_modules/
 .next/
 dist/
+*.tsbuildinfo
 
 # Entornos y datos volátiles de Docker
 .env
@@ -22,6 +23,7 @@ __pycache__/
 
 # Fotografías originales entregadas por UNETI (se publican derivados WebP en uneti/)
 frontend/public/assets/images/uneti_new/
+frontend/public/assets/images/UNETI-STUDENTS/
 
 # Reglas locales del asistente (pueden contener credenciales)
 .clinerules

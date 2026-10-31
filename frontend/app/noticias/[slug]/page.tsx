@@ -15,6 +15,15 @@ type PropiedadesNoticia = {
   params: Promise<{ slug: string }>;
 };
 
+const BASE_PUBLICA = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.uneti.edu.ve").replace(
+  /\/$/,
+  "",
+);
+
+// Los detalles leen `params` para resolver el slug; se declaran bloqueantes
+// para cumplir con la validación de URL data de Next.js 16.
+export const instant = false;
+
 export async function generateStaticParams() {
   const noticias = await obtenerNoticias(50, 300);
   return noticias.map((noticia) => ({ slug: noticia.slug }));
@@ -50,6 +59,7 @@ export default async function DetalleNoticiaPage({ params }: PropiedadesNoticia)
   }
 
   const relacionadas = await obtenerNoticiasRelacionadas(noticia.slug, 3);
+  const urlCompartir = `${BASE_PUBLICA}/noticias/${noticia.slug}`;
 
   return (
     <>
@@ -61,9 +71,9 @@ export default async function DetalleNoticiaPage({ params }: PropiedadesNoticia)
           <div className="container">
             <div className="row justify-content-center">
               <div className="col-lg-9">
-                <h4 className="alt-font text-dark-gray fw-600 ls-minus-1px w-90 md-w-100 mb-30px">
+                <p className="alt-font text-dark-gray fw-600 ls-minus-1px w-90 md-w-100 mb-30px fs-20 lh-30">
                   {noticia.resumen}
-                </h4>
+                </p>
                 <div
                   className="uneti-noticia-contenido last-paragraph-no-margin"
                   dangerouslySetInnerHTML={{ __html: noticia.contenidoHtml }}
@@ -96,7 +106,7 @@ export default async function DetalleNoticiaPage({ params }: PropiedadesNoticia)
                     <a
                       className="text-dark-gray me-10px"
                       href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-                        `https://www.uneti.edu.ve/noticias/${noticia.slug}`,
+                        urlCompartir,
                       )}`}
                       target="_blank"
                       rel="noreferrer"
@@ -108,9 +118,7 @@ export default async function DetalleNoticiaPage({ params }: PropiedadesNoticia)
                       className="text-dark-gray"
                       href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
                         noticia.titulo,
-                      )}&url=${encodeURIComponent(
-                        `https://www.uneti.edu.ve/noticias/${noticia.slug}`,
-                      )}`}
+                      )}&url=${encodeURIComponent(urlCompartir)}`}
                       target="_blank"
                       rel="noreferrer"
                       aria-label="Compartir en X"

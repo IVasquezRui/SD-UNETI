@@ -74,13 +74,13 @@ export default function EncabezadoSitio() {
             </ul>
 
             <a
-              href={CONTACTO.sis}
-              className="uneti-header__sis"
+              href={CONTACTO.campus}
+              className="uneti-header__campus"
               target="_blank"
               rel="noreferrer"
               onClick={() => setMenuAbierto(false)}
             >
-              Explora el SIS-UNETI
+              Ir a Campus
               <i className="bi bi-arrow-up-right ms-2" aria-hidden="true"></i>
             </a>
           </div>

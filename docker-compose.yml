@@ -1,7 +1,7 @@
 services:
   # Base de Datos: MariaDB (versión LTS fijada para reproducibilidad)
   db:
-    image: ${MARIADB_IMAGE:-mariadb:11.4.13}
+    image: ${MARIADB_IMAGE:-mariadb:11.8.9}
     container_name: ${MARIADB_CONTAINER_NAME:-wp_mariadb}
     restart: always
     environment:
@@ -24,7 +24,7 @@ services:
 
   # CMS: WordPress Headless (versión fijada)
   wordpress:
-    image: ${WORDPRESS_IMAGE:-wordpress:7.1.3-php8.5-apache}
+    image: ${WORDPRESS_IMAGE:-wordpress:7.1.4-php8.5-apache}
     container_name: ${WORDPRESS_CONTAINER_NAME:-wp_site}
     restart: always
     depends_on:
@@ -53,29 +53,33 @@ services:
     networks:
       - frontend_net
 
-  # Frontend Headless: Next.js (App Router) + TypeScript + Tailwind con Bun
+  # Frontend Headless: Next.js (App Router) + TypeScript + Tailwind con Node.js 26 LTS
   frontend:
-    image: ${BUN_IMAGE:-oven/bun:1.4.4-alpine}
+    image: ${NODE_IMAGE:-node:26.13.0-slim}
     container_name: ${FRONTEND_CONTAINER_NAME:-next_frontend}
     restart: always
     working_dir: /app
-    command: sh -c "bun install && bun run dev"
+    command: sh -c "npm install --no-audit --no-fund && npm run dev"
     ports:
       - "${FRONTEND_PORT:-3000}:3000"
     environment:
       # NODE_ENV no se fija globalmente: next dev lo define como development y
       # next build como production. Un valor fijo rompe el build de producción.
       WATCHPACK_POLLING: "true"
+      # URL pública que consume el navegador y usan metadatos/compartir
+      NEXT_PUBLIC_SITE_URL: ${SITE_URL:-http://localhost:3000}
       # URLs públicas que consume el navegador
       NEXT_PUBLIC_WP_URL: ${WORDPRESS_URL:-http://localhost:8080}
       NEXT_PUBLIC_GRAPHQL_URL: ${WORDPRESS_URL:-http://localhost:8080}/graphql
       NEXT_PUBLIC_SISU_URL: ${SISU_URL:-http://localhost:8000}
-      NEXT_PUBLIC_SIS_URL: ${SIS_URL:-http://localhost:8080}
+      NEXT_PUBLIC_SIS_URL: ${SIS_URL:-http://localhost}
       # URL interna (resolución por DNS de Docker dentro de frontend_net)
       WP_INTERNAL_URL: http://wordpress
       WP_GRAPHQL_URL: http://wordpress/graphql
     volumes:
       - ./frontend:/app
+      # node_modules vive dentro del contenedor: evita binarios linux en el host
+      - /app/node_modules
     depends_on:
       wordpress:
         condition: service_started

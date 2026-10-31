@@ -286,9 +286,9 @@ Cada iteración debe producir un incremento verificable. No se considera termina
 **Definition of Done**
 
 - Código implementado y tipado.
-- `bunx tsc --noEmit` sin errores.
-- `bun run lint` sin errores nuevos.
-- `bun run build` exitoso.
+- `npx tsc --noEmit` sin errores.
+- `npm run lint` sin errores nuevos.
+- `npm run build` exitoso.
 - Smoke tests de las rutas afectadas.
 - Persistencia o contrato de datos verificado cuando aplica.
 - Documentación y ADR actualizados.
@@ -346,15 +346,15 @@ Next.js es la única capa pública. WordPress actúa como CMS, fuente de noticia
 
 | Capa | Tecnología | Versión verificada | Función |
 |---|---|---|---|
-| Frontend | Next.js | `16.4.2` | Render, rutas, API interna y SSE |
-| UI | React | `19.3.0` | Componentes de servidor y cliente |
-| Runtime | Bun | `1.4.3` | Instalación y ejecución del frontend |
+| Frontend | Next.js | `16.4.3` | Render, rutas, API interna y SSE |
+| UI | React | `19.3.1` | Componentes de servidor y cliente |
+| Runtime | Node.js + npm | `26.13.0` LTS | Instalación y ejecución del frontend |
 | Lenguaje | TypeScript | `^5` | Tipado estricto |
 | Estilos | Template `demo-elearning` + `uneti.css` | Template + CSS propio | Base visual institucional |
 | Utilidades CSS | Tailwind CSS | `^4` | Tema y utilidades sin preflight |
-| CMS | WordPress | `7.1.3` | Administración de contenido |
-| API de contenido | WPGraphQL | `2.24.2` | Consultas GraphQL |
-| Base de datos | MariaDB | `11.4.13` | Persistencia |
+| CMS | WordPress | `7.1.4` | Administración de contenido |
+| API de contenido | WPGraphQL | `2.26.0` | Consultas GraphQL |
+| Base de datos | MariaDB | `11.8.9` | Persistencia |
 | Infraestructura | Docker Compose | 3 servicios | Orquestación local |
 
 ### 6.4 Flujos de datos
@@ -605,9 +605,9 @@ Las redirecciones preservan enlaces heredados y evitan rupturas de SEO durante l
 
 | Puerta | Herramienta o evidencia | Estado |
 |---|---|---|
-| Tipado estricto | `bunx tsc --noEmit` | Sin errores |
-| Lint | `bun run lint` | 0 errores; 6 advertencias por CSS manual del template |
-| Build | `bun run build` | Exitoso; 22 rutas prerenderizadas |
+| Tipado estricto | `npx tsc --noEmit` | Sin errores |
+| Lint | `npm run lint` | 0 errores; 6 advertencias por CSS manual del template |
+| Build | `npm run build` | Exitoso; 22 rutas prerenderizadas |
 | Configuración Docker | `docker compose config` | Válida |
 | Rutas críticas | Smoke tests HTTP | 200 |
 | Redirecciones | Smoke tests HTTP | 301 |
@@ -653,7 +653,7 @@ Las redirecciones preservan enlaces heredados y evitan rupturas de SEO durante l
 
 - Credenciales de desarrollo embebidas en `docker-compose.yml`; deben migrarse a `.env` o Docker secrets.
 - Existe riesgo de credenciales expuestas en el historial de Git; deben rotarse y auditarse.
-- `wordpress:latest` no está fijado por digest.
+- `wordpress:7.1.4-php8.5-apache` no está fijado por digest.
 - Comentarios autoaprobados, sin CAPTCHA, rate limiting ni moderación previa.
 - Formulario de contacto sin persistencia segura, sin política de retención y sin consentimiento explícito.
 - Sin TLS, reverse proxy ni restricción de acceso a `wp-admin` en el entorno local.
@@ -743,9 +743,9 @@ Acciones mínimas para la siguiente fase:
 
 | Elemento | Estado |
 |---|---|
-| WordPress | `7.1.3` |
-| WPGraphQL | `2.24.2`, activo |
-| MariaDB | `11.4.13`, contenedor saludable |
+| WordPress | `7.1.4` |
+| WPGraphQL | `2.26.0`, activo |
+| MariaDB | `11.8.9`, contenedor saludable |
 | Noticias publicadas | 6 |
 | Comentarios demo visibles | 3, en la noticia de convocatoria 2026 |
 | Posts de ejemplo | `hola-mundo` y `noticia-de-prueba-institucional` en borrador |
@@ -757,9 +757,9 @@ Acciones mínimas para la siguiente fase:
 
 | Verificación | Resultado |
 |---|---|
-| `bunx tsc --noEmit` | Sin errores |
-| `bun run lint` | 0 errores; 6 advertencias por CSS manual |
-| `bun run build` | Exitoso; 22 rutas prerenderizadas. El fallo previo de `/_global-error` se debía a `NODE_ENV=development` en el servicio `frontend` |
+| `npx tsc --noEmit` | Sin errores |
+| `npm run lint` | 0 errores; 6 advertencias por CSS manual |
+| `npm run build` | Exitoso; 22 rutas prerenderizadas. El fallo previo de `/_global-error` se debía a `NODE_ENV=development` en el servicio `frontend` |
 | `docker compose config` | Configuración válida |
 | `seed.py validate` | 6 posts, 6 media, 3 comentarios, checksums correctos |
 | `seed.py import` | Idempotente: segunda ejecución sin duplicados |
@@ -793,7 +793,7 @@ La noticia y el comentario temporales usados para validar el flujo fueron elimin
 - [x] Carreras PNF con información completa.
 - [x] Entorno Docker operativo y documentado.
 - [x] Seed portable e idempotente; validaciones de posts, comentarios e imágenes.
-- [x] `bun run build` de producción sin errores.
+- [x] `npm run build` de producción sin errores.
 - [x] Workflow CI de bootstrap, verificación e idempotencia.
 - [ ] Pruebas E2E automatizadas.
 - [ ] Endurecimiento de seguridad y despliegue productivo.
@@ -810,9 +810,9 @@ Los valores de esta sección corresponden al corte del 20/10/2026 y al commit `9
 
 | Servicio | Contenedor | Imagen | Puerto | Función |
 |---|---|---|---|---|
-| Base de datos | `wp_mariadb` | `mariadb:11.4` | Interno `3306` | Persistencia |
-| CMS | `wp_site` | `wordpress:latest` | `8080:80` | WordPress y WPGraphQL |
-| Frontend | `next_frontend` | `oven/bun:1-alpine` | `3000:3000` | Next.js en desarrollo |
+| Base de datos | `wp_mariadb` | `mariadb:11.8.9` | Interno `3306` | Persistencia |
+| CMS | `wp_site` | `wordpress:7.1.4-php8.5-apache` | `8080:80` | WordPress y WPGraphQL |
+| Frontend | `next_frontend` | `node:26.13.0-slim` | `3000:3000` | Next.js en desarrollo |
 
 MariaDB tiene healthcheck y volumen persistente. WordPress espera a que la base esté saludable. Next.js usa la red interna `frontend_net`.
 
@@ -849,11 +849,11 @@ python3 scripts/seed/seed.py verify
 python3 scripts/seed/seed.py export
 
 # Verificar tipos y lint
-docker exec next_frontend bunx tsc --noEmit
-docker exec next_frontend bun run lint
+docker exec next_frontend npx tsc --noEmit
+docker exec next_frontend npm run lint
 
 # Regenerar el grafo de memoria
-docker run --rm -v "$PWD:/app" -w /app --entrypoint bun oven/bun:1.4.3-alpine build_graph.js
+docker run --rm -v "$PWD:/app" -w /app --entrypoint node node:26.13.0-slim build_graph.js
 ```
 
 ### 10.4 Persistencia y datos
@@ -914,7 +914,7 @@ Un backup no probado no se considera una capacidad operativa.
 Después de crear o mover archivos estructurales:
 
 ```bash
-docker run --rm -v "$PWD:/app" -w /app --entrypoint bun oven/bun:1-alpine build_graph.js
+docker run --rm -v "$PWD:/app" -w /app --entrypoint node node:26.13.0-slim build_graph.js
 ```
 
 El grafo `lookdown/` está excluido de Git y se regenera localmente.
@@ -928,7 +928,7 @@ El grafo `lookdown/` está excluido de Git y se regenera localmente.
 | ID | Riesgo | Impacto | Probabilidad | Mitigación | Estado |
 |---|---|---|---|---|---|
 | R-01 | Credenciales de desarrollo en `docker-compose.yml` y posible exposición histórica | Alto | Alta | Externalizar a `.env` o secrets; rotar credenciales; revisar historial | Abierto |
-| R-02 | Imagen `wordpress:latest` sin digest | Medio | Media | Fijar versión y digest; probar actualizaciones | Abierto |
+| R-02 | Imagen `wordpress:7.1.4-php8.5-apache` sin digest | Medio | Media | Fijar versión y digest; probar actualizaciones | Abierto |
 | R-03 | Comentarios autoaprobados sin anti-spam | Alto | Media | Moderación previa, CAPTCHA, rate limiting y auditoría | Abierto |
 | R-04 | Leads de contacto solo en logs | Medio | Alta | Persistir en CMS/CRM y notificar por correo | Abierto |
 | R-05 | Multimedia del seed en `wp_data/` ignorado | Medio | Alta | Incluir assets en el repositorio o ampliar el seed | Abierto |
@@ -1236,9 +1236,9 @@ Reglas de código:
 Una tarea se considera terminada cuando:
 
 - El código está implementado y tipado.
-- `bunx tsc --noEmit` no reporta errores.
-- `bun run lint` no agrega errores nuevos.
-- `bun run build` finaliza correctamente.
+- `npx tsc --noEmit` no reporta errores.
+- `npm run lint` no agrega errores nuevos.
+- `npm run build` finaliza correctamente.
 - Las rutas afectadas responden con el código esperado.
 - La persistencia o el contrato de datos fue verificada.
 - La documentación y el ADR correspondiente están actualizados.
@@ -1351,11 +1351,11 @@ python3 scripts/seed/seed.py bootstrap
 python3 scripts/seed/seed.py verify
 
 # Calidad
-docker exec next_frontend bunx tsc --noEmit
-docker exec next_frontend bun run lint
+docker exec next_frontend npx tsc --noEmit
+docker exec next_frontend npm run lint
 
 # Memoria técnica
-docker run --rm -v "$PWD:/app" -w /app --entrypoint bun oven/bun:1-alpine build_graph.js
+docker run --rm -v "$PWD:/app" -w /app --entrypoint node node:26.13.0-slim build_graph.js
 
 # Git
 git status

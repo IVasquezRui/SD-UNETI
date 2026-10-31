@@ -39,13 +39,13 @@ La solución cubre:
 
 | Capa | Tecnología | Versión verificada |
 |---|---|---|
-| Frontend | Next.js / React | `16.4.2` / `19.3.0` |
-| Runtime frontend | Bun | `1.4.3` |
-| Lenguaje | TypeScript | `^5` |
+| Frontend | Next.js / React | `16.4.3` / `19.3.1` |
+| Runtime frontend | Node.js + npm | `26.13.0` LTS |
+| Lenguaje | TypeScript | `5.9.3` |
 | Estilos | Template `demo-elearning` + CSS propio | `uneti.css` |
-| CMS | WordPress | `7.1.3` |
-| API de contenido | WPGraphQL | `2.24.2` |
-| Base de datos | MariaDB | `11.4.13` |
+| CMS | WordPress | `7.1.4` |
+| API de contenido | WPGraphQL | `2.26.0` |
+| Base de datos | MariaDB | `11.8.9` |
 | Infraestructura | Docker Compose | 3 servicios |
 
 ### Flujo de datos
@@ -272,9 +272,9 @@ La Fase 5 del proyecto (`Documents/fase-5-ui-ux-2026.md`) renueva la capa públi
 
 ## 6. Estado actual del CMS y datos demo
 
-- WordPress: `7.1.3`.
-- WPGraphQL: `2.24.2`, activo.
-- MariaDB: `11.4.13`, contenedor saludable.
+- WordPress: `7.1.4`.
+- WPGraphQL: `2.26.0`, activo.
+- MariaDB: `11.8.9`, contenedor saludable.
 - Noticias publicadas: **6**.
 - Comentarios demo visibles: **3**, todos en la noticia de convocatoria 2026.
 - Posts de ejemplo `hola-mundo` y `noticia-de-prueba-institucional`: en borrador.
@@ -287,11 +287,13 @@ La Fase 5 del proyecto (`Documents/fase-5-ui-ux-2026.md`) renueva la capa públi
 
 ## 7. Validación técnica ejecutada
 
+> La tabla siguiente conserva el registro histórico de la validación inicial (ejecutada con Bun 1.4.x). La validación vigente con Node.js 26.13.0 LTS está en §7.1.
+
 | Verificación | Resultado |
 |---|---|
-| `bunx tsc --noEmit` | Sin errores |
-| `bun run lint` | 0 errores; 6 advertencias por hojas de estilo manuales del template |
-| `bun run build` | Exitoso: 22 rutas prerenderizadas. El fallo de `/_global-error` era causado por `NODE_ENV=development` fijado en el servicio `frontend`; eliminado del compose |
+| `npx tsc --noEmit` | Sin errores |
+| `npm run lint` | 0 errores; 6 advertencias por hojas de estilo manuales del template |
+| `npm run build` | Exitoso: 22 rutas prerenderizadas. El fallo de `/_global-error` era causado por `NODE_ENV=development` fijado en el servicio `frontend`; eliminado del compose |
 | `docker compose config` | Configuración válida |
 | `python3 scripts/seed/seed.py validate` | 6 posts, 6 media, 3 comentarios, checksums correctos |
 | `python3 scripts/seed/seed.py import` | Idempotente: segunda ejecución sin duplicados |
@@ -313,6 +315,22 @@ La Fase 5 del proyecto (`Documents/fase-5-ui-ux-2026.md`) renueva la capa públi
 
 El comentario y la noticia temporales usados para validar el flujo fueron eliminados después de las pruebas.
 
+### 7.1 Validación de la migración a Node.js 26.13.0 LTS (2026-10-31)
+
+| Verificación | Resultado |
+|---|---|
+| `npm ci` | 358 paquetes instalados |
+| `npm run lint` | Sin errores |
+| `npx tsc --noEmit` | Sin errores |
+| `npm run build` | 23 páginas generadas; 6 noticias prerenderizadas |
+| `docker compose config -q` | Válido |
+| `seed.py bootstrap` / `verify` | 6 posts, 3 comentarios, 6 medios, GraphQL activo |
+| Rutas públicas | 200; ruta inexistente con 404 institucional |
+| Playwright (11 rutas × 2 viewports) | 0 errores de hidratación, 0 overflow, 0 IDs duplicados, 0 imágenes sin alt |
+| Parallax del hero | Activo en escritorio; desactivado en móvil y con movimiento reducido |
+
+El detalle completo está en `Documents/qa-20261031.md`.
+
 ---
 
 ## 8. Decisiones de arquitectura
@@ -331,7 +349,7 @@ El comentario y la noticia temporales usados para validar el flujo fueron elimin
 ## 9. Deuda técnica y riesgos conocidos
 
 - Las credenciales de desarrollo viven en `.env` (ignorado); para producción deben migrarse a Docker secrets o un gestor externo.
-- Las imágenes están fijadas por tag (`mariadb:11.4.13`, `wordpress:7.1.3`, `oven/bun:1.4.3-alpine`); falta fijarlas por digest.
+- Las imágenes están fijadas por tag (`mariadb:11.8.9`, `wordpress:7.1.4`, `node:26.13.0-slim`); falta fijarlas por digest.
 - Los comentarios se autoaprueban y no tienen CAPTCHA, rate limiting ni moderación previa.
 - El formulario de contacto solo registra el lead en logs; falta persistencia, correo o integración CRM.
 - Las imágenes de `seed/media/` no tienen fuente/licencia documentada; ver `seed/CREDITS.md`.
@@ -377,11 +395,11 @@ python3 scripts/seed/seed.py verify
 python3 scripts/seed/seed.py export
 
 # Verificar tipos y lint
-docker exec next_frontend bunx tsc --noEmit
-docker exec next_frontend bun run lint
+docker exec next_frontend npx tsc --noEmit
+docker exec next_frontend npm run lint
 
 # Regenerar el grafo de memoria
-docker run --rm -v "$PWD:/app" -w /app --entrypoint bun oven/bun:1.4.3-alpine build_graph.js
+docker run --rm -v "$PWD:/app" -w /app --entrypoint node node:26.13.0-slim build_graph.js
 ```
 
 ---
@@ -398,6 +416,6 @@ docker run --rm -v "$PWD:/app" -w /app --entrypoint bun oven/bun:1.4.3-alpine bu
 - [x] Carreras PNF con información completa.
 - [x] Entorno Docker operativo y documentado.
 - [x] Seed portable e idempotente; validaciones de posts, comentarios e imágenes.
-- [x] `bun run build` de producción sin errores.
+- [x] `npm run build` de producción sin errores.
 - [ ] Pruebas E2E automatizadas.
 - [ ] Endurecimiento de seguridad y despliegue productivo.

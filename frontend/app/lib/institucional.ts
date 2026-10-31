@@ -12,6 +12,8 @@ export type InfoContacto = {
   sisu: string;
   sis: string;
   instagram: string;
+  facebook: string;
+  linkedin: string;
   youtube: string;
   youtubeVideo: string;
 };
@@ -80,8 +82,11 @@ export const CONTACTO: InfoContacto = {
   campus: "https://www.uneti.edu.ve/campus/",
   uneti360: "https://uneti360.unetieduca.edu.ve/",
   sisu: process.env.NEXT_PUBLIC_SISU_URL ?? "http://localhost:8000",
-  sis: process.env.NEXT_PUBLIC_SIS_URL ?? "http://localhost:8080",
+  sis: process.env.NEXT_PUBLIC_SIS_URL ?? "http://localhost",
   instagram: "https://www.instagram.com/unetivzla",
+  facebook: "https://www.facebook.com/UNETICCS",
+  linkedin:
+    "https://www.linkedin.com/company/universidad-nacional-experimental-de-las-telecomunicaciones-e-inform%C3%A1tica/",
   youtube: "https://www.youtube.com/@UNETIEducativo",
   youtubeVideo: "https://www.youtube.com/watch?v=gB9PsUUKqL8",
 };

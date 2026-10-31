@@ -1,5 +1,6 @@
 import ContadorAnimado from "./ContadorAnimado";
 import IndicadorEnLinea from "./IndicadorEnLinea";
+import MediaHeroParallax from "./MediaHeroParallax";
 
 const HERO_STATS = [
   { value: 2, suffix: "", label: "PNF académicos" },
@@ -10,14 +11,13 @@ const HERO_STATS = [
 export default function PortadaPrincipal() {
   return (
     <section id="hero" className="uneti-hero">
-      <img
-        src="/assets/images/uneti/hero-estudiantes.webp"
-        alt="Estudiantes de la UNETI durante un encuentro académico"
-        className="uneti-hero__media"
+      <MediaHeroParallax
+        desktopSrc="/assets/images/uneti/hero-comunidad.webp"
+        mobileSrc="/assets/images/uneti/hero-comunidad-mobile.webp"
+        alt="Estudiantes y docentes de la UNETI reunidos en la sede de Caracas"
         width={1280}
-        height={960}
-        loading="eager"
-        decoding="async"
+        height={700}
+        velocidad={0.1}
       />
       <div className="uneti-hero__shade" aria-hidden="true"></div>
       <div className="uneti-hero__grid" aria-hidden="true"></div>
@@ -60,13 +60,13 @@ export default function PortadaPrincipal() {
               </div>
 
               <div className="uneti-hero__meta">
-                <div className="uneti-online-card">
-                  <span className="uneti-online-card__icon" aria-hidden="true">
-                    <i className="bi bi-globe2"></i>
+                <div className="uneti-modality-card">
+                  <span className="uneti-modality-card__icon" aria-hidden="true">
+                    <i className="bi bi-laptop"></i>
                   </span>
                   <div>
-                    <strong>100% online</strong>
-                    <span>Formación gratuita y a tu ritmo</span>
+                    <strong>Educación Multimodal / Híbrida</strong>
+                    <span>Encuentros presenciales y mediación digital</span>
                   </div>
                 </div>
                 <IndicadorEnLinea cantidad={1240} />

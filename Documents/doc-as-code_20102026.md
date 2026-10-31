@@ -9,7 +9,7 @@
 | H-01 | `wp_data/` está fuera de Git | `.gitignore` lo excluye; las 6 imágenes originales pesan ~1.6 MB | Un clon limpio no tiene multimedia |
 | H-02 | `wp_content/` no es un respaldo de contenido | 27 MB, 1056 archivos; solo contiene `015.jpg`, no las 6 imágenes de noticias | Confunde vendor con contenido y no resuelve el seed |
 | H-03 | `database/init.sql` es un dump completo, no un seed | 642 líneas, ~1.5 MB, 10 `INSERT`; no contiene `uneti-abre-convocatoria...`; incluye `wp_users`, `wp_usermeta`, `session_tokens` y `comment_author_IP` | Riesgo de seguridad y fuente de datos no portable |
-| H-04 | WPGraphQL no se monta en un clon limpio | `wp_content/plugins/wp-graphql` está versionado en 2.24.2, pero Compose solo monta `mu-plugins` y scripts | `active_plugins` apunta a un plugin inexistente; GraphQL falla |
+| H-04 | WPGraphQL no se monta en un clon limpio | `wp_content/plugins/wp-graphql` está versionado en 2.26.0, pero Compose solo monta `mu-plugins` y scripts | `active_plugins` apunta a un plugin inexistente; GraphQL falla |
 | H-05 | `seed-noticias.php` no es portable | Hardcodea autor `1`, imágenes en `wp_data/2026/10`, fechas relativas de comentarios y no exporta | No reconstruye el entorno de forma determinista |
 | H-06 | Compose fija URLs, puertos, contraseñas y nombres | `localhost:8080`, `wp_site`, `frontend_net`, puertos fijos | Dificulta colaboración, CI y ejecución en paralelo |
 | H-07 | Las imágenes de noticias no tienen créditos | Solo existe `frontend/public/assets/images/carreras/CREDITS.md` | Riesgo legal al publicar el repositorio |
@@ -168,7 +168,7 @@ El entrypoint oficial omite copiar directorios de `wp-content/*/*/` que ya exist
 - Añadir `!.env.example` al `.gitignore`, porque la regla actual `.env.*` también ignoraría el ejemplo.
 - Parametrizar puertos: `${WORDPRESS_PORT:-8080}:80` y `${FRONTEND_PORT:-3000}:3000`.
 - Eliminar `container_name` fijos y el nombre fijo de red para permitir proyectos paralelos y CI.
-- Fijar versiones: WordPress 7.1.3, MariaDB 11.4.13, WPGraphQL 2.24.2 y Bun 1.4.3.
+- Fijar versiones: WordPress 7.1.4, MariaDB 11.8.9, WPGraphQL 2.26.0 y Node.js 26.13.0 LTS + npm.
 
 ## Fases de implementación
 
@@ -191,7 +191,7 @@ El entrypoint oficial omite copiar directorios de `wp-content/*/*/` que ya exist
 - `seed/media/` contiene solo originales, no las variantes generadas.
 - `seed/` no contiene usuarios, contraseñas, sesiones, IPs ni correos personales.
 - `database/init.sql` fue eliminado; ya no se versionan usuarios ni sesiones.
-- `docker compose config`, `bunx tsc --noEmit`, `bun run lint` y `bun run build` pasan. El fallo de `/_global-error` se corrigió eliminando `NODE_ENV=development` del servicio `frontend`; `next dev` y `next build` gestionan ese valor.
+- `docker compose config`, `npx tsc --noEmit`, `npm run lint` y `npm run build` pasan. El fallo de `/_global-error` se corrigió eliminando `NODE_ENV=development` del servicio `frontend`; `next dev` y `next build` gestionan ese valor.
 - La prueba se repite en un segundo entorno o en CI con puertos alternativos `3001/8081`.
 
 ## Riesgos y mitigaciones
