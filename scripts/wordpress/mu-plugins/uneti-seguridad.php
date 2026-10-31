@@ -49,6 +49,20 @@ add_filter(
 	}
 );
 
+/* No expone el sitemap de usuarios (enumeración por wp-sitemap-users-*.xml). */
+add_filter(
+	'wp_sitemaps_add_provider',
+	function ( $proveedor, $nombre ) {
+		if ( 'users' === $nombre ) {
+			return false;
+		}
+
+		return $proveedor;
+	},
+	10,
+	2
+);
+
 /* Evita la enumeración por ?author=N. */
 add_action(
 	'template_redirect',
