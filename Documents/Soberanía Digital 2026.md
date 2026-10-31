@@ -140,7 +140,7 @@ Este documento cumple cuatro funciones:
 | Actualización en vivo | SSE con polling de respaldo |
 | Comentarios | Lectura y publicación sobre noticias abiertas |
 | Carreras | Listado y detalle de los PNF en Informática y Telecomunicaciones |
-| Formularios | Contacto, inscripción y becas con validación básica |
+| Formularios | Contacto y solicitud de admisión con validación y persistencia en WordPress |
 | CMS | WordPress, WPGraphQL y administración de contenido |
 | Datos | MariaDB con contenido demo idempotente |
 | Infraestructura | Docker Compose con MariaDB, WordPress y Next.js |
@@ -516,7 +516,7 @@ wordpress-headless/
 |---|---|---|
 | `/` | Inicio institucional | Contenido local y componentes |
 | `/nosotros` | Misión, visión, valores e hitos | Contenido local |
-| `/admisiones` | Proceso, requisitos, becas y formularios | Contenido local |
+| `/admisiones` | Proceso, requisitos y formulario de admisión | Contenido local + `/api/admisiones` |
 | `/contacto` | Canales de atención, ubicación y formulario | Contenido local + `/api/contacto` |
 | `/noticias` | Listado dinámico | WPGraphQL + `/api/noticias/stream` |
 | `/noticias/[slug]` | Detalle, relacionadas y comentarios | WPGraphQL + API de comentarios |
@@ -557,7 +557,7 @@ Las redirecciones preservan enlaces heredados y evitan rupturas de SEO durante l
 | `ResumenNoticia` | `slug`, `titulo`, `fecha`, `comentarios` | Stream SSE |
 | `Comentario` | `nombre`, `contenido`, `fecha`, `avatar` | Sección de comentarios |
 | `Carrera` | `slug`, `nombre`, `codigo`, `lema`, `resumen`, `descripcion`, `portada`, `galeria`, `fundamentacion`, `mision`, `vision`, perfiles, competencias, campo laboral, trayectos, laboratorios, salidas, FAQs | Listado y detalle PNF |
-| `LeadPayload` | `type`, `name`, `email`, `phone`, `subject`, `message` | Formularios de contacto, inscripción y beca |
+| `LeadPayload` | `tipo`, `nombre`, `cedula`, `correo`, `telefono`, `programa`, `asunto`, `mensaje`, `consentimiento`, `origen` | Formularios de admisión y contacto |
 
 ### 7.5 Reglas de validación
 

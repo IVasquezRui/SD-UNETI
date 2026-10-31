@@ -34,3 +34,23 @@ Desde la raíz del repositorio:
 docker compose up -d
 python3 scripts/seed/seed.py bootstrap
 ```
+
+Para validar el build de producción con WordPress arriba:
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d frontend
+```
+
+## Formularios
+
+- `/api/contacto`: mensajes de contacto y altas del boletín.
+- `/api/admisiones`: solicitud de admisión; reenvía a WordPress con `WP_FORM_TOKEN`.
+
+El token debe coincidir con `UNETI_FORM_TOKEN` en el contenedor WordPress. Nunca uses el prefijo `NEXT_PUBLIC_` para este valor.
+
+## QA
+
+```bash
+bash ../scripts/ci/qa-frontend.sh http://localhost:3000
+node ../scripts/ci/probar-formulario.mjs
+```
