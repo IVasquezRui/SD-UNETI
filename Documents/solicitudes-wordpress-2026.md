@@ -121,6 +121,7 @@ También funciona **Export any WordPress data to XML/CSV** con el mismo CPT.
 - Validación y saneamiento en Next.js y en WordPress.
 - `show_in_rest = false` y `public = false` para el CPT.
 - Sin exposición del CPT en WPGraphQL.
+- Sitemap de usuarios bloqueado y acceso directo a `mu-plugins` denegado.
 - IP almacenada solo como hash.
 - Exportación protegida con nonce y capacidad `edit_others_posts`.
 - CSV protegido contra inyección de fórmulas.

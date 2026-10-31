@@ -450,5 +450,6 @@ docker run --rm -v "$PWD:/app" -w /app --entrypoint node node:26.13.0-slim build
 ### Infraestructura y CI
 
 - Endurecimiento de Next.js, WordPress (mu-plugin, Apache y PHP) y MariaDB.
+- Sitemap de usuarios y acceso directo a `mu-plugins` bloqueados; WPScan sin usuarios enumerados.
 - Workflows `01`–`08` con QA y pentests, optimizados para el plan gratuito.
 - Documentos [`solicitudes-wordpress-2026.md`](solicitudes-wordpress-2026.md) y [`ci-cd-2026.md`](ci-cd-2026.md).
