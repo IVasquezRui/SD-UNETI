@@ -49,6 +49,7 @@ services:
         define( 'WP_SITEURL', '${WORDPRESS_URL:-http://localhost:8080}' );
         define( 'WP_MEMORY_LIMIT', '512M' );
         define( 'DISALLOW_FILE_EDIT', true );
+        define( 'DISABLE_WP_CRON', true );
         define( 'FS_METHOD', 'direct' );
     volumes:
       - ${WP_DATA_DIR:-./wp_data}:/var/www/html
