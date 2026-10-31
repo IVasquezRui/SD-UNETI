@@ -12,12 +12,13 @@ export default function PortadaPrincipal() {
   return (
     <section id="hero" className="uneti-hero">
       <MediaHeroParallax
-        desktopSrc="/assets/images/uneti/hero-comunidad.webp"
-        mobileSrc="/assets/images/uneti/hero-comunidad-mobile.webp"
-        alt="Estudiantes y docentes de la UNETI reunidos en la sede de Caracas"
+        desktopSrc="/assets/images/uneti/contacto-estudiantes.webp"
+        mobileSrc="/assets/images/uneti/contacto-estudiantes-mobile.webp"
+        alt="Estudiantes de la UNETI durante una actividad académica"
         width={1280}
-        height={700}
+        height={960}
         velocidad={0.1}
+        posicion="50% 38%"
       />
       <div className="uneti-hero__shade" aria-hidden="true"></div>
       <div className="uneti-hero__grid" aria-hidden="true"></div>

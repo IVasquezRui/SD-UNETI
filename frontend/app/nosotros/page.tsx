@@ -5,6 +5,13 @@ import TituloPagina from "../componentes/TituloPagina";
 import PieSitio from "../componentes/PieSitio";
 import EncabezadoSitio from "../componentes/EncabezadoSitio";
 import ContadorAnimado from "../componentes/ContadorAnimado";
+import FlashcardValor from "../componentes/FlashcardValor";
+import HistoriaParallax from "../componentes/HistoriaParallax";
+import ModalidadHibrida from "../componentes/ModalidadHibrida";
+import ParallaxImagen from "../componentes/ParallaxImagen";
+import Reveal from "../componentes/Reveal";
+import RutaUNETI from "../componentes/RutaUNETI";
+import SedesUNETI from "../componentes/SedesUNETI";
 import { ACTIVIDADES_NOSOTROS, PREGUNTAS_NOSOTROS, VALORES } from "../lib/institucional";
 
 export const metadata: Metadata = {
@@ -24,6 +31,7 @@ export default function NosotrosPage() {
           image="/assets/images/uneti/nosotros-graduados.webp"
           crumbs={[{ label: "Inicio", href: "/" }, { label: "Sobre Nosotros" }]}
           particleId="about-page-particles"
+          parallax
         />
 
         <section className="position-relative overflow-hidden">
@@ -31,23 +39,21 @@ export default function NosotrosPage() {
             <div className="row align-items-center justify-content-center">
               <div className="col-lg-6 col-md-10 md-mb-40px">
                 <div className="uneti-about-collage">
-                  <img
+                  <ParallaxImagen
                     src="/assets/images/uneti/nosotros-principal.webp"
                     alt="Comunidad universitaria de la UNETI"
                     className="uneti-about-main"
                     width={1280}
                     height={576}
-                    loading="lazy"
-                    decoding="async"
+                    velocidad={0.05}
                   />
-                  <img
+                  <ParallaxImagen
                     src="/assets/images/uneti/nosotros-equipo.webp"
                     alt="Formación en telecomunicaciones e informática"
                     className="uneti-about-small"
                     width={1200}
                     height={800}
-                    loading="lazy"
-                    decoding="async"
+                    velocidad={0.09}
                   />
                   <div className="uneti-about-years">
                     <strong>8+</strong>
@@ -86,6 +92,8 @@ export default function NosotrosPage() {
           </div>
         </section>
 
+        <HistoriaParallax />
+
         <section className="bg-gradient-tranquil-white position-relative overflow-hidden">
           <div className="container">
             <div className="row justify-content-center text-center mb-5">
@@ -101,20 +109,20 @@ export default function NosotrosPage() {
               </div>
             </div>
             <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
-              {VALORES.map((value) => (
-                <div className="col" key={value.title}>
-                  <article className="uneti-value-card">
-                    <span className="uneti-icon-tone uneti-tone-orange">
-                      <i className={value.icon}></i>
-                    </span>
-                    <h3>{value.title}</h3>
-                    <p>{value.description}</p>
-                  </article>
-                </div>
+              {VALORES.map((value, index) => (
+                <Reveal className="col" key={value.title} delay={index * 90}>
+                  <FlashcardValor valor={value} indice={index} />
+                </Reveal>
               ))}
             </div>
           </div>
         </section>
+
+        <RutaUNETI />
+
+        <ModalidadHibrida />
+
+        <SedesUNETI />
 
         <section className="position-relative overflow-hidden">
           <div className="container">
@@ -145,6 +153,7 @@ export default function NosotrosPage() {
           image="/assets/images/uneti/faq-estudiantes.webp"
           imageAlt="Estudiante de la UNETI"
           items={PREGUNTAS_NOSOTROS}
+          sticky
         />
 
         <SeccionActividades

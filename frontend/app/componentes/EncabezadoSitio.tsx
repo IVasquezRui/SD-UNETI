@@ -80,7 +80,7 @@ export default function EncabezadoSitio() {
               rel="noreferrer"
               onClick={() => setMenuAbierto(false)}
             >
-              Ir a Campus
+              Ir al Campus Virtual
               <i className="bi bi-arrow-up-right ms-2" aria-hidden="true"></i>
             </a>
           </div>

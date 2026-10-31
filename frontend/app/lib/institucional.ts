@@ -9,8 +9,6 @@ export type InfoContacto = {
   helpDesk: string;
   campus: string;
   uneti360: string;
-  sisu: string;
-  sis: string;
   instagram: string;
   facebook: string;
   linkedin: string;
@@ -62,6 +60,7 @@ export type ElementoValor = {
   icon: string;
   title: string;
   description: string;
+  tone: "light-blue" | "blue" | "green" | "orange";
 };
 
 export type Hito = {
@@ -81,8 +80,6 @@ export const CONTACTO: InfoContacto = {
   helpDesk: "https://www.uneti.edu.ve/ayuda/",
   campus: "https://www.uneti.edu.ve/campus/",
   uneti360: "https://uneti360.unetieduca.edu.ve/",
-  sisu: process.env.NEXT_PUBLIC_SISU_URL ?? "http://localhost:8000",
-  sis: process.env.NEXT_PUBLIC_SIS_URL ?? "http://localhost",
   instagram: "https://www.instagram.com/unetivzla",
   facebook: "https://www.facebook.com/UNETICCS",
   linkedin:
@@ -93,11 +90,11 @@ export const CONTACTO: InfoContacto = {
 
 export const CANALES_SOPORTE: CanalSoporte[] = [
   {
-    icon: "bi bi-mortarboard",
-    title: "SIS-UNETI",
-    description: "Gestiona tu matrícula, notas, constancias y trámites académicos.",
-    href: CONTACTO.sis,
-    cta: "Entrar al SIS-UNETI",
+    icon: "bi bi-laptop",
+    title: "Campus Virtual",
+    description: "Accede al entorno oficial del componente a distancia y a tus actividades académicas.",
+    href: CONTACTO.campus,
+    cta: "Ir al Campus Virtual",
     tone: "blue",
   },
   {
@@ -147,7 +144,7 @@ export const PREGUNTAS_INICIO: ElementoPregunta[] = [
     id: "pregrado",
     title: "¿Qué pregrado dictan?",
     paragraphs: [
-      "Dictamos los PNF (Programa Nacional de Formación) en Telecomunicaciones y en Informática, con tres salidas profesionales: en el primer año se otorga el título de Técnico Medio, a los dos años el título de Técnico Superior Universitario y en 4 años el de Ingeniero.",
+      "Dictamos los PNF (Programa Nacional de Formación) en Telecomunicaciones y en Informática, con salida de Técnico Superior Universitario (TSU) en 2 años e Ingeniería en 4 años. La prosecución de TSU a Ingeniería se realiza dentro del mismo PNF.",
     ],
   },
   {
@@ -378,24 +375,28 @@ export const VALORES: ElementoValor[] = [
     title: "Estudiantes formados con éxito",
     description:
       "Miles de estudiantes se han formado en UNETI bajo un modelo educativo innovador y comprometido con el progreso social y tecnológico del país.",
+    tone: "light-blue",
   },
   {
     icon: "bi bi-graph-up-arrow",
     title: "Crecimiento académico sostenido",
     description:
       "Nuestra comunidad académica se fortalece día a día, impulsando el desarrollo del conocimiento, la investigación aplicada y la transformación digital.",
+    tone: "blue",
   },
   {
     icon: "bi bi-lightbulb",
     title: "Talento humano con visión de futuro",
     description:
       "Formamos ciudadanos y profesionales con ética, compromiso y capacidad para liderar en áreas críticas como informática, telecomunicaciones, blockchain y metaverso.",
+    tone: "green",
   },
   {
     icon: "bi bi-bank",
     title: "Educación al servicio de la Nación",
     description:
       "A través de programas adaptados a los desafíos contemporáneos, UNETI se consolida como un pilar en la construcción de un futuro tecnológico para Venezuela.",
+    tone: "orange",
   },
 ];
 

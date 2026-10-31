@@ -4,8 +4,8 @@ import FormularioBoletin from "./FormularioBoletin";
 import LogotipoSitio from "./LogotipoSitio";
 
 const ENLACES_RAPIDOS = [
-  { label: "SIS-UNETI", href: CONTACTO.sis },
-  { label: "Asistente SISU", href: CONTACTO.sisu },
+  { label: "Campus Virtual", href: CONTACTO.campus },
+  { label: "Mesa de Ayuda", href: CONTACTO.helpDesk },
   { label: "Admisiones", href: "/admisiones" },
   { label: "Contacto", href: "/contacto" },
   { label: "Instagram", href: CONTACTO.instagram },

@@ -9,6 +9,8 @@ type FaqSectionProps = {
   imageAlt?: string;
   items: ElementoPregunta[];
   backgroundImage?: string;
+  /** Mantiene la introducción y la imagen fijas mientras se recorre el acordeón. */
+  sticky?: boolean;
 };
 
 export default function SeccionPreguntas({
@@ -20,16 +22,23 @@ export default function SeccionPreguntas({
   imageAlt = "",
   items,
   backgroundImage,
+  sticky = false,
 }: FaqSectionProps) {
   return (
     <section
       id={id}
-      className="position-relative overflow-hidden"
+      className={`position-relative overflow-hidden${sticky ? " uneti-faq--sticky" : ""}`}
       style={backgroundImage ? { backgroundImage: `url('${backgroundImage}')` } : undefined}
     >
       <div className="container">
-        <div className="row align-items-center justify-content-center">
-          <div className="col-lg-5 col-md-10 md-mb-40px">
+        <div
+          className={`row ${
+            sticky ? "align-items-start" : "align-items-center"
+          } justify-content-center`}
+        >
+          <div
+            className={`col-lg-5 col-md-10 md-mb-40px${sticky ? " uneti-faq__intro" : ""}`}
+          >
             <span className="uneti-section-eyebrow mb-15px">{eyebrow}</span>
             <h2 className="alt-font text-dark-gray fw-600 ls-minus-3px mb-20px">{title}</h2>
             {description && <p className="mb-30px">{description}</p>}

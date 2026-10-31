@@ -53,13 +53,6 @@ export type Carrera = {
 
 const SALIDAS_INFORMATICA: SalidaProfesional[] = [
   {
-    nivel: "Técnico Medio",
-    duracion: "Al culminar el primer año",
-    titulo: "Técnico Medio en Informática",
-    descripcion:
-      "Capacidad para instalar, configurar y mantener equipos, redes locales y aplicaciones ofimáticas.",
-  },
-  {
     nivel: "TSU",
     duracion: "2 años · 4 semestres",
     titulo: "Técnico Superior Universitario en Informática",
@@ -76,13 +69,6 @@ const SALIDAS_INFORMATICA: SalidaProfesional[] = [
 ];
 
 const SALIDAS_TELECOMUNICACIONES: SalidaProfesional[] = [
-  {
-    nivel: "Técnico Medio",
-    duracion: "Al culminar el primer año",
-    titulo: "Técnico Medio en Telecomunicaciones",
-    descripcion:
-      "Instalación y mantenimiento de cableado estructurado, equipos de radio y servicios de conectividad.",
-  },
   {
     nivel: "TSU",
     duracion: "2 años · 4 semestres",
@@ -106,7 +92,7 @@ export const CARRERAS: Carrera[] = [
     codigo: "PNF-I",
     lema: "Construye el software y la infraestructura que transforma el país.",
     resumen:
-      "Formación integral en desarrollo de software, infraestructura, seguridad informática, ciencia de datos y tecnologías emergentes, con salidas progresivas como Técnico Medio, TSU e Ingeniero.",
+      "Formación integral en desarrollo de software, infraestructura, seguridad informática, ciencia de datos y tecnologías emergentes, con salida de TSU en 2 años e Ingeniería en 4 años.",
     descripcion: [
       "El Programa Nacional de Formación en Informática de la UNETI forma profesionales capaces de diseñar, construir y mantener soluciones tecnológicas para las necesidades reales de las comunidades, las instituciones públicas y el sector productivo.",
       "El plan de estudios combina proyectos sociotecnológicos, laboratorios especializados y prácticas profesionalizantes. El estudiante avanza desde la alfabetización computacional hasta la ingeniería de software, la ciberseguridad y la analítica de datos.",
@@ -278,7 +264,7 @@ export const CARRERAS: Carrera[] = [
     codigo: "PNF-T",
     lema: "Conecta comunidades, territorios y oportunidades.",
     resumen:
-      "Formación en redes, transmisión, radiofrecuencia, fibra óptica y servicios de telecomunicaciones, con salidas progresivas como Técnico Medio, TSU e Ingeniero.",
+      "Formación en redes, transmisión, radiofrecuencia, fibra óptica y servicios de telecomunicaciones, con salida de TSU en 2 años e Ingeniería en 4 años.",
     descripcion: [
       "El Programa Nacional de Formación en Telecomunicaciones de la UNETI forma profesionales para diseñar, operar y mantener las redes y los servicios que garantizan la conectividad del país.",
       "El estudiante trabaja con señales, electrónica, sistemas de transmisión, redes de datos y comunicaciones inalámbricas y ópticas. Los laboratorios y las pasantías permiten aplicar los conocimientos en infraestructura real.",
