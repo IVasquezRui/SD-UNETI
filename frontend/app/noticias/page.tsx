@@ -22,8 +22,8 @@ export default async function NoticiasPage() {
         <TituloPagina
           title="Últimas noticias"
           subtitle="Información publicada y actualizada desde el CMS de la UNETI."
-          image="/assets/images/uneti/nosotros-fondo.webp"
-          imagePosition="center 30%"
+          image="/assets/images/uneti/noticias-hero-2026.webp"
+          imagePosition="center 35%"
           crumbs={[{ label: "Inicio", href: "/" }, { label: "Noticias" }]}
           particleId="noticias-page-particles"
         />

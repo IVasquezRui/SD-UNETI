@@ -18,7 +18,7 @@ El `README.md` debe incluir la siguiente estructura y contenido:
    - **Frontend:** Next.js (App Router, React 19/18, TypeScript, Tailwind CSS).
    - **Backend / CMS:** WordPress Headless, WPGraphQL, MariaDB.
    - **Infraestructura:** Docker & Docker Compose (Orquestación multi-contenedor).
-   - **Memoria Técnica Local:** Grafo de conocimiento indexado vía Bun / Lookdown.
+   - **Memoria Técnica Local:** Grafo de conocimiento indexado vía Node.js / Lookdown.
 
 4. **Guía de Inicio Rápido (Quickstart / Onboarding para Desarrolladores):**
    - Requisitos previos (Git, Docker, Docker Compose).
@@ -77,7 +77,7 @@ Antes de modificar, crear o analizar cualquier archivo en el proyecto, DEBES seg
 3. **Acción Directa:** Con base en las conexiones `[[Wikilinks]]` de la ficha del grafo, ve directo a editar o leer el archivo de código fuente necesario.
 
 ## 3. ACTUALIZACIÓN POST-CAMBIO
-- Si creas un archivo nuevo o modificas la estructura del proyecto, recuerda ejecutar al terminar en la terminal: `bun build_graph.js` para mantener sincronizados los grafos y la bóveda de Obsidian.
+- Si creas un archivo nuevo o modificas la estructura del proyecto, recuerda ejecutar al terminar en la terminal: `node build_graph.js` para mantener sincronizados los grafos y la bóveda de Obsidian.
 "
 
 Bien sabes que existe el la carpeta lookdown y el script js que "indexa" la gran mayoría de archivos tanto en Wordpress como en el Frontend.

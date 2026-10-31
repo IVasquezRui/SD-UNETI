@@ -133,32 +133,52 @@ export default function PieSitio() {
                 Universidad Nacional Experimental de las Telecomunicaciones e Informática.
                 Formamos profesionales para la soberanía tecnológica de Venezuela.
               </p>
-              <div className="elements-social social-text-style-01 mt-5 xs-mt-15px">
-                <ul className="small-icon light fw-500">
-                  <li>
-                    <a
-                      className="instagram"
-                      href={CONTACTO.instagram}
-                      target="_blank"
-                      rel="noreferrer"
-                      aria-label="Instagram de la UNETI"
-                    >
-                      Ig.
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      className="youtube"
-                      href={CONTACTO.youtube}
-                      target="_blank"
-                      rel="noreferrer"
-                      aria-label="Canal de YouTube de UNETI Educativo"
-                    >
-                      Yt.
-                    </a>
-                  </li>
-                </ul>
-              </div>
+              <ul className="uneti-social" aria-label="Redes sociales de la UNETI">
+                <li>
+                  <a
+                    href={CONTACTO.instagram}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="Instagram de la UNETI"
+                    title="Instagram"
+                  >
+                    <i className="bi bi-instagram" aria-hidden="true"></i>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={CONTACTO.facebook}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="Facebook de la UNETI"
+                    title="Facebook"
+                  >
+                    <i className="bi bi-facebook" aria-hidden="true"></i>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={CONTACTO.linkedin}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="LinkedIn de la UNETI"
+                    title="LinkedIn"
+                  >
+                    <i className="bi bi-linkedin" aria-hidden="true"></i>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={CONTACTO.youtube}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="Canal de YouTube de UNETI Educativo"
+                    title="YouTube"
+                  >
+                    <i className="bi bi-youtube" aria-hidden="true"></i>
+                  </a>
+                </li>
+              </ul>
             </div>
 
             <div className="col-lg-2 col-md-4 col-sm-6 md-mb-40px xs-mb-30px">

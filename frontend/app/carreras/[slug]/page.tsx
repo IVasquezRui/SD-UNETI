@@ -17,6 +17,10 @@ type PropiedadesCarrera = {
   params: Promise<{ slug: string }>;
 };
 
+// Los detalles leen `params` para resolver el PNF; se declaran bloqueantes
+// para cumplir con la validación de URL data de Next.js 16.
+export const instant = false;
+
 export function generateStaticParams() {
   return CARRERAS.map((carrera) => ({ slug: carrera.slug }));
 }

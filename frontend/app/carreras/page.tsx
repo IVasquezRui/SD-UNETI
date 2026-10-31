@@ -42,7 +42,8 @@ export default function CarrerasPage() {
         <TituloPagina
           title="Nuestras carreras"
           subtitle="Dos Programas Nacionales de Formación para transformar la tecnología del país."
-          image="/assets/images/uneti/carreras-hero.webp"
+          image="/assets/images/uneti/carreras-hero-2026.webp"
+          imagePosition="center 45%"
           crumbs={[{ label: "Inicio", href: "/" }, { label: "Carreras" }]}
           particleId="carreras-page-particles"
         />

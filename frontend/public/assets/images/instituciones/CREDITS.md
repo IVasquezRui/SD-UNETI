@@ -2,13 +2,16 @@
 
 ## Fotografías institucionales
 
-Las fotografías `hero-uneti.webp`, `nosotros-principal.webp`,
+Las fotografías `hero-uneti.webp`, `hero-comunidad.webp`,
+`hero-comunidad-mobile.webp`, `nosotros-principal.webp`,
 `nosotros-equipo.webp`, `nosotros-fondo.webp`, `actividades-taller.webp`,
 `faq-estudiantes.webp`, `contacto-estudiantes.webp`, `video-comunidad.webp`,
-`about-top.webp` y los retratos `testimonio-*.webp` son derivados de las
-fotografías institucionales suministradas por el equipo UNETI. Los originales
-se mantienen fuera del repositorio para no duplicar peso; los derivados WebP
-publicados aquí son la versión que usa el sitio.
+`carreras-hero-2026.webp`, `noticias-hero-2026.webp`, `about-top.webp` y los
+retratos `testimonio-*.webp` son derivados de las fotografías institucionales
+suministradas por el equipo UNETI en octubre de 2026. Los originales se
+mantienen fuera del repositorio (`UNETI-STUDENTS/` y `uneti_new/`) para no
+duplicar peso; los derivados WebP publicados aquí son la versión que usa el
+sitio.
 
 ## Logos de instituciones aliadas
 

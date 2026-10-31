@@ -8,7 +8,7 @@
 | Proyecto | SD-UNETI — portal institucional headless |
 | Rama de trabajo | `main` (repositorio `SD-UNETI`) |
 | Periodo | 27 al 29 de octubre de 2026 |
-| Estado | **En curso** — bloque visual cerrado, organigrama y verificación pendientes |
+| Estado | **En curso** — bloque visual y verificación cerrados; organigrama pendiente |
 | Alcance | Frontend Next.js (`frontend/`), estilos propios (`uneti.css`, `style.css`) y documentación |
 | Impacto en backend / base de datos | Nulo |
 | Fase anterior | Fase 4 — limpieza opcional (ver `doc-as-code_20102026.md`) |
@@ -42,7 +42,7 @@ La hoja `style.css` de la plantilla incluía el selector `[class*=ti-]`, pensado
 ### 2.3 Identidad visual y fotografía
 
 - Nueva portada con jerarquía editorial: hero a pantalla completa, degradado de legibilidad, indicadores en vivo y llamada a la admisión.
-- Imágenes institucionales derivadas a WebP: `hero-estudiantes.webp`, `nosotros-estudiantes.webp`, `nosotros-graduados.webp`, `carreras-hero.webp` y `cursos-hero.webp`.
+- Imágenes institucionales derivadas a WebP: `hero-estudiantes.webp`, `nosotros-estudiantes.webp`, `nosotros-graduados.webp`, `carreras-hero.webp` y `cursos-hero.webp`. En la revisión del 31/10/2026 se sustituyeron por `hero-comunidad.webp` + `hero-comunidad-mobile.webp`, `carreras-hero-2026.webp` y `noticias-hero-2026.webp`.
 - Los originales entregados por la universidad se conservan en `frontend/public/assets/images/uneti_new/`, **excluido de Git**; solo se publican los derivados optimizados.
 
 ### 2.4 Navegación y páginas
@@ -70,10 +70,10 @@ La hoja `style.css` de la plantilla incluía el selector `[class*=ti-]`, pensado
 | E-05 | Encuadre configurable de cabeceras internas | `TituloPagina.tsx`, `/noticias`, `/contacto` | ✅ Completado |
 | E-06 | Ajustes de admisiones y canales de soporte | `admisiones/page.tsx`, `lib/institucional.ts` | ✅ Completado |
 | E-07 | Ruta y contenido de Cursos UNETI | `app/cursos/page.tsx`, `lib/cursos.ts`, `TarjetaCurso.tsx`, `uneti.css` | ✅ Completado |
-| E-08 | Nueva fotografía del hero principal | `UNETI-STUDENTS/WhatsApp Image 2026-10-29 at 10.33.46 (1).jpeg` → `hero-comunidad.webp` + variante móvil | ⏳ Pendiente |
+| E-08 | Nueva fotografía del hero principal | `UNETI-STUDENTS/WhatsApp Image 2026-10-29 at 10.33.46 (1).jpeg` → `hero-comunidad.webp` + variante móvil | ✅ Completado |
 | E-09 | Organigrama institucional animado en `/nosotros` | `lib/organigrama.ts`, `OrganigramaInstitucional.tsx`, `uneti.css`, fotos de autoridades | ⏳ Pendiente |
-| E-10 | Verificación visual y funcional | Playwright en `/`, `/nosotros`, `/carreras`, `/cursos`, `/admisiones`, `/contacto`, `/noticias` a 1440 px y 390 px | ⏳ Pendiente |
-| E-11 | Accesibilidad y peso de imágenes | Auditoría de contraste, foco y `prefers-reduced-motion`; presupuesto de imagen | ⏳ Pendiente |
+| E-10 | Verificación visual y funcional | Playwright en `/`, `/nosotros`, `/carreras`, `/cursos`, `/admisiones`, `/contacto`, `/noticias` a 1440 px y 390 px | ✅ Completado |
+| E-11 | Accesibilidad y peso de imágenes | Auditoría de contraste, foco y `prefers-reduced-motion`; presupuesto de imagen | ✅ Completado |
 
 ### Fuente del organigrama (E-09)
 
@@ -89,7 +89,7 @@ Las fotografías de las autoridades se reutilizan desde `sis-uneti-frontend/publ
 
 ## 4. Criterios de aceptación
 
-- `bun run build` y `bun run lint` finalizan sin errores en `frontend/`.
+- `npm run build` y `npm run lint` finalizan sin errores en `frontend/` con Node.js 26.13.0 LTS.
 - Ninguna ruta de la navegación principal ni del pie devuelve 404.
 - Todas las imágenes publicadas son WebP con `width`/`height` declarados y `loading="lazy"` salvo el hero.
 - Las animaciones se anulan con `prefers-reduced-motion: reduce`.
@@ -105,7 +105,7 @@ Las fotografías de las autoridades se reutilizan desde `sis-uneti-frontend/publ
 |---|---|
 | Fotografías sin licencia documentada | Créditos en `instituciones/CREDITS.md`; originales fuera de Git (`uneti_new/`) |
 | Regresión de layout por la hoja heredada `style.css` | Selectores acotados y verificación visual por ruta |
-| Dependencias nativas `lightningcss`/`oxide` en arm64 | Instalación documentada de los binarios `*-darwin-x64` junto a Bun |
+| Dependencias nativas `lightningcss`/`oxide` en arm64 | Node 26 + npm resuelve los binarios linux/arm64 de la imagen `node:26.13.0-slim`; validación con `npm run build` en el contenedor |
 | Duplicidad de fuentes de imágenes | Un solo origen en `uneti/`; `uneti_new/` solo como banco de originales |
 | Datos del organigrama desactualizados | Se toma el PDF oficial del repositorio de la organización como fuente única |
 
@@ -125,4 +125,13 @@ Las fotografías de las autoridades se reutilizan desde `sis-uneti-frontend/publ
 - `Documents/nextSteps.md` — lista de trabajo acumulada.
 - `docs/04-academico-institucional/gobierno/organigrama-uneti-2026.pdf` — organigrama oficial (repositorio de la organización).
 
+---
 
+## 8. Nota de migración — 2026-10-31
+
+- El frontend pasó de Bun a **Node.js 26.13.0 LTS + npm** (`package-lock.json`).
+- Versiones actualizadas: Next.js `16.4.3`, React `19.3.1`, WordPress `7.1.4`,
+  WPGraphQL `2.26.0` y MariaDB `11.8.9`.
+- Hero principal con `hero-comunidad.webp` y variante móvil; nuevas imágenes
+  para `/carreras` y `/noticias`.
+- Verificación completa en `Documents/qa-20261031.md`.

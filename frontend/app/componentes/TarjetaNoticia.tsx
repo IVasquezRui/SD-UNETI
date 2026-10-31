@@ -18,12 +18,11 @@ export default function TarjetaNoticia({ noticia }: { noticia: Noticia }) {
           </time>
           <span className="text-base-color">{noticia.tiempoLectura}</span>
         </div>
-        <a
-          href={href}
-          className="card-title fw-600 fs-20 lh-28 text-dark-gray d-inline-block mb-15px"
-        >
-          {noticia.titulo}
-        </a>
+        <h3 className="card-title fw-600 fs-20 lh-28 text-dark-gray mb-15px">
+          <a href={href} className="text-dark-gray">
+            {noticia.titulo}
+          </a>
+        </h3>
         <p className="mb-20px flex-grow-1">{noticia.resumen}</p>
         <div className="d-flex align-items-center justify-content-between border-top border-color-extra-medium-gray pt-20px">
           <span className="d-flex align-items-center">

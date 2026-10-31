@@ -2,9 +2,10 @@
 
 [![MVP](https://img.shields.io/badge/estado-MVP%20v1.0-0B5FFF)](Documents/PROGRESS.md)
 [![Seed portable](https://github.com/IVasquezRui/SD-UNETI/actions/workflows/seed.yml/badge.svg)](https://github.com/IVasquezRui/SD-UNETI/actions/workflows/seed.yml)
-[![Next.js](https://img.shields.io/badge/Next.js-16.4.2-000000)](https://nextjs.org/)
-[![WordPress](https://img.shields.io/badge/WordPress-7.1.3-21759B)](https://wordpress.org/)
-[![WPGraphQL](https://img.shields.io/badge/WPGraphQL-2.24.2-E10098)](https://www.wpgraphql.com/)
+[![Next.js](https://img.shields.io/badge/Next.js-16.4.3-000000)](https://nextjs.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-26.13.0%20LTS-339933)](https://nodejs.org/)
+[![WordPress](https://img.shields.io/badge/WordPress-7.1.4-21759B)](https://wordpress.org/)
+[![WPGraphQL](https://img.shields.io/badge/WPGraphQL-2.26.0-E10098)](https://www.wpgraphql.com/)
 [![Docker](https://img.shields.io/badge/Docker%20Compose-3%20servicios-2496ED)](docker-compose.yml)
 [![Licencia](https://img.shields.io/badge/licencia-por%20definir-lightgrey)](Documents/Soberanía%20Digital%202026.md)
 
@@ -34,13 +35,13 @@ Navegador
 
 | Capa | Tecnología | Versión |
 |---|---|---|
-| Frontend | Next.js / React | `16.4.2` / `19.3.0` |
-| Runtime frontend | Bun | `1.4.4` |
-| Lenguaje | TypeScript | `^5` |
+| Frontend | Next.js / React | `16.4.3` / `19.3.1` |
+| Runtime frontend | Node.js + npm | `26.13.0` LTS |
+| Lenguaje | TypeScript | `5.9.3` |
 | Estilos | Template `demo-elearning` + `uneti.css` | — |
-| CMS | WordPress | `7.1.3` (PHP 8.5) |
-| API de contenido | WPGraphQL | `2.24.2` |
-| Base de datos | MariaDB | `11.4.13` |
+| CMS | WordPress | `7.1.4` (PHP 8.5) |
+| API de contenido | WPGraphQL | `2.26.0` |
+| Base de datos | MariaDB | `11.8.9` |
 | Orquestación | Docker Compose | 3 servicios |
 
 ## Inicio rápido
@@ -50,7 +51,7 @@ Navegador
 - Git.
 - Docker Engine con Docker Compose v2.
 - Python 3.10+ (solo biblioteca estándar).
-- Opcional: Bun `1.4.4` si se ejecuta el frontend fuera de Docker.
+- Opcional: Node.js `26.13.0` LTS y npm si se ejecuta el frontend fuera de Docker.
 
 ### Levantar el entorno
 
@@ -67,12 +68,24 @@ python3 scripts/seed/seed.py bootstrap
 
 `bootstrap` instala WordPress si la base está vacía, activa WPGraphQL, importa las 6 noticias con sus imágenes y comentarios, y ejecuta `verify`. El proceso es idempotente: puede repetirse sin duplicar contenido.
 
+### Frontend fuera de Docker
+
+Requiere Node.js `26.13.0` LTS y npm.
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+El build de producción (`npm run build`) debe ejecutarse con WordPress arriba y el seed importado: `generateStaticParams` necesita las noticias publicadas para prerenderizar los detalles.
+
 ### URLs locales
 
 | Servicio | URL |
 |---|---|
 | Portal Next.js | `http://localhost:3000` |
-| WordPress |  (PHP 8.5) (PHP 8.5)`http://localhost:8080` |
+| WordPress | `http://localhost:8080` |
 | Administración | `http://localhost:8080/wp-admin` |
 | WPGraphQL | `http://localhost:8080/graphql` |
 | API de comentarios | `http://localhost:8080/wp-json/uneti/v1/comentarios/{slug}` |
@@ -108,7 +121,7 @@ docker compose up -d frontend
 
 # Tipos, lint y build de producción en un contenedor efímero
 docker compose stop frontend
-docker compose run --rm --no-deps frontend sh -c 'bun install --frozen-lockfile && bun run build'
+docker compose run --rm --no-deps frontend sh -c 'npm ci --no-audit --no-fund && npm run build'
 docker compose start frontend
 ```
 
@@ -163,9 +176,9 @@ El workflow [`.github/workflows/seed.yml`](.github/workflows/seed.yml) se ejecut
 
 1. Crea una rama desde `main`.
 2. Mantén los cambios de contenido en `seed/` y los cambios de presentación en `frontend/`.
-3. Ejecuta `python3 scripts/seed/seed.py validate`, `bunx tsc --noEmit`, `bun run lint` y `bun run build`.
+3. Ejecuta `python3 scripts/seed/seed.py validate`, `npx tsc --noEmit`, `npm run lint` y `npm run build`.
 4. No incluyas secretos, volúmenes (`db_data/`, `wp_data/`) ni artefactos de build.
-5. Actualiza la documentación y, si cambia la estructura, regenera `lookdown/` con `bun build_graph.js`.
+5. Actualiza la documentación y los créditos de imágenes cuando incorpores activos.
 
 ## Licencia
 
