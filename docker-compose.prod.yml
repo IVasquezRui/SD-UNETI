@@ -1,0 +1,8 @@
+services:
+  # Override para CI y validación de producción: compila Next.js y arranca el
+  # servidor de producción en lugar de `next dev`.
+  #
+  # No se fija NODE_ENV: `next build` y `next start` lo gestionan. Forzarlo
+  # globalmente provoca un fallo de prerender en /_global-error.
+  frontend:
+    command: sh -c "npm ci --include=dev --no-audit --no-fund && npm run build && npm run start"

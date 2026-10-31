@@ -29,6 +29,10 @@ frontend/public/assets/images/UNETI-STUDENTS/
 .clinerules
 Documents/reglasclineextension.txt
 
+# Reportes de QA/pentest generados localmente y logs de despliegue
+reportes/
+*.log
+
 # Navegacion local del agente (lookdown): nunca se versiona
 build_graph.py
 build_graph.js

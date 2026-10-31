@@ -6,7 +6,6 @@ on:
       - "seed/**"
       - "scripts/seed/**"
       - "scripts/wordpress/**"
-      - "frontend/**"
       - "docker-compose.yml"
       - ".env.example"
       - ".github/workflows/seed.yml"
@@ -15,7 +14,6 @@ on:
       - "seed/**"
       - "scripts/seed/**"
       - "scripts/wordpress/**"
-      - "frontend/**"
       - "docker-compose.yml"
       - ".env.example"
       - ".github/workflows/seed.yml"
@@ -32,7 +30,7 @@ jobs:
   seed:
     name: Bootstrap + verify
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 20
 
     steps:
       - name: Checkout
@@ -59,6 +57,7 @@ jobs:
           WORDPRESS_ADMIN_PASSWORD=ci-admin-password
           WORDPRESS_ADMIN_EMAIL=admin@example.com
           WP_DATA_DIR=/tmp/uneti-ci/wp_data
+          UNETI_FORM_TOKEN=ci-form-token
           FRONTEND_PORT=3000
           MARIADB_IMAGE=mariadb:11.8.9
           WORDPRESS_IMAGE=wordpress:7.1.4-php8.5-apache
@@ -82,11 +81,6 @@ jobs:
         run: |
           python3 scripts/seed/seed.py import
           python3 scripts/seed/seed.py verify
-
-      - name: Build de producción del frontend
-        run: |
-          docker compose run --rm --no-deps frontend \
-            sh -c 'npm ci --no-audit --no-fund && npm run build'
 
       - name: Recolectar logs
         if: failure()
