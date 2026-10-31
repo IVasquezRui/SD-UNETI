@@ -8,7 +8,7 @@ import { CARRERAS } from "../lib/carreras";
 export const metadata: Metadata = {
   title: "Carreras | UNETI",
   description:
-    "PNF en Informática y PNF en Telecomunicaciones: formación gratuita con salidas como Técnico Medio, TSU e Ingeniero en la UNETI.",
+    "PNF en Informática y PNF en Telecomunicaciones: formación gratuita con salida de TSU en 2 años e Ingeniería en 4 años en la UNETI.",
 };
 
 const VENTAJAS = [
@@ -20,7 +20,7 @@ const VENTAJAS = [
   {
     icono: "bi bi-layers",
     titulo: "Salidas progresivas",
-    texto: "Técnico Medio al primer año, TSU a los dos y título de Ingeniero a los cuatro.",
+    texto: "TSU a los 2 años y título de Ingeniero a los 4, con prosecución dentro del mismo PNF.",
   },
   {
     icono: "bi bi-laptop",

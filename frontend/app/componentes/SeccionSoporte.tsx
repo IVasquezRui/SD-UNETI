@@ -12,8 +12,8 @@ export default function SeccionSoporte() {
               Estamos listos para atender tu solicitud.
             </h2>
             <p className="mb-0">
-              Accede al SIS-UNETI, conversa con SISU, consulta el proceso de admisión o comunícate
-              con nuestro equipo.
+              Accede al Campus Virtual, consulta el proceso de admisión o comunícate con nuestro
+              equipo.
             </p>
           </div>
         </div>

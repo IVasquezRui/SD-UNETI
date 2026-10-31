@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type CSSProperties } from "react";
 
 type PropiedadesMediaHero = {
   desktopSrc: string;
@@ -9,6 +9,8 @@ type PropiedadesMediaHero = {
   width: number;
   height: number;
   velocidad?: number;
+  /** Encuadre de la imagen; por defecto conserva el encuadre histórico del hero. */
+  posicion?: string;
 };
 
 /**
@@ -25,6 +27,7 @@ export default function MediaHeroParallax({
   width,
   height,
   velocidad = 0.1,
+  posicion = "50% 32%",
 }: PropiedadesMediaHero) {
   const capa = useRef<HTMLDivElement>(null);
 
@@ -99,6 +102,7 @@ export default function MediaHeroParallax({
           src={desktopSrc}
           alt={alt}
           className="uneti-hero__media"
+          style={{ "--hero-object-position": posicion } as CSSProperties}
           width={width}
           height={height}
           loading="eager"

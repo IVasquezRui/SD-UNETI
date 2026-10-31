@@ -61,7 +61,7 @@ export const CURSOS: Curso[] = [
     titulo: "Criptografía y seguridad de la información",
     resumen: "Protege la información y firma digitalmente los documentos de la universidad.",
     descripcion:
-      "Criptografía simétrica y asimétrica, funciones hash, infraestructura de clave pública y verificación de documentos aplicada al ecosistema SIS-UNETI.",
+      "Criptografía simétrica y asimétrica, funciones hash, infraestructura de clave pública y verificación de documentos aplicada a la firma digital de documentos institucionales.",
     icono: "bi bi-shield-lock",
     tono: "orange",
     duracion: "8 semanas",

@@ -8,7 +8,7 @@ import { CONTACTO, CANALES_SOPORTE } from "../lib/institucional";
 export const metadata: Metadata = {
   title: "Contacto | UNETI",
   description:
-    "Contacta a la UNETI: SIS-UNETI, asistente SISU, admisiones, teléfonos, correo institucional y ubicación en Caracas.",
+    "Contacta a la UNETI: Campus Virtual, admisiones, teléfonos, correo institucional y ubicación en Caracas.",
 };
 
 export default function ContactoPage() {
@@ -19,8 +19,8 @@ export default function ContactoPage() {
         <TituloPagina
           title="Contáctanos"
           subtitle="Estamos listos para atenderte."
-          image="/assets/images/uneti/contacto-estudiantes.webp"
-          imagePosition="center 30%"
+          image="/assets/images/uneti/hero-comunidad.webp"
+          imagePosition="center 42%"
           crumbs={[{ label: "Inicio", href: "/" }, { label: "Contacto" }]}
           particleId="contact-page-particles"
         />
@@ -36,7 +36,7 @@ export default function ContactoPage() {
               </div>
               <div className="col-lg-6 last-paragraph-no-margin">
                 <p className="mb-0">
-                  Escríbenos para consultas académicas, admisión, becas o atención al estudiante.
+                  Escríbenos para consultas académicas, de admisión o de atención al estudiante.
                   Nuestro equipo te responderá en un plazo de dos días hábiles.
                 </p>
               </div>
@@ -159,7 +159,7 @@ export default function ContactoPage() {
             <div className="row justify-content-center mb-10 sm-mb-0">
               <div className="col-xl-9 col-lg-10">
                 <div className="bg-white border-radius-6px p-50px md-p-30px box-shadow-large">
-                  <FormularioContacto variante="contacto" />
+                  <FormularioContacto />
                 </div>
               </div>
             </div>

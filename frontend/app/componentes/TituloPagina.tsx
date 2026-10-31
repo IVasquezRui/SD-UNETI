@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import FondoParallaxCabecera from "./FondoParallaxCabecera";
 import ParticulasDecorativas from "./ParticulasDecorativas";
 
 type MigaPan = {
@@ -14,6 +15,8 @@ type PropiedadesTituloPagina = {
   crumbs?: MigaPan[];
   children?: ReactNode;
   particleId?: string;
+  /** Sustituye el fondo estático por una capa con parallax. */
+  parallax?: boolean;
 };
 
 export default function TituloPagina({
@@ -24,14 +27,23 @@ export default function TituloPagina({
   crumbs,
   children,
   particleId = "page-title-particles",
+  parallax = false,
 }: PropiedadesTituloPagina) {
+  const fondo = image ?? "/assets/images/uneti/nosotros-principal.webp";
+
   return (
     <section
       className="uneti-page-header"
-      style={{
-        backgroundPosition: imagePosition,
-        backgroundImage: `url(${image ?? "/assets/images/uneti/nosotros-principal.webp"})` }}
+      style={
+        parallax
+          ? undefined
+          : {
+              backgroundPosition: imagePosition,
+              backgroundImage: `url(${fondo})`,
+            }
+      }
     >
+      {parallax && <FondoParallaxCabecera src={fondo} posicion={imagePosition} />}
       <div className="uneti-page-header__overlay" aria-hidden="true"></div>
       <ParticulasDecorativas id={particleId} className="uneti-page-header__particles" />
 
