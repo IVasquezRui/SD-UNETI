@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import FormularioContacto from "../componentes/FormularioContacto";
+import FormularioAdmision from "../componentes/FormularioAdmision";
 import TituloPagina from "../componentes/TituloPagina";
 import PieSitio from "../componentes/PieSitio";
 import EncabezadoSitio from "../componentes/EncabezadoSitio";
@@ -9,8 +9,6 @@ export const metadata: Metadata = {
   description:
     "Proceso de admisión, requisitos y opciones de ingreso a los Programas Nacionales de Formación de la UNETI.",
 };
-
-const PROGRAMAS = ["PNF en Telecomunicaciones", "PNF en Informática"];
 
 const PASOS = [
   {
@@ -35,25 +33,7 @@ const PASOS = [
     number: "4",
     title: "Confirma tu ingreso",
     description:
-      "Recibe la confirmación, accede al SIS-UNETI y comienza tu formación como unetista.",
-  },
-];
-
-const BECAS = [
-  {
-    icon: "bi bi-award",
-    title: "Excelencia académica",
-    description: "Reconocimiento para estudiantes con promedio sobresaliente en educación media.",
-  },
-  {
-    icon: "bi bi-people",
-    title: "Compromiso comunitario",
-    description: "Apoyo para estudiantes que lideran proyectos sociales o comunitarios.",
-  },
-  {
-    icon: "bi bi-globe",
-    title: "Talento en investigación",
-    description: "Impulso para quienes participan en semilleros de investigación desde el primer semestre.",
+      "Recibe la confirmación y formaliza tu inscripción por los canales oficiales de la UNETI.",
   },
 ];
 
@@ -116,59 +96,13 @@ export default function AdmisionesPage() {
                   <h3 className="alt-font text-dark-gray fw-600 ls-minus-1px mb-30px">
                     Solicitar admisión
                   </h3>
-                  <FormularioContacto variante="inscripcion" programas={PROGRAMAS} />
+                  <FormularioAdmision />
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        <section className="bg-very-light-gray">
-          <div className="container">
-            <div className="row justify-content-center text-center mb-5">
-              <div className="col-lg-7">
-                <span className="d-inline-block alt-font fs-19 fw-500 text-dark-gray mb-10px">
-                  Becas
-                </span>
-                <h2 className="alt-font text-dark-gray fw-600 ls-minus-3px mb-15px">
-                  Apoyo para tus estudios
-                </h2>
-                <p className="mb-0">
-                  Cada semestre abrimos un número limitado de becas parciales para estudiantes
-                  con mérito académico, compromiso comunitario o interés en investigación.
-                </p>
-              </div>
-            </div>
-            <div className="row row-cols-1 row-cols-md-3 g-4 mb-6">
-              {BECAS.map((scholarship) => (
-                <div className="col" key={scholarship.title}>
-                  <div className="bg-white border-radius-6px p-30px h-100 box-shadow-large">
-                    <div className="feature-box-icon-rounded w-60px h-60px rounded-circle bg-yellow d-flex align-items-center justify-content-center mb-20px">
-                      <i className={`${scholarship.icon} icon-extra-medium text-dark-gray`}></i>
-                    </div>
-                    <span className="d-block fs-18 fw-600 text-dark-gray mb-5px">
-                      {scholarship.title}
-                    </span>
-                    <p className="mb-0">{scholarship.description}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="row justify-content-center">
-              <div className="col-xl-9 col-lg-10">
-                <div className="bg-white border-radius-6px p-50px md-p-30px box-shadow-large">
-                  <span className="d-inline-block alt-font fs-19 fw-500 text-dark-gray mb-5px">
-                    Solicitud de beca
-                  </span>
-                  <h3 className="alt-font text-dark-gray fw-600 ls-minus-1px mb-30px">
-                    Solicitar una beca
-                  </h3>
-                  <FormularioContacto variante="beca" programas={PROGRAMAS} />
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
       </main>
       <PieSitio />
     </>
