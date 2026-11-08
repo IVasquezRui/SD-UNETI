@@ -9,7 +9,7 @@ temáticos a `main`.
 | Dato | Valor |
 | --- | --- |
 | Puntos del plan | 22 (21 numerados + 4.1) |
-| Commits de implementación | 30 |
+| Commits de implementación | 31 |
 | PRs temáticos | 6 (más el PR base) |
 | Ramas | `grupo-1-ui-portada`, `grupo-2-carreras-posgrados`, `grupo-3-nosotros`, `grupo-4-responsive`, `grupo-5-hardening`, `grupo-6-docs` |
 | QA final | 29/29, 120 enlaces e imágenes, 0 brechas |
