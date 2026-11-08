@@ -5,6 +5,7 @@ import Reveal from "../componentes/Reveal";
 import TarjetaCurso from "../componentes/TarjetaCurso";
 import TituloPagina from "../componentes/TituloPagina";
 import { CURSOS, PASOS_CURSOS } from "../lib/cursos";
+import { enlaceWhatsApp, mensajeCursos } from "../lib/whatsapp";
 
 export const metadata: Metadata = {
   title: "Cursos | UNETI",
@@ -95,15 +96,17 @@ export default function CursosPage() {
                 </ol>
                 <div className="d-flex flex-wrap align-items-center gap-2 mt-30px">
                   <a
-                    href="/admisiones"
+                    href={enlaceWhatsApp(mensajeCursos())}
+                    target="_blank"
+                    rel="noreferrer"
                     className="btn btn-large btn-dark-gray btn-rounded btn-switch-text"
                   >
                     <span>
-                      <span className="btn-double-text" data-text="Inicia tu admisión">
-                        Inicia tu admisión
+                      <span className="btn-double-text" data-text="Solicitar información">
+                        Solicitar información
                       </span>
                       <span>
-                        <i className="fa-solid fa-arrow-right"></i>
+                        <i className="bi bi-whatsapp"></i>
                       </span>
                     </span>
                   </a>
