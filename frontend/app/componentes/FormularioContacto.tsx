@@ -474,7 +474,8 @@ export default function FormularioContacto() {
                 />
                 <span>
                   Autorizo el tratamiento de mis datos para que la UNETI pueda atender esta
-                  solicitud, conforme a su política de privacidad.
+                  solicitud, conforme a su política de privacidad.{" "}
+                <a href="/privacidad" target="_blank" rel="noreferrer">Ver política</a>
                 </span>
               </label>
               {errores.consentimiento && (
