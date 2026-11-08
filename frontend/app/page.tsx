@@ -9,7 +9,7 @@ import PieSitio from "./componentes/PieSitio";
 import EncabezadoSitio from "./componentes/EncabezadoSitio";
 import RutaUNETI from "./componentes/RutaUNETI";
 import SeccionTestimonios from "./componentes/SeccionTestimonios";
-import SeccionVideo from "./componentes/SeccionVideo";
+import RedesSocialesResumen from "./componentes/RedesSocialesResumen";
 import { ACTIVIDADES_INICIO, PREGUNTAS_INICIO } from "./lib/institucional";
 
 export default function Inicio() {
@@ -41,7 +41,7 @@ export default function Inicio() {
           image="/assets/images/uneti/actividades-taller.webp"
           imageAlt="Actividades de la UNETI"
         />
-        <SeccionVideo />
+        <RedesSocialesResumen />
         <SeccionArticulos />
       </main>
       <PieSitio />
