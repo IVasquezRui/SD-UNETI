@@ -13,7 +13,6 @@ export type InfoContacto = {
   facebook: string;
   linkedin: string;
   youtube: string;
-  youtubeVideo: string;
   whatsapp: string;
 };
 
@@ -38,14 +37,6 @@ export type ElementoActividad = {
   icon: string;
   title: string;
   tone: "light-blue" | "blue" | "green" | "orange";
-};
-
-export type AreaInnovacion = {
-  slug: string;
-  title: string;
-  description: string;
-  image: string;
-  href: string;
 };
 
 export type Testimonio = {
@@ -86,7 +77,6 @@ export const CONTACTO: InfoContacto = {
   linkedin:
     "https://www.linkedin.com/company/universidad-nacional-experimental-de-las-telecomunicaciones-e-inform%C3%A1tica/",
   youtube: "https://www.youtube.com/@UNETIEducativo",
-  youtubeVideo: "https://www.youtube.com/watch?v=gB9PsUUKqL8",
   whatsapp: "https://wa.me/584241427051",
 };
 
@@ -260,48 +250,13 @@ export const PREGUNTAS_NOSOTROS: ElementoPregunta[] = [
 
 ];
 
-export const AREAS_INNOVACION: AreaInnovacion[] = [
-  {
-    slug: "blockchain",
-    title: "Blockchain / Cripto",
-    description:
-      "Estamos a la vanguardia de las últimas tendencias en tecnología y educación. Hemos desarrollado un innovador programa enfocado en blockchain y criptomonedas para potenciar tus habilidades en áreas de gran demanda laboral.",
-    image: "/assets/images/uneti/innovacion-blockchain.webp",
-    href: "/contacto",
-  },
-  {
-    slug: "metaverso",
-    title: "Metaverso / Aula Inmersiva",
-    description:
-      "Creemos que la educación del futuro es inmersiva. Estamos desarrollando innovadores espacios educativos en realidad virtual y metaversos para ofrecer una experiencia de aprendizaje única.",
-    image: "/assets/images/uneti/innovacion-metaverso.webp",
-    href: "/contacto",
-  },
-  {
-    slug: "ia",
-    title: "IA como Herramienta Tecno-pedagógica",
-    description:
-      "La inteligencia artificial está transformando la manera de educar y aprender. En UNETI queremos prepararte para usar la IA de forma efectiva en tus lecciones y cursos.",
-    image: "/assets/images/uneti/innovacion-ia.webp",
-    href: "/contacto",
-  },
-  {
-    slug: "modelado-3d",
-    title: "Modelado en 3D",
-    description:
-      "El modelado y diseño 3D son habilidades altamente valoradas en la industria tecnológica y creativa actual. En UNETI queremos que explotes tu talento y te conviertas en un experto en la creación de modelos y mundos 3D.",
-    image: "/assets/images/uneti/innovacion-3d.webp",
-    href: "/contacto",
-  },
-];
-
 export const TESTIMONIOS: Testimonio[] = [
   {
     name: "Juan Rodríguez",
     location: "Caracas",
     role: "Estudiante",
     quote:
-      "Gracias a los cursos de modelado 3D en Blender dictados por la UNETI pude conseguir un empleo como freelance. Los recomiendo ampliamente.",
+      "Gracias a los cursos de programación y desarrollo de software de la UNETI pude conseguir un empleo como freelance. Los recomiendo ampliamente.",
     image: "/assets/images/uneti/testimonio-juan.webp",
     rating: 5,
   },

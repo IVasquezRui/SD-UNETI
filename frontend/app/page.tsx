@@ -2,14 +2,15 @@ import SeccionNosotros from "./componentes/SeccionNosotros";
 import SeccionActividades from "./componentes/SeccionActividades";
 import SeccionArticulos from "./componentes/SeccionArticulos";
 import SeccionCarreras from "./componentes/SeccionCarreras";
+import SeccionModalidadInicio from "./componentes/SeccionModalidadInicio";
 import SeccionPreguntas from "./componentes/SeccionPreguntas";
 import PortadaPrincipal from "./componentes/PortadaPrincipal";
-import SeccionInnovacion from "./componentes/SeccionInnovacion";
+import SeccionCursosInicio from "./componentes/SeccionCursosInicio";
 import PieSitio from "./componentes/PieSitio";
 import EncabezadoSitio from "./componentes/EncabezadoSitio";
-import SeccionSoporte from "./componentes/SeccionSoporte";
+import RutaUNETI from "./componentes/RutaUNETI";
 import SeccionTestimonios from "./componentes/SeccionTestimonios";
-import SeccionVideo from "./componentes/SeccionVideo";
+import RedesSocialesResumen from "./componentes/RedesSocialesResumen";
 import { ACTIVIDADES_INICIO, PREGUNTAS_INICIO } from "./lib/institucional";
 
 export default function Inicio() {
@@ -18,9 +19,10 @@ export default function Inicio() {
       <EncabezadoSitio />
       <main>
         <PortadaPrincipal />
-        <SeccionSoporte />
+        <RutaUNETI />
         <SeccionNosotros />
         <SeccionCarreras />
+        <SeccionModalidadInicio />
         <SeccionPreguntas
           id="preguntas"
           eyebrow="Preguntas y respuestas"
@@ -30,7 +32,7 @@ export default function Inicio() {
           imageAlt="Estudiante de la UNETI"
           items={PREGUNTAS_INICIO}
         />
-        <SeccionInnovacion />
+        <SeccionCursosInicio />
         <SeccionTestimonios />
         <SeccionActividades
           id="actividades"
@@ -41,7 +43,7 @@ export default function Inicio() {
           image="/assets/images/uneti/actividades-taller.webp"
           imageAlt="Actividades de la UNETI"
         />
-        <SeccionVideo />
+        <RedesSocialesResumen />
         <SeccionArticulos />
       </main>
       <PieSitio />

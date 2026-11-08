@@ -44,7 +44,9 @@ export default function CursosPage() {
             <div className="row row-cols-1 row-cols-md-2 g-4">
               {CURSOS.map((curso, indice) => (
                 <Reveal className="col" delay={indice * 90} key={curso.slug}>
-                  <TarjetaCurso curso={curso} />
+                  <div id={`curso-${curso.slug}`} className="h-100">
+                    <TarjetaCurso curso={curso} />
+                  </div>
                 </Reveal>
               ))}
             </div>

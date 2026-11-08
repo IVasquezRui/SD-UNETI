@@ -6,17 +6,6 @@ import Reveal from "./Reveal";
 export default function SeccionNosotros() {
   return (
     <section id="about" className="uneti-about-section position-relative overflow-hidden">
-      <div className="uneti-about-section__bg" aria-hidden="true">
-        <img
-          src="/assets/images/uneti/nosotros-fondo.webp"
-          alt=""
-          width={1280}
-          height={960}
-          loading="lazy"
-          decoding="async"
-        />
-      </div>
-
       <div className="container">
         <div className="row align-items-center justify-content-center">
           <Reveal className="col-lg-6 col-md-10 md-mb-40px sm-mb-25px">
