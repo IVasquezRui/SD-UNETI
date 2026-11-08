@@ -25,7 +25,7 @@ const BASE_PUBLICA = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.uneti.edu
 export const instant = false;
 
 export async function generateStaticParams() {
-  const noticias = await obtenerNoticias(50, 300);
+  const noticias = await obtenerNoticias(50);
   return noticias.map((noticia) => ({ slug: noticia.slug }));
 }
 
@@ -67,7 +67,7 @@ export default async function DetalleNoticiaPage({ params }: PropiedadesNoticia)
       <main>
         <CabeceraNoticia noticia={noticia} />
 
-        <section className="pb-0">
+        <section id="contenido" className="pb-0">
           <div className="container">
             <div className="row justify-content-center">
               <div className="col-lg-9">
@@ -132,7 +132,7 @@ export default async function DetalleNoticiaPage({ params }: PropiedadesNoticia)
           </div>
         </section>
 
-        <section className="pt-30px pb-30px">
+        <section id="autor" className="pt-30px pb-30px">
           <div className="container">
             <div className="row justify-content-center">
               <div className="col-lg-9">
@@ -167,7 +167,7 @@ export default async function DetalleNoticiaPage({ params }: PropiedadesNoticia)
           comentariosAbiertos={noticia.comentariosAbiertos}
         />
 
-        <section className="bg-gradient-tranquil-white">
+        <section id="relacionadas" className="bg-gradient-tranquil-white">
           <div className="container">
             <div className="row justify-content-center align-items-center mb-4 text-center">
               <div className="col-12">

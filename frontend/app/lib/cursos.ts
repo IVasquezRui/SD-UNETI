@@ -103,7 +103,8 @@ export const PASOS_CURSOS: PasoCurso[] = [
   },
   {
     titulo: "Inscríbete en línea",
-    descripcion: "Escríbenos desde el formulario de contacto indicando el curso de tu interés.",
+    descripcion:
+      "Escríbenos por WhatsApp indicando el curso de tu interés y te acompañamos con la inscripción.",
   },
   {
     titulo: "Certifica tu participación",

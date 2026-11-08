@@ -1,10 +1,10 @@
 import { connection } from "next/server";
-import { obtenerNoticias } from "../../../lib/noticias";
+import { obtenerNoticiasEnVivo } from "../../../lib/noticias";
 
 const INTERVALO_MS = 15000;
 const encoder = new TextEncoder();
 
-function huella(noticias: Awaited<ReturnType<typeof obtenerNoticias>>): string {
+function huella(noticias: Awaited<ReturnType<typeof obtenerNoticiasEnVivo>>): string {
   return JSON.stringify(
     noticias.map((noticia) => [
       noticia.slug,
@@ -34,7 +34,7 @@ export async function GET(request: Request) {
         consultando = true;
 
         try {
-          const noticias = await obtenerNoticias(50, 0);
+          const noticias = await obtenerNoticiasEnVivo(50);
           if (cerrado) return;
 
           const actual = huella(noticias);

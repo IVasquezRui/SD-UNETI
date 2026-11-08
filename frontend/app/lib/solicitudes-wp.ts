@@ -4,6 +4,8 @@ export type ResultadoEnvio = {
   ok: boolean;
   status: number;
   folio?: string;
+  /** Identificador interno de la solicitud en WordPress (se muestra como ticket). */
+  id?: number;
   error?: string;
 };
 
@@ -44,7 +46,7 @@ export async function enviarSolicitudAWp(
     });
 
     const cuerpo = (await respuesta.json().catch(() => null)) as
-      | { ok?: boolean; folio?: string; message?: string }
+      | { ok?: boolean; folio?: string; ticket?: string; id?: number; message?: string }
       | null;
 
     if (!respuesta.ok) {
@@ -59,7 +61,12 @@ export async function enviarSolicitudAWp(
       };
     }
 
-    return { ok: true, status: 201, folio: cuerpo?.folio };
+    return {
+      ok: true,
+      status: 201,
+      folio: cuerpo?.folio ?? cuerpo?.ticket,
+      id: cuerpo?.id,
+    };
   } catch (error) {
     console.error("[solicitudes] No se pudo contactar a WordPress", error);
     return {

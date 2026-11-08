@@ -86,6 +86,34 @@ async function postNext(datos, origen = BASE) {
   });
 }
 
+function payloadPosgrado(extra = {}) {
+  return {
+    tipo: "posgrado",
+    nombre: "Formulario Posgrado CI",
+    cedula: "12345678",
+    correo: "posgrado-ci@example.com",
+    telefono: "0212-505-1402",
+    programa: "Especialización y Maestría en Ciberseguridad",
+    mensaje: "Solicitud de prueba automatizada de posgrado.",
+    consentimiento: true,
+    origen: `${BASE}/posgrados`,
+    inicio: Date.now() - 5000,
+    sitio_web: "",
+    ...extra,
+  };
+}
+
+async function postNextPosgrado(datos, origen = BASE) {
+  return pedir(`${BASE}/api/posgrados`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Origin: origen,
+    },
+    body: JSON.stringify(datos),
+  });
+}
+
 async function postWp(datos, token = TOKEN) {
   const headers = { "Content-Type": "application/json" };
   if (token) headers["X-UNETI-Token"] = token;
@@ -140,6 +168,51 @@ if (metodo.status === 405) {
   ok("GET /api/admisiones responde 405");
 } else {
   fallo(`GET /api/admisiones respondió ${metodo.status}`);
+}
+
+// 5.1 Posgrados: envío válido, ticket y programa inválido (tareas 18 y 19)
+const posgrado = await postNextPosgrado(payloadPosgrado(), `${BASE}/posgrados`);
+const cuerpoPosgrado = json(posgrado.texto);
+const ticketPosgrado = cuerpoPosgrado?.ticket ?? cuerpoPosgrado?.folio ?? "";
+
+if (posgrado.status === 201 && ticketPosgrado) {
+  ok(`El formulario de posgrados creó la solicitud (ticket ${ticketPosgrado})`);
+} else {
+  fallo(`El envío de posgrado respondió ${posgrado.status} y ticket "${ticketPosgrado}"`);
+}
+
+const posgradoInvalido = await postNextPosgrado(
+  payloadPosgrado({ programa: "PNF en Informática" }),
+  `${BASE}/posgrados`,
+);
+if (posgradoInvalido.status === 400) {
+  ok("Un posgrado inválido se rechaza con 400");
+} else {
+  fallo(`Un posgrado inválido respondió ${posgradoInvalido.status} (se esperaba 400)`);
+}
+
+// 5.2 Contacto: envío válido (tarea 4)
+const contacto = await pedir(`${BASE}/api/contacto`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json", Origin: BASE },
+  body: JSON.stringify({
+    tipo: "contacto",
+    nombre: "Contacto CI",
+    correo: "contacto-ci@example.com",
+    telefono: "0212-505-1402",
+    asunto: "Información académica",
+    mensaje: "Consulta de prueba automatizada del formulario de contacto.",
+    consentimiento: true,
+    origen: `${BASE}/contacto`,
+    inicio: Date.now() - 5000,
+    sitio_web: "",
+  }),
+});
+const cuerpoContacto = json(contacto.texto);
+if (contacto.status === 201 && (cuerpoContacto?.ticket || cuerpoContacto?.folio)) {
+  ok(`El formulario de contacto creó la solicitud (ticket ${cuerpoContacto.ticket ?? cuerpoContacto.folio})`);
+} else {
+  fallo(`El envío de contacto respondió ${contacto.status}`);
 }
 
 // 6. Límite de intentos (se ejecuta al final para no bloquear las pruebas anteriores)

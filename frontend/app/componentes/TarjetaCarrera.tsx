@@ -1,12 +1,24 @@
 import type { Carrera } from "../lib/carreras";
+import CarruselFundido from "./CarruselFundido";
 
 export default function TarjetaCarrera({ carrera }: { carrera: Carrera }) {
   return (
     <article className="uneti-carrera-card card border-0 border-radius-6px overflow-hidden box-shadow-large h-100">
       <div className="uneti-carrera-imagen position-relative overflow-hidden">
-        <a href={`/carreras/${carrera.slug}`} aria-label={carrera.nombre}>
-          <img src={carrera.portada} alt={carrera.nombre} loading="lazy" />
-        </a>
+        <CarruselFundido
+          label={`Galería del ${carrera.nombre}`}
+          className="uneti-carrera-fundido"
+          intervalo={5000}
+        >
+          {carrera.galeria.map((foto) => (
+            <img key={foto.imagen} src={foto.imagen} alt={foto.alt} loading="lazy" decoding="async" />
+          ))}
+        </CarruselFundido>
+        <a
+          className="uneti-carrera-imagen__enlace"
+          href={`/carreras/${carrera.slug}`}
+          aria-label={`Conocer el ${carrera.nombre}`}
+        ></a>
         <span className="uneti-carrera-codigo">{carrera.codigo}</span>
       </div>
       <div className="card-body p-40px sm-p-30px d-flex flex-column">

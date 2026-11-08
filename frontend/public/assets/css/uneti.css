@@ -4153,3 +4153,1657 @@ main > section.uneti-article-header {
     transform: rotateY(180deg);
   }
 }
+
+/* ==========================================
+   TFSA — confirmación a pantalla completa
+   ========================================== */
+.uneti-tfsa {
+  position: fixed;
+  inset: 0;
+  z-index: 1300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  isolation: isolate;
+}
+
+.uneti-tfsa__scrim {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 50% 32%,
+    rgba(255, 255, 255, 0.94),
+    rgba(232, 246, 243, 0.9) 46%,
+    rgba(213, 233, 238, 0.86) 100%
+  );
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: uneti-tfsa-fade 0.3s ease both;
+}
+
+.uneti-tfsa--error .uneti-tfsa__scrim {
+  background: radial-gradient(
+    circle at 50% 32%,
+    rgba(255, 255, 255, 0.95),
+    rgba(255, 241, 242, 0.92) 46%,
+    rgba(255, 228, 231, 0.88) 100%
+  );
+}
+
+.uneti-tfsa__card {
+  position: relative;
+  width: min(540px, 100%);
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  padding: 46px 38px 32px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.97);
+  border: 1px solid rgba(15, 157, 118, 0.22);
+  box-shadow: 0 40px 90px rgba(7, 32, 44, 0.22);
+  text-align: center;
+  animation: uneti-tfsa-card 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.uneti-tfsa--error .uneti-tfsa__card {
+  border-color: rgba(192, 38, 60, 0.28);
+  box-shadow: 0 40px 90px rgba(60, 12, 20, 0.2);
+}
+
+.uneti-tfsa__halo {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 46px;
+  pointer-events: none;
+}
+
+.uneti-tfsa__halo span {
+  position: absolute;
+  width: 132px;
+  height: 132px;
+  border-radius: 50%;
+  border: 2px solid rgba(15, 157, 118, 0.4);
+  opacity: 0;
+  animation: uneti-tfsa-halo 2.4s ease-out infinite;
+}
+
+.uneti-tfsa__halo span:nth-child(2) {
+  animation-delay: 0.8s;
+}
+
+.uneti-tfsa__halo span:nth-child(3) {
+  animation-delay: 1.6s;
+}
+
+.uneti-tfsa--error .uneti-tfsa__halo span {
+  border-color: rgba(192, 38, 60, 0.4);
+}
+
+.uneti-tfsa__icono {
+  position: relative;
+  display: inline-flex;
+  width: 132px;
+  height: 132px;
+  margin-bottom: 8px;
+}
+
+.uneti-tfsa__icono svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.uneti-tfsa__aro {
+  fill: rgba(15, 157, 118, 0.1);
+  stroke: #0f9d76;
+  stroke-width: 4;
+  stroke-dasharray: 330;
+  stroke-dashoffset: 330;
+  animation: uneti-tfsa-aro 0.7s ease-out 0.05s forwards;
+}
+
+.uneti-tfsa__trazo {
+  fill: none;
+  stroke: #0f9d76;
+  stroke-width: 10;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 120;
+  stroke-dashoffset: 120;
+  animation: uneti-tfsa-trazo 0.6s cubic-bezier(0.65, 0, 0.35, 1) 0.35s forwards;
+}
+
+.uneti-tfsa__trazo--dos {
+  animation-delay: 0.55s;
+}
+
+.uneti-tfsa--error .uneti-tfsa__aro {
+  fill: rgba(192, 38, 60, 0.08);
+  stroke: #c0263c;
+}
+
+.uneti-tfsa--error .uneti-tfsa__trazo {
+  stroke: #c0263c;
+}
+
+.uneti-tfsa__sello {
+  display: inline-block;
+  margin-bottom: 12px;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: rgba(15, 157, 118, 0.12);
+  color: #0b7d5e;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+}
+
+.uneti-tfsa--error .uneti-tfsa__sello {
+  background: rgba(192, 38, 60, 0.1);
+  color: #a11f31;
+}
+
+.uneti-tfsa__titulo {
+  margin: 0 0 12px;
+  color: #0f2239;
+  font-family: var(--alt-font, inherit);
+  font-size: clamp(1.5rem, 3.4vw, 2rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.uneti-tfsa__subtitulo {
+  margin: 0 0 8px;
+  color: #4d5b70;
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+.uneti-tfsa__ticket {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 8px;
+  background: rgba(15, 157, 118, 0.12);
+  color: #0b7d5e;
+  font-family: var(--alt-font, inherit);
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  overflow-wrap: anywhere;
+}
+
+.uneti-tfsa--error .uneti-tfsa__ticket {
+  background: rgba(192, 38, 60, 0.1);
+  color: #a11f31;
+}
+
+.uneti-tfsa__detalle {
+  margin: 10px 0 0;
+  color: #a11f31;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.uneti-tfsa__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 26px;
+}
+
+.uneti-tfsa__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 48px;
+  padding: 12px 24px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.uneti-tfsa__btn--solido {
+  background: #0f2239;
+  color: #fff;
+  box-shadow: 0 12px 28px rgba(15, 34, 57, 0.24);
+}
+
+.uneti-tfsa__btn--solido:hover {
+  background: #17324f;
+  transform: translateY(-2px);
+}
+
+.uneti-tfsa__btn--ghost {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(15, 34, 57, 0.16);
+  color: #0f2239;
+}
+
+.uneti-tfsa__btn--ghost:hover {
+  background: #fff;
+  transform: translateY(-2px);
+}
+
+.uneti-tfsa__nota {
+  margin: 20px 0 0;
+  color: #6b7a90;
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+
+.uneti-tfsa__nota i {
+  margin-right: 6px;
+  color: #0f9d76;
+}
+
+.uneti-tfsa--error .uneti-tfsa__nota i {
+  color: #c0263c;
+}
+
+@keyframes uneti-tfsa-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes uneti-tfsa-card {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes uneti-tfsa-aro {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes uneti-tfsa-trazo {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes uneti-tfsa-halo {
+  0% {
+    opacity: 0.5;
+    transform: scale(0.78);
+  }
+  70% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.55);
+  }
+}
+
+/* ==========================================
+   Navegación rápida (hamburguesa global)
+   ========================================== */
+.uneti-quicknav__fab {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 1150;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  border: 0;
+  border-radius: 999px;
+  background: #0f2239;
+  color: #fff;
+  box-shadow: 0 18px 40px rgba(7, 22, 37, 0.28);
+  cursor: pointer;
+  transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+}
+
+.uneti-quicknav__fab:hover {
+  transform: translateY(-3px);
+  background: #142c47;
+  box-shadow: 0 22px 48px rgba(7, 22, 37, 0.34);
+}
+
+.uneti-quicknav__fab.is-open {
+  background: var(--base-color);
+}
+
+.uneti-quicknav__fab:focus-visible {
+  outline: 3px solid rgba(255, 127, 70, 0.55);
+  outline-offset: 3px;
+}
+
+.uneti-quicknav__burger {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 22px;
+}
+
+.uneti-quicknav__burger span {
+  display: block;
+  height: 2px;
+  border-radius: 2px;
+  background: #fff;
+  transition: transform 0.3s ease, opacity 0.2s ease;
+}
+
+.uneti-quicknav__fab.is-open .uneti-quicknav__burger span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.uneti-quicknav__fab.is-open .uneti-quicknav__burger span:nth-child(2) {
+  opacity: 0;
+}
+
+.uneti-quicknav__fab.is-open .uneti-quicknav__burger span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.uneti-quicknav__fab-texto {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.uneti-quicknav__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1160;
+  background: rgba(7, 22, 37, 0.52);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.uneti-quicknav__overlay.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.uneti-quicknav__panel {
+  position: fixed;
+  z-index: 1170;
+  right: 18px;
+  bottom: 92px;
+  width: min(390px, calc(100vw - 36px));
+  max-height: min(72vh, 660px);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 22px 20px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.985);
+  border: 1px solid rgba(15, 34, 57, 0.08);
+  box-shadow: 0 30px 70px rgba(7, 22, 37, 0.26);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  transform: translateY(16px) scale(0.97);
+  opacity: 0;
+  visibility: hidden;
+  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease,
+    visibility 0.25s ease;
+}
+
+.uneti-quicknav__panel.is-open {
+  transform: none;
+  opacity: 1;
+  visibility: visible;
+}
+
+.uneti-quicknav__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.uneti-quicknav__head strong {
+  display: block;
+  color: #0f2239;
+  font-family: var(--alt-font, inherit);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.uneti-quicknav__sello {
+  display: inline-block;
+  margin-bottom: 4px;
+  color: var(--base-color);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+}
+
+.uneti-quicknav__cerrar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 auto;
+  border: 1px solid rgba(15, 34, 57, 0.12);
+  border-radius: 50%;
+  background: #fff;
+  color: #0f2239;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.uneti-quicknav__cerrar:hover {
+  background: #f1f5fa;
+  transform: rotate(90deg);
+}
+
+.uneti-quicknav__grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.uneti-quicknav__titulo {
+  color: #8a97a8;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.uneti-quicknav__lista {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.uneti-quicknav__lista a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: 11px;
+  color: #33445c;
+  font-size: 14px;
+  line-height: 1.3;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.uneti-quicknav__lista a:hover {
+  background: #f2f6fb;
+  transform: translateX(3px);
+}
+
+.uneti-quicknav__lista a.is-active {
+  background: rgba(255, 127, 70, 0.12);
+  color: #0f2239;
+  font-weight: 600;
+}
+
+.uneti-quicknav__num {
+  width: 22px;
+  flex: 0 0 auto;
+  color: #b3becd;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.uneti-quicknav__lista a.is-active .uneti-quicknav__num {
+  color: var(--base-color);
+}
+
+.uneti-quicknav__lista a i {
+  width: 18px;
+  flex: 0 0 auto;
+  color: var(--base-color);
+  font-size: 15px;
+  text-align: center;
+}
+
+.uneti-quicknav__paginas {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.uneti-quicknav__paginas a {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 12px;
+  border: 1px solid rgba(15, 34, 57, 0.08);
+  border-radius: 11px;
+  background: #fbfcfe;
+  color: #33445c;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.uneti-quicknav__paginas a:hover {
+  border-color: rgba(255, 127, 70, 0.5);
+  background: #fff;
+  transform: translateY(-2px);
+}
+
+.uneti-quicknav__paginas a.is-active {
+  border-color: var(--base-color);
+  background: rgba(255, 127, 70, 0.1);
+  color: #0f2239;
+}
+
+.uneti-quicknav__paginas a i {
+  color: var(--base-color);
+  font-size: 15px;
+}
+
+.uneti-quicknav__foot {
+  margin-top: auto;
+}
+
+.uneti-quicknav__arriba {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: 100%;
+  padding: 11px 16px;
+  border: 1px dashed rgba(15, 34, 57, 0.18);
+  border-radius: 12px;
+  background: transparent;
+  color: #0f2239;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.uneti-quicknav__arriba:hover {
+  background: #f4f7fb;
+  border-color: rgba(15, 34, 57, 0.3);
+}
+
+@media (max-width: 767.98px) {
+  .uneti-quicknav__fab {
+    right: 14px;
+    bottom: 14px;
+    padding: 13px 16px;
+  }
+
+  .uneti-quicknav__fab-texto {
+    display: none;
+  }
+
+  .uneti-quicknav__panel {
+    right: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    max-height: 84vh;
+    border-radius: 22px 22px 0 0;
+    padding: 20px 18px calc(20px + env(safe-area-inset-bottom));
+  }
+}
+
+/* ==========================================
+   Hero: carrusel de fondo, brillo y parallax
+   ========================================== */
+.uneti-hero__media {
+  filter: saturate(1.12) contrast(1.06) brightness(1.08);
+}
+
+.uneti-hero__shade {
+  background: linear-gradient(
+      90deg,
+      rgba(5, 18, 31, 0.9) 0%,
+      rgba(5, 18, 31, 0.74) 38%,
+      rgba(5, 18, 31, 0.4) 70%,
+      rgba(5, 18, 31, 0.12) 100%
+    ),
+    linear-gradient(0deg, rgba(5, 18, 31, 0.78) 0%, transparent 44%);
+}
+
+.uneti-hero__media-wrap,
+.uneti-hero__shade,
+.uneti-hero__grid,
+.uneti-hero__particles {
+  pointer-events: none;
+}
+
+.uneti-hero__media-wrap .uneti-hero__slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1.4s ease;
+}
+
+.uneti-hero__media-wrap .uneti-hero__slide.is-active {
+  opacity: 1;
+}
+
+.uneti-hero__slide.is-active img {
+  animation: uneti-hero-zoom 16s ease-out both;
+}
+
+@keyframes uneti-hero-zoom {
+  from {
+    transform: scale(1.01);
+  }
+  to {
+    transform: scale(1.09);
+  }
+}
+
+.uneti-hero__dots {
+  position: absolute;
+  left: 50%;
+  bottom: 30px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transform: translateX(-50%);
+}
+
+.uneti-hero__dot {
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.42);
+  cursor: pointer;
+  transition: width 0.25s ease, background 0.25s ease;
+}
+
+.uneti-hero__dot.is-active {
+  width: 26px;
+  border-radius: 5px;
+  background: var(--base-color);
+}
+
+.uneti-hero__dot:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+/* El desplazamiento del storytelling necesita margen de imagen suficiente. */
+.uneti-story__imagen.uneti-parallax-img {
+  transform: translate3d(0, var(--parallax-y, 0px), 0) scale(1.16);
+}
+
+@media (max-width: 991.98px) {
+  .uneti-hero__shade {
+    background: linear-gradient(
+        180deg,
+        rgba(5, 18, 31, 0.86) 0%,
+        rgba(5, 18, 31, 0.66) 48%,
+        rgba(5, 18, 31, 0.5) 100%
+      ),
+      linear-gradient(90deg, rgba(5, 18, 31, 0.72), transparent 78%);
+  }
+}
+
+@media (max-width: 767.98px) {
+  .uneti-hero__dots {
+    bottom: 18px;
+  }
+}
+
+/* ==========================================
+   Flashcards: sin destellos en hover
+   ========================================== */
+.uneti-flashcard {
+  position: relative;
+  isolation: isolate;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.uneti-flashcard:hover {
+  transform: translateY(-6px);
+}
+
+/* El hover ya no toca el plano 3D: solo el volteo usa rotateY. */
+.uneti-flashcard:not(.is-flipped):hover .uneti-flashcard__inner {
+  transform: none;
+}
+
+.uneti-flashcard.is-flipped:hover .uneti-flashcard__inner {
+  transform: rotateY(180deg);
+}
+
+.uneti-flashcard__cara {
+  overflow: visible;
+  transform-style: flat;
+}
+
+/* Las caras se separan 1px para evitar la costura de la composición 3D. */
+.uneti-flashcard__frente {
+  transform: translateZ(1px);
+}
+
+.uneti-flashcard__reverso {
+  transform: rotateY(180deg) translateZ(1px);
+  overflow-y: auto;
+}
+
+/* La animación de aparición no debe dejar un transform permanente. */
+.uneti-reveal {
+  transform: none;
+}
+
+.uneti-reveal--visible {
+  opacity: 1;
+  transform: none;
+  animation: uneti-reveal-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+/* ==========================================
+   Logo del pie de página a color
+   ========================================== */
+.uneti-logo--footer {
+  height: 42px;
+  filter: none;
+}
+
+.uneti-footer-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  padding: 10px 16px;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22);
+}
+
+.uneti-footer-logo .uneti-logo {
+  height: 38px;
+  max-width: 168px;
+  filter: none;
+}
+
+/* ==========================================
+   Contacto: mapas de sedes y motivos
+   ========================================== */
+.uneti-mapa-sede-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.uneti-mapa-sede {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  border-radius: 20px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 24px 60px rgba(15, 34, 57, 0.12);
+}
+
+.uneti-mapa-sede__mapa {
+  position: relative;
+  min-height: 430px;
+  background: #e9eef5;
+}
+
+.uneti-mapa-sede__mapa iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.uneti-mapa-sede__mapa--derecha {
+  order: 2;
+}
+
+.uneti-mapa-sede__ficha {
+  padding: 34px 32px;
+}
+
+.uneti-mapa-sede__tipo {
+  display: inline-block;
+  margin-bottom: 12px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgba(255, 127, 70, 0.12);
+  color: #c24a12;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.uneti-mapa-sede__actividad {
+  margin-bottom: 16px;
+  color: #4d5b70;
+  font-size: 15px;
+}
+
+.uneti-mapa-sede .uneti-sede__datos {
+  margin: 0 0 22px;
+}
+
+.uneti-mapa-sede__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+}
+
+.uneti-mapa-sede__ruta {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #0f2239;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.uneti-mapa-sede__ruta:hover {
+  color: var(--base-color);
+}
+
+.uneti-motivos {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.uneti-motivos legend {
+  padding: 0;
+}
+
+.uneti-motivos__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.uneti-motivo {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 13px 16px;
+  border: 1px solid rgba(15, 34, 57, 0.12);
+  border-radius: 12px;
+  background: #fbfcfe;
+  color: #33445c;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.uneti-motivo:hover {
+  border-color: rgba(255, 127, 70, 0.5);
+  background: #fff;
+  transform: translateY(-2px);
+}
+
+.uneti-motivo.is-selected {
+  border-color: var(--base-color);
+  background: rgba(255, 127, 70, 0.12);
+  color: #0f2239;
+  box-shadow: 0 8px 20px rgba(255, 127, 70, 0.18);
+}
+
+.uneti-motivo i {
+  color: var(--base-color);
+  font-size: 16px;
+}
+
+.uneti-admision--contacto .uneti-admision__barra {
+  background: linear-gradient(90deg, #ff7f46, #f2b705);
+}
+
+@media (max-width: 991.98px) {
+  .uneti-mapa-sede {
+    grid-template-columns: 1fr;
+  }
+
+  .uneti-mapa-sede__mapa {
+    min-height: 330px;
+    order: 0;
+  }
+
+  .uneti-mapa-sede__ficha {
+    padding: 26px 22px;
+  }
+}
+
+/* ==========================================
+   Posgrados: tarjetas, colores y llamadas
+   ========================================== */
+.uneti-posgrados-section {
+  padding: 100px 0;
+  background: linear-gradient(180deg, #ffffff 0%, #f4f8fb 100%);
+}
+
+.uneti-posgrado-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 28px 26px;
+  border: 1px solid rgba(15, 34, 57, 0.08);
+  border-top: 4px solid var(--posgrado-color, var(--base-color));
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 18px 44px rgba(15, 34, 57, 0.09);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.uneti-posgrado-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 26px 60px rgba(15, 34, 57, 0.15);
+}
+
+.uneti-posgrado-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.uneti-posgrado-card__icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: var(--posgrado-color, var(--base-color));
+  color: #fff;
+  font-size: 22px;
+  box-shadow: 0 10px 24px rgba(15, 34, 57, 0.18);
+}
+
+.uneti-posgrado-card__siglas {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #f2f6fb;
+  color: #4d5b70;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.uneti-posgrado-card__nivel {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--posgrado-color, var(--base-color));
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.uneti-posgrado-card h3 {
+  margin: 0 0 10px;
+  color: #0f2239;
+  font-family: var(--alt-font, inherit);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+
+.uneti-posgrado-card__resumen {
+  margin-bottom: 16px;
+  color: #4d5b70;
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+
+.uneti-posgrado-card__meta {
+  display: grid;
+  gap: 10px;
+  margin: 0 0 20px;
+  padding: 14px;
+  border-radius: 12px;
+  background: #f7fafd;
+}
+
+.uneti-posgrado-card__meta dt {
+  color: #8a97a8;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.uneti-posgrado-card__meta dd {
+  margin: 2px 0 0;
+  color: #0f2239;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.uneti-posgrado-card__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.uneti-posgrado-card__detalle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #0f2239;
+  font-size: 13.5px;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: rgba(15, 34, 57, 0.25);
+  text-underline-offset: 4px;
+}
+
+.uneti-posgrado-card__detalle:hover {
+  color: var(--posgrado-color, var(--base-color));
+}
+
+.uneti-solicitar-cupo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 11px 20px;
+  border-radius: 999px;
+  border: 1px solid var(--posgrado-color, var(--base-color));
+  background: var(--posgrado-color, var(--base-color));
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  box-shadow: 0 12px 26px rgba(15, 34, 57, 0.18);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.uneti-solicitar-cupo:hover {
+  transform: translateY(-2px);
+  color: #fff;
+  box-shadow: 0 16px 32px rgba(15, 34, 57, 0.24);
+}
+
+.uneti-solicitar-cupo--ghost {
+  background: #fff;
+  color: var(--posgrado-color, var(--base-color));
+  box-shadow: none;
+}
+
+.uneti-solicitar-cupo--ghost:hover {
+  background: var(--posgrado-color, var(--base-color));
+  color: #fff;
+}
+
+.uneti-nivel-card {
+  height: 100%;
+  padding: 30px 26px;
+  border: 1px solid rgba(15, 34, 57, 0.07);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 18px 44px rgba(15, 34, 57, 0.08);
+}
+
+.uneti-nivel-card__icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  margin-bottom: 18px;
+  border-radius: 16px;
+  background: rgba(255, 127, 70, 0.12);
+  color: var(--base-color);
+  font-size: 26px;
+}
+
+/* ==========================================
+   Posgrados: ficha de detalle y malla
+   ========================================== */
+.uneti-posgrado-detalle {
+  position: relative;
+  padding: 36px 34px;
+  border: 1px solid rgba(15, 34, 57, 0.08);
+  border-left: 5px solid var(--posgrado-color, var(--base-color));
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 22px 54px rgba(15, 34, 57, 0.1);
+  scroll-margin-top: 110px;
+}
+
+.uneti-posgrado-detalle__head {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  margin-bottom: 18px;
+  padding-right: 70px;
+}
+
+.uneti-posgrado-detalle__numero {
+  position: absolute;
+  right: 0;
+  top: -6px;
+  color: rgba(15, 34, 57, 0.08);
+  font-family: var(--alt-font, inherit);
+  font-size: 56px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.uneti-posgrado-detalle__icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 58px;
+  flex: 0 0 auto;
+  border-radius: 16px;
+  background: var(--posgrado-color, var(--base-color));
+  color: #fff;
+  font-size: 26px;
+}
+
+.uneti-posgrado-detalle__siglas {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--posgrado-color, var(--base-color));
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.uneti-posgrado-detalle__resumen {
+  color: #4d5b70;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.uneti-posgrado-detalle__proposito {
+  margin-bottom: 22px;
+  padding: 16px 18px;
+  border-radius: 12px;
+  background: #f7fafd;
+  color: #33445c;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.uneti-posgrado-detalle__datos {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 0 0 26px;
+}
+
+.uneti-posgrado-detalle__datos dt {
+  color: #8a97a8;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.uneti-posgrado-detalle__datos dd {
+  margin: 3px 0 0;
+  color: #0f2239;
+  font-size: 13.5px;
+  line-height: 1.45;
+}
+
+.uneti-posgrado-detalle__malla {
+  padding-top: 22px;
+  border-top: 1px solid rgba(15, 34, 57, 0.08);
+}
+
+.uneti-malla {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.uneti-malla__eje {
+  padding: 18px;
+  border: 1px solid rgba(15, 34, 57, 0.08);
+  border-radius: 14px;
+  background: #fbfcfe;
+}
+
+.uneti-malla__eje h4 {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0 0 12px;
+  color: #0f2239;
+  font-family: var(--alt-font, inherit);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.uneti-malla__eje h4 i {
+  color: var(--posgrado-color, var(--base-color));
+  font-size: 18px;
+}
+
+.uneti-malla__eje ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.uneti-malla__eje li {
+  margin-bottom: 7px;
+  color: #4d5b70;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+
+.uneti-posgrado-detalle__requisitos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.uneti-posgrado-detalle__details {
+  padding: 14px 18px;
+  border: 1px dashed rgba(15, 34, 57, 0.16);
+  border-radius: 12px;
+  background: #fff;
+}
+
+.uneti-posgrado-detalle__details summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: #0f2239;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none;
+}
+
+.uneti-posgrado-detalle__details summary::-webkit-details-marker {
+  display: none;
+}
+
+.uneti-posgrado-detalle__details summary i {
+  color: var(--posgrado-color, var(--base-color));
+  transition: transform 0.25s ease;
+}
+
+.uneti-posgrado-detalle__details[open] summary i {
+  transform: rotate(180deg);
+}
+
+.uneti-posgrado-detalle__details ul {
+  margin: 12px 0 0;
+  padding-left: 18px;
+}
+
+.uneti-posgrado-detalle__details li {
+  margin-bottom: 6px;
+  color: #4d5b70;
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+.uneti-posgrado-detalle__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  margin-top: 26px;
+  padding-top: 22px;
+  border-top: 1px solid rgba(15, 34, 57, 0.08);
+}
+
+.uneti-posgrado-detalle__volver {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #4d5b70;
+  font-size: 13.5px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.uneti-posgrado-detalle__volver:hover {
+  color: #0f2239;
+}
+
+.uneti-posgrado-elegido {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 20px;
+  padding: 14px 16px;
+  border: 1px solid var(--posgrado-color, var(--base-color));
+  border-radius: 14px;
+  background: #fff;
+}
+
+.uneti-posgrado-elegido__icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 auto;
+  border-radius: 12px;
+  background: var(--posgrado-color, var(--base-color));
+  color: #fff;
+  font-size: 20px;
+}
+
+.uneti-posgrado-elegido strong {
+  display: block;
+  color: #0f2239;
+  font-size: 14.5px;
+}
+
+.uneti-posgrado-elegido span {
+  color: #4d5b70;
+  font-size: 12.5px;
+}
+
+.uneti-programas--posgrado .uneti-programa {
+  border-color: rgba(15, 34, 57, 0.12);
+}
+
+.uneti-programa--posgrado .uneti-programa__icono {
+  background: var(--posgrado-color, var(--base-color));
+  color: #fff;
+  box-shadow: none;
+}
+
+.uneti-programa--posgrado.is-selected {
+  border-color: var(--posgrado-color, var(--base-color));
+  background: #fff;
+  box-shadow: 0 12px 26px rgba(15, 34, 57, 0.1);
+}
+
+.uneti-programa--posgrado.is-selected .uneti-programa__check {
+  color: var(--posgrado-color, var(--base-color));
+}
+
+.uneti-admision--posgrado .uneti-admision__barra {
+  background: linear-gradient(90deg, #4582ff, #00b8b5);
+}
+
+@media (max-width: 991.98px) {
+  .uneti-posgrado-detalle {
+    padding: 28px 22px;
+  }
+
+  .uneti-posgrado-detalle__head {
+    padding-right: 0;
+  }
+
+  .uneti-posgrado-detalle__numero {
+    display: none;
+  }
+
+  .uneti-posgrado-detalle__datos,
+  .uneti-posgrado-detalle__requisitos {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================
+   Carrusel de imágenes de las carreras
+   ========================================== */
+.uneti-fundido {
+  position: relative;
+}
+
+.uneti-fundido__viewport {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #e9eef5;
+}
+
+.uneti-fundido__slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+}
+
+.uneti-fundido__slide.is-active {
+  opacity: 1;
+}
+
+.uneti-fundido__slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.uneti-fundido__dots {
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 11px;
+  border-radius: 999px;
+  background: rgba(7, 22, 37, 0.42);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  transform: translateX(-50%);
+}
+
+.uneti-fundido__dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+  transition: width 0.2s ease, background 0.2s ease;
+}
+
+.uneti-fundido__dot.is-active {
+  width: 22px;
+  border-radius: 4px;
+  background: var(--base-color);
+}
+
+.uneti-carrera-imagen__enlace {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+}
+
+.uneti-carrera-imagen__enlace:focus-visible {
+  outline: 3px solid var(--base-color);
+  outline-offset: 4px;
+}
+
+.uneti-carrera-imagen .uneti-carrera-codigo {
+  z-index: 2;
+}
+
+/* Llamada a WhatsApp en las tarjetas de curso */
+.uneti-course-card__cta--whatsapp {
+  color: #0b7d5e;
+}
+
+.uneti-course-card__cta--whatsapp:hover {
+  color: #0f9d76;
+}
+
+.uneti-course-card__cta--whatsapp i {
+  font-size: 16px;
+}
+
+/* ==========================================
+   Justificación de párrafos
+   ========================================== */
+main p {
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  overflow-wrap: break-word;
+}
+
+/* Los bloques centrados conservan su alineación. */
+main .text-center p,
+main .text-sm-center p,
+main .text-md-center p,
+main .text-lg-center p,
+main .text-xl-center p,
+main .uneti-admision__exito p,
+main .uneti-tfsa p {
+  text-align: center;
+  hyphens: none;
+}
+
+/* Los bloques alineados a la derecha también. */
+main .text-end p,
+main .text-sm-end p,
+main .text-md-end p,
+main .text-lg-end p,
+main .text-xl-end p {
+  text-align: right;
+}
+
+/* Textos breves de interfaz que no deben justificarse ni guionarse. */
+main figcaption,
+main .uneti-hero p,
+main .uneti-page-header p,
+main .uneti-flashcard__reverso p,
+main .uneti-motivo,
+main .uneti-solicitar-cupo,
+main .uneti-quicknav__panel p {
+  text-align: left;
+  hyphens: none;
+}
+
+/* ==========================================
+   Ajustes responsive de posgrados
+   ========================================== */
+@media (max-width: 767.98px) {
+  .uneti-posgrados-section {
+    padding: 70px 0;
+  }
+
+  .uneti-posgrado-card {
+    padding: 24px 20px;
+  }
+
+  .uneti-posgrado-card__acciones,
+  .uneti-posgrado-detalle__acciones {
+    gap: 10px;
+  }
+
+  .uneti-posgrado-card__acciones .uneti-solicitar-cupo,
+  .uneti-posgrado-detalle__acciones .uneti-solicitar-cupo {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .uneti-malla {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================
+   Anclajes: la cabecera fija no debe tapar el destino
+   ========================================== */
+main section[id],
+main article[id],
+main div[id] {
+  scroll-margin-top: 104px;
+}
+
+@media (max-width: 767.98px) {
+  main section[id],
+  main article[id],
+  main div[id] {
+    scroll-margin-top: 88px;
+  }
+}
+
+/* ==========================================
+   Movimiento reducido para los componentes nuevos
+   ========================================== */
+@media (prefers-reduced-motion: reduce) {
+  .uneti-tfsa__scrim,
+  .uneti-tfsa__card,
+  .uneti-tfsa__aro,
+  .uneti-tfsa__trazo,
+  .uneti-tfsa__halo span,
+  .uneti-hero__slide.is-active img {
+    animation: none !important;
+  }
+
+  .uneti-tfsa__aro,
+  .uneti-tfsa__trazo {
+    stroke-dashoffset: 0 !important;
+  }
+
+  .uneti-tfsa__halo span {
+    display: none;
+  }
+
+  .uneti-quicknav__panel,
+  .uneti-quicknav__overlay,
+  .uneti-fundido__slide,
+  .uneti-hero__media-wrap .uneti-hero__slide,
+  .uneti-posgrado-card,
+  .uneti-solicitar-cupo {
+    transition: none !important;
+  }
+}
+
