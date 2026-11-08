@@ -1,9 +1,14 @@
+import type { CSSProperties } from "react";
 import type { Curso } from "../lib/cursos";
 import { enlaceWhatsApp, mensajeCurso } from "../lib/whatsapp";
 
 export default function TarjetaCurso({ curso }: { curso: Curso }) {
   return (
-    <article className="uneti-course-card h-100">
+    <article
+      className="uneti-course-card uneti-course-card--color h-100"
+      style={{ "--curso-color": curso.color } as CSSProperties}
+    >
+      <span className="uneti-course-card__vineta" aria-hidden="true"></span>
       <div className="uneti-course-card__head">
         <span className={`uneti-icon-tone uneti-tone-${curso.tono}`}>
           <i className={curso.icono}></i>
