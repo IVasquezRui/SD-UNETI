@@ -14,6 +14,7 @@ export type InfoContacto = {
   linkedin: string;
   youtube: string;
   youtubeVideo: string;
+  whatsapp: string;
 };
 
 export type CanalSoporte = {
@@ -86,6 +87,7 @@ export const CONTACTO: InfoContacto = {
     "https://www.linkedin.com/company/universidad-nacional-experimental-de-las-telecomunicaciones-e-inform%C3%A1tica/",
   youtube: "https://www.youtube.com/@UNETIEducativo",
   youtubeVideo: "https://www.youtube.com/watch?v=gB9PsUUKqL8",
+  whatsapp: "https://wa.me/584241427051",
 };
 
 export const CANALES_SOPORTE: CanalSoporte[] = [

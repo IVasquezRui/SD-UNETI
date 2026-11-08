@@ -5,6 +5,13 @@ import { useEffect, type RefObject } from "react";
 type OpcionesParallax = {
   velocidad?: number;
   anchoMinimo?: number;
+  /**
+   * Selector del ancestro que define el recorrido del parallax.
+   * Por defecto se mide el padre directo; en bloques con `position: sticky`
+   * hay que apuntar a la sección que sí se desplaza (si no, el progreso queda
+   * congelado y la imagen no se mueve).
+   */
+  alcanceSelector?: string;
 };
 
 /**
@@ -17,11 +24,14 @@ type OpcionesParallax = {
  */
 export function useParallax<T extends HTMLElement>(
   ref: RefObject<T | null>,
-  { velocidad = 0.08, anchoMinimo = 768 }: OpcionesParallax = {},
+  { velocidad = 0.08, anchoMinimo = 768, alcanceSelector }: OpcionesParallax = {},
 ) {
   useEffect(() => {
     const nodo = ref.current;
-    const alcance = nodo?.parentElement;
+    const alcance =
+      (alcanceSelector
+        ? (nodo?.closest(alcanceSelector) as HTMLElement | null)
+        : null) ?? nodo?.parentElement;
     if (!nodo || !alcance) return;
 
     const movimientoReducido = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -95,5 +105,5 @@ export function useParallax<T extends HTMLElement>(
       if (frame) window.cancelAnimationFrame(frame);
       nodo.style.removeProperty("--parallax-y");
     };
-  }, [ref, velocidad, anchoMinimo]);
+  }, [ref, velocidad, anchoMinimo, alcanceSelector]);
 }

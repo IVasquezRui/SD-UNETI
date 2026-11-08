@@ -1,3 +1,4 @@
+import { cacheLife, cacheTag } from "next/cache";
 import {
   NOTICIAS_QUERY,
   NOTICIA_QUERY,
@@ -115,22 +116,24 @@ function mapearNoticia(raw: RawNoticia): Noticia {
   };
 }
 
-export async function obtenerNoticias(limite = 12, revalidate = 15): Promise<Noticia[]> {
-  const data = await consultarGraphQL<RawNoticiasResponse>(
-    NOTICIAS_QUERY,
-    { first: Math.min(Math.max(limite, 1), 100) },
-    { revalidate },
-  );
+export async function obtenerNoticias(limite = 12): Promise<Noticia[]> {
+  "use cache";
+  cacheLife("noticias");
+  cacheTag("noticias");
+
+  const data = await consultarGraphQL<RawNoticiasResponse>(NOTICIAS_QUERY, {
+    first: Math.min(Math.max(limite, 1), 100),
+  });
 
   return data?.posts.nodes.map(mapearNoticia) ?? [];
 }
 
 export async function obtenerNoticiaPorSlug(slug: string): Promise<Noticia | null> {
-  const data = await consultarGraphQL<RawNoticiaResponse>(
-    NOTICIA_QUERY,
-    { slug },
-    { revalidate: 30 },
-  );
+  "use cache";
+  cacheLife("noticias");
+  cacheTag("noticias", `noticia-${slug}`);
+
+  const data = await consultarGraphQL<RawNoticiaResponse>(NOTICIA_QUERY, { slug });
 
   return data?.post ? mapearNoticia(data.post) : null;
 }
@@ -143,11 +146,25 @@ export async function obtenerNoticiasRelacionadas(
   return noticias.filter((noticia) => noticia.slug !== slug).slice(0, limite);
 }
 
+/**
+ * Lectura sin caché para el stream SSE y el polling del navegador: estos
+ * canales necesitan detectar cambios en WordPress en cada ciclo.
+ */
+export async function obtenerNoticiasEnVivo(limite = 50): Promise<Noticia[]> {
+  const data = await consultarGraphQL<RawNoticiasResponse>(
+    NOTICIAS_QUERY,
+    { first: Math.min(Math.max(limite, 1), 100) },
+    { sinCache: true },
+  );
+
+  return data?.posts.nodes.map(mapearNoticia) ?? [];
+}
+
 export async function consultarResumenNoticias(): Promise<ResumenNoticia[]> {
   const data = await consultarGraphQL<RawNoticiasResponse>(
     NOTICIAS_STREAM_QUERY,
     undefined,
-    { revalidate: 0 },
+    { sinCache: true },
   );
 
   return (

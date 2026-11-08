@@ -3,7 +3,7 @@ import CarruselSimple from "./CarruselSimple";
 
 export default function CarruselCarrera({ carrera }: { carrera: Carrera }) {
   return (
-    <section className="bg-tranquil position-relative overflow-hidden">
+    <section id="galeria" className="bg-tranquil position-relative overflow-hidden">
       <div className="container">
         <div className="row justify-content-center text-center mb-4">
           <div className="col-lg-8">
@@ -14,7 +14,12 @@ export default function CarruselCarrera({ carrera }: { carrera: Carrera }) {
           </div>
         </div>
 
-        <CarruselSimple label={`Galería de ${carrera.nombre}`} className="uneti-carrera-swiper">
+        <CarruselSimple
+          label={`Galería de ${carrera.nombre}`}
+          className="uneti-carrera-swiper"
+          autoPlay
+          intervalo={5000}
+        >
           {carrera.galeria.map((foto) => (
             <figure className="uneti-galeria-item mb-0" key={foto.imagen}>
               <img

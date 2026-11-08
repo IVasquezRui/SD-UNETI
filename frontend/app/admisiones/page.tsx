@@ -49,7 +49,7 @@ export default function AdmisionesPage() {
           crumbs={[{ label: "Inicio", href: "/" }, { label: "Admisiones" }]}
         />
 
-        <section className="bg-tranquil position-relative overlap-height">
+        <section id="proceso" className="bg-tranquil position-relative overlap-height">
           <div className="container overlap-gap-section">
             <div className="row justify-content-center align-items-start">
               <div className="col-lg-6 lg-mb-40px">
@@ -88,7 +88,7 @@ export default function AdmisionesPage() {
                   </ul>
                 </div>
               </div>
-              <div className="col-lg-6">
+              <div id="formulario" className="col-lg-6">
                 <div className="bg-white border-radius-6px p-50px md-p-30px box-shadow-large">
                   <span className="d-inline-block alt-font fs-19 fw-500 text-dark-gray mb-5px">
                     Solicitud en línea

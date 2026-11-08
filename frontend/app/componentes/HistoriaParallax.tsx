@@ -63,7 +63,8 @@ export default function HistoriaParallax() {
                   src={paso.image}
                   alt={paso.alt}
                   className={`uneti-story__imagen${indice === activo ? " is-active" : ""}`}
-                  velocidad={0.04}
+                  velocidad={0.045}
+                  alcanceSelector=".uneti-story"
                   loading={indice === 0 ? "eager" : "lazy"}
                 />
               ))}

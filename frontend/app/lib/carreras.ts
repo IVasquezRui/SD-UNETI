@@ -101,16 +101,20 @@ export const CARRERAS: Carrera[] = [
     portada: "/assets/images/carreras/pnf-informatica/portada.jpg",
     galeria: [
       {
-        imagen: "/assets/images/carreras/pnf-informatica/galeria-1.jpg",
-        alt: "Estudiante de Informática trabajando con código en una laptop",
+        imagen: "/assets/images/carreras/pnf-informatica/carrusel-1.jpg",
+        alt: "Estudiantes del PNF en Informática durante una práctica de laboratorio",
       },
       {
-        imagen: "/assets/images/carreras/pnf-informatica/galeria-2.jpg",
-        alt: "Especialista en ciberseguridad frente a pantallas de monitoreo",
+        imagen: "/assets/images/carreras/pnf-informatica/carrusel-2.jpg",
+        alt: "Formación en desarrollo de software del PNF en Informática",
       },
       {
-        imagen: "/assets/images/carreras/pnf-informatica/galeria-3.jpg",
-        alt: "Código fuente en la pantalla de un computador",
+        imagen: "/assets/images/carreras/pnf-informatica/carrusel-3.jpg",
+        alt: "Práctica de redes y ciberseguridad del PNF en Informática",
+      },
+      {
+        imagen: "/assets/images/carreras/pnf-informatica/carrusel-4.jpg",
+        alt: "Encuentro académico de estudiantes de Informática de la UNETI",
       },
     ],
     icono: "bi bi-cpu",
@@ -273,16 +277,16 @@ export const CARRERAS: Carrera[] = [
     portada: "/assets/images/carreras/pnf-telecomunicaciones/portada.jpg",
     galeria: [
       {
-        imagen: "/assets/images/carreras/pnf-telecomunicaciones/galeria-1.jpg",
-        alt: "Red global de telecomunicaciones vista desde el espacio",
+        imagen: "/assets/images/carreras/pnf-telecomunicaciones/carrusel-1.jpg",
+        alt: "Estudiantes del PNF en Telecomunicaciones en práctica de laboratorio",
       },
       {
-        imagen: "/assets/images/carreras/pnf-telecomunicaciones/galeria-2.jpg",
-        alt: "Ingeniero revisando equipos de telecomunicaciones",
+        imagen: "/assets/images/carreras/pnf-telecomunicaciones/carrusel-2.jpg",
+        alt: "Formación en redes y transmisión del PNF en Telecomunicaciones",
       },
       {
-        imagen: "/assets/images/carreras/pnf-telecomunicaciones/galeria-3.jpg",
-        alt: "Componentes electrónicos y equipos de transmisión",
+        imagen: "/assets/images/carreras/pnf-telecomunicaciones/carrusel-3.jpg",
+        alt: "Práctica de telecomunicaciones en los espacios de la UNETI",
       },
     ],
     icono: "bi bi-broadcast",

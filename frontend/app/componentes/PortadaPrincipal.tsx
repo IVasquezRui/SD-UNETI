@@ -1,6 +1,6 @@
 import ContadorAnimado from "./ContadorAnimado";
 import IndicadorEnLinea from "./IndicadorEnLinea";
-import MediaHeroParallax from "./MediaHeroParallax";
+import MediaHeroParallax, { type DiapositivaHero } from "./MediaHeroParallax";
 
 const HERO_STATS = [
   { value: 2, suffix: "", label: "PNF académicos" },
@@ -8,18 +8,42 @@ const HERO_STATS = [
   { value: 100, suffix: "%", label: "Educación gratuita" },
 ];
 
+const HERO_SLIDES: DiapositivaHero[] = [
+  {
+    desktopSrc: "/assets/images/uneti/contacto-estudiantes.webp",
+    mobileSrc: "/assets/images/uneti/contacto-estudiantes-mobile.webp",
+    alt: "Estudiantes de la UNETI durante una actividad académica",
+    width: 1280,
+    height: 960,
+    posicion: "50% 38%",
+  },
+  {
+    desktopSrc: "/assets/images/uneti/FotoGrupalCurso3.jpg",
+    alt: "Participantes de un curso de formación de la UNETI",
+    width: 570,
+    height: 600,
+    posicion: "50% 32%",
+  },
+  {
+    desktopSrc: "/assets/images/uneti/EquipoDeDesarrolloDeSoftware.jpg",
+    alt: "Equipo de desarrollo de software de la UNETI",
+    width: 896,
+    height: 1195,
+    posicion: "50% 28%",
+  },
+  {
+    desktopSrc: "/assets/images/uneti/DiLorenzoEnseña.jpg",
+    alt: "Docente de la UNETI durante una clase",
+    width: 896,
+    height: 1196,
+    posicion: "50% 26%",
+  },
+];
+
 export default function PortadaPrincipal() {
   return (
     <section id="hero" className="uneti-hero">
-      <MediaHeroParallax
-        desktopSrc="/assets/images/uneti/contacto-estudiantes.webp"
-        mobileSrc="/assets/images/uneti/contacto-estudiantes-mobile.webp"
-        alt="Estudiantes de la UNETI durante una actividad académica"
-        width={1280}
-        height={960}
-        velocidad={0.1}
-        posicion="50% 38%"
-      />
+      <MediaHeroParallax slides={HERO_SLIDES} velocidad={0.1} intervalo={5000} />
       <div className="uneti-hero__shade" aria-hidden="true"></div>
       <div className="uneti-hero__grid" aria-hidden="true"></div>
       <div className="uneti-hero__particles" aria-hidden="true">

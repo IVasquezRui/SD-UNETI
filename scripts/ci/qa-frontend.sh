@@ -11,7 +11,7 @@ iniciar_reporte "QA del frontend SD-UNETI"
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
 
-RUTAS=("" "nosotros" "carreras" "cursos" "noticias" "admisiones" "contacto")
+RUTAS=("" "nosotros" "carreras" "posgrados" "cursos" "noticias" "admisiones" "contacto")
 
 for ruta in "${RUTAS[@]}"; do
   url="${BASE}/${ruta}"
@@ -30,6 +30,8 @@ INICIO="$TMP/inicio.html"
 NOSOTROS="$TMP/nosotros.html"
 CONTACTO="$TMP/contacto.html"
 ADMISIONES="$TMP/admisiones.html"
+POSGRADOS="$TMP/posgrados.html"
+CURSOS="$TMP/cursos.html"
 
 # Heroes intercambiados (tarea 1)
 if grep -q 'contacto-estudiantes.webp' "$INICIO"; then
@@ -68,6 +70,28 @@ for marca in 'uneti-admision' 'uneti-admision__etiqueta' 'Cédula de identidad' 
     registrar_fallo "Admisiones no contiene $marca"
   fi
 done
+
+# Posgrados: oferta, mallas y solicitud (tareas 14 a 18)
+for marca in 'uneti-posgrado-detalle' 'uneti-malla__eje' 'Solicitar Cupo' 'formulario-posgrados' 'uneti-admision--posgrado'; do
+  if grep -q "$marca" "$POSGRADOS"; then
+    registrar_ok "Posgrados contiene $marca"
+  else
+    registrar_fallo "Posgrados no contiene $marca"
+  fi
+done
+
+if grep -q 'uneti-posgrados-section' "$TMP/carreras.html"; then
+  registrar_ok "Carreras incluye el apartado de Posgrados"
+else
+  registrar_fallo "Carreras no incluye el apartado de Posgrados"
+fi
+
+# Cursos: la llamada abre WhatsApp con el nombre del curso (tarea 16)
+if grep -q 'wa.me/584241427051' "$CURSOS" && grep -q 'Obtener información' "$CURSOS"; then
+  registrar_ok "Cursos enlaza a WhatsApp con el nombre del curso"
+else
+  registrar_fallo "Cursos no contiene la llamada de WhatsApp esperada"
+fi
 
 # Contenido retirado (tareas 4 y 5)
 for archivo in "$TMP"/*.html; do

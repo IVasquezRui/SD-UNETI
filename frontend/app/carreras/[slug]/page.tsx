@@ -67,7 +67,7 @@ export default async function DetalleCarreraPage({ params }: PropiedadesCarrera)
           particleId="carrera-detalle-particles"
         />
 
-        <section className="position-relative overflow-hidden">
+        <section id="presentacion" className="position-relative overflow-hidden">
           <div className="container">
             <div className="row align-items-start">
               <div className="col-lg-7 lg-mb-40px">
@@ -106,7 +106,7 @@ export default async function DetalleCarreraPage({ params }: PropiedadesCarrera)
 
         <CarruselCarrera carrera={carrera} />
 
-        <section className="bg-gradient-tranquil-white position-relative overflow-hidden">
+        <section id="fundamentos" className="bg-gradient-tranquil-white position-relative overflow-hidden">
           <div className="container">
             <div className="row justify-content-center text-center mb-5">
               <div className="col-lg-8">
@@ -190,7 +190,7 @@ export default async function DetalleCarreraPage({ params }: PropiedadesCarrera)
           </div>
         </section>
 
-        <section className="position-relative overflow-hidden">
+        <section id="campo-laboral" className="position-relative overflow-hidden">
           <div className="container">
             <div className="row align-items-start g-4">
               <div className="col-lg-7">
@@ -221,7 +221,7 @@ export default async function DetalleCarreraPage({ params }: PropiedadesCarrera)
         </section>
 
 
-        <section className="bg-tranquil position-relative overflow-hidden">
+        <section id="malla" className="bg-tranquil position-relative overflow-hidden">
           <div className="container">
             <div className="row justify-content-center text-center mb-5">
               <div className="col-lg-8">
@@ -239,7 +239,7 @@ export default async function DetalleCarreraPage({ params }: PropiedadesCarrera)
           </div>
         </section>
 
-        <section className="position-relative overflow-hidden">
+        <section id="laboratorios" className="position-relative overflow-hidden">
           <div className="container">
             <div className="row justify-content-center text-center mb-5">
               <div className="col-lg-8">
@@ -259,7 +259,7 @@ export default async function DetalleCarreraPage({ params }: PropiedadesCarrera)
           </div>
         </section>
 
-        <section className="bg-gradient-tranquil-white position-relative overflow-hidden">
+        <section id="salidas" className="bg-gradient-tranquil-white position-relative overflow-hidden">
           <div className="container">
             <div className="row justify-content-center text-center mb-5">
               <div className="col-lg-8">
@@ -290,7 +290,7 @@ export default async function DetalleCarreraPage({ params }: PropiedadesCarrera)
         </section>
 
 
-        <section className="position-relative overflow-hidden">
+        <section id="preguntas" className="position-relative overflow-hidden">
           <div className="container">
             <div className="row justify-content-center">
               <div className="col-lg-9">
@@ -320,7 +320,7 @@ export default async function DetalleCarreraPage({ params }: PropiedadesCarrera)
         </section>
 
         {relacionadas.length > 0 && (
-          <section className="bg-tranquil position-relative overflow-hidden">
+          <section id="relacionadas" className="bg-tranquil position-relative overflow-hidden">
             <div className="container">
               <div className="row align-items-center mb-4">
                 <div className="col-lg-8">
@@ -389,7 +389,7 @@ export default async function DetalleCarreraPage({ params }: PropiedadesCarrera)
         )}
 
 
-        <section className="position-relative overflow-hidden pb-0">
+        <section id="admision" className="position-relative overflow-hidden pb-0">
           <div className="container">
             <div className="row justify-content-center">
               <div className="col-lg-9 text-center">
