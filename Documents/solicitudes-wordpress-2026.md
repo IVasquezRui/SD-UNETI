@@ -1,6 +1,7 @@
 # Solicitudes UNETI 2026 — CPT, REST y exportación
 
-> Implementación nativa de WordPress para recibir las solicitudes del formulario de admisiones y los mensajes de contacto del portal SD-UNETI.
+> Implementación nativa de WordPress para recibir las solicitudes de admisión a los PNF, de admisión
+> a posgrados (PNFA) y los mensajes de contacto del portal SD-UNETI.
 
 ## 1. Flujo
 
@@ -32,7 +33,7 @@ El token vive solo en el servidor de Next.js (`WP_FORM_TOKEN`). El navegador nun
 | Estado del post | `private` |
 | Taxonomía | `estado_solicitud` |
 | Estados | `nueva`, `en_revision`, `contactada`, `admitida`, `descartada` |
-| Título | `Solicitud de admisión/contacto — Nombre — Fecha` |
+| Título | `Solicitud de admisión/posgrado/contacto — Nombre — Fecha` |
 | Autor | `0` (solicitud anónima) |
 
 ### Metadatos
@@ -40,12 +41,12 @@ El token vive solo en el servidor de Next.js (`WP_FORM_TOKEN`). El navegador nun
 | Meta key | Contenido |
 |---|---|
 | `_uneti_folio` | `UNETI-2026-000123` |
-| `_uneti_tipo` | `admision` o `contacto` |
+| `_uneti_tipo` | `admision`, `posgrado` o `contacto` |
 | `_uneti_nombre` | Nombre completo |
 | `_uneti_cedula` | Cédula normalizada |
 | `_uneti_correo` | Correo validado |
 | `_uneti_telefono` | Teléfono |
-| `_uneti_programa` | PNF de interés |
+| `_uneti_programa` | PNF de interés o posgrado (PNFA) |
 | `_uneti_asunto` | Asunto (contacto) |
 | `_uneti_mensaje` | Mensaje |
 | `_uneti_consentimiento` | `si` |
@@ -61,7 +62,8 @@ No se guarda la IP cruda.
 - Método: `POST`.
 - Ruta: `/wp-json/uneti/v1/solicitudes`.
 - Cabecera obligatoria: `X-UNETI-Token`.
-- Respuesta correcta: `201 { "ok": true, "folio": "UNETI-2026-000123", "id": 123 }`.
+- Respuesta correcta: `201 { "ok": true, "folio": "UNETI-2026-000123", "ticket": "UNETI-2026-000123", "id": 123 }`.
+  `ticket` es un alias de `folio` que el frontend muestra en la animación TFSA.
 - `GET` responde `405`.
 - Sin token o token inválido: `403`.
 - Token no configurado: `503`.
@@ -87,6 +89,39 @@ curl -X POST http://localhost:8080/wp-json/uneti/v1/solicitudes \
     "inicio": 1
   }'
 ```
+
+### Solicitud de posgrado (PNFA)
+
+El formulario de `/posgrados` envía `tipo: "posgrado"` a `/api/posgrados`. En este caso `programa`
+debe ser uno de los siete PNFA declarados en `app/lib/posgrados.ts` y `cedula` es obligatoria:
+
+```json
+{
+  "tipo": "posgrado",
+  "nombre": "María Pérez",
+  "cedula": "12345678",
+  "correo": "maria@example.com",
+  "telefono": "0212-505-1402",
+  "programa": "Especialización y Maestría en Ciberseguridad",
+  "mensaje": "Quiero solicitar cupo para este posgrado.",
+  "consentimiento": true,
+  "origen": "http://localhost:3000/posgrados",
+  "inicio": 1
+}
+```
+
+| `tipo` | Endpoint Next.js | `programa` permitido |
+|---|---|---|
+| `admision` | `/api/admisiones` | `PNF en Informática` o `PNF en Telecomunicaciones` |
+| `posgrado` | `/api/posgrados` | Los siete PNFA de `app/lib/posgrados.ts` |
+| `contacto` | `/api/contacto` | Vacío |
+
+### Revalidación del frontend
+
+El portal expone `POST /api/revalidar` (cabecera `X-UNETI-Token` con
+`UNETI_REVALIDATE_TOKEN` o, en su defecto, `WP_FORM_TOKEN`). Al publicar o actualizar una noticia,
+WordPress puede invocarlo con `{ "slug": "<slug>" }` para invalidar el ISR de `/`, `/noticias` y la
+nota concreta.
 
 ## 4. Panel de administración
 

@@ -126,7 +126,7 @@ export default function PieSitio() {
 
           <div className="row mb-5 sm-mb-7 xs-mb-30px footer-dark text-center text-sm-start">
             <div className="col-lg-3 col-md-4 col-sm-6 d-flex flex-column last-paragraph-no-margin md-mb-40px xs-mb-30px">
-              <a href="/" className="footer-logo mb-20px d-inline-block">
+              <a href="/" className="footer-logo uneti-footer-logo mb-20px d-inline-block">
                 <LogotipoSitio variant="footer" />
               </a>
               <p className="lh-28">

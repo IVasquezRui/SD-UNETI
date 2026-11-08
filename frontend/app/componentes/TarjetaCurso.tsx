@@ -1,4 +1,5 @@
 import type { Curso } from "../lib/cursos";
+import { enlaceWhatsApp, mensajeCurso } from "../lib/whatsapp";
 
 export default function TarjetaCurso({ curso }: { curso: Curso }) {
   return (
@@ -31,9 +32,15 @@ export default function TarjetaCurso({ curso }: { curso: Curso }) {
         <i className="bi bi-patch-check" aria-hidden="true"></i>
         <span>{curso.resultado}</span>
       </p>
-      <a href="/contacto" className="uneti-course-card__cta">
-        Solicitar información
-        <i className="bi bi-arrow-right" aria-hidden="true"></i>
+      <a
+        href={enlaceWhatsApp(mensajeCurso(curso.titulo))}
+        target="_blank"
+        rel="noreferrer"
+        className="uneti-course-card__cta uneti-course-card__cta--whatsapp"
+        aria-label={`Obtener información por WhatsApp sobre ${curso.titulo}`}
+      >
+        Obtener información
+        <i className="bi bi-whatsapp" aria-hidden="true"></i>
       </a>
     </article>
   );

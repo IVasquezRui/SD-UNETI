@@ -1,11 +1,15 @@
-/** Contrato compartido por el formulario de admisiones y el de contacto. */
+/** Contrato compartido por los formularios de admisión (PNF), posgrados y contacto. */
+
+import { PROGRAMAS_POSGRADO } from "./posgrados";
 
 export const PROGRAMAS_ADMISION = [
   "PNF en Telecomunicaciones",
   "PNF en Informática",
 ] as const;
 
-export type TipoSolicitud = "admision" | "contacto";
+export { PROGRAMAS_POSGRADO };
+
+export type TipoSolicitud = "admision" | "contacto" | "posgrado";
 
 export type SolicitudPayload = {
   tipo: TipoSolicitud;
@@ -58,7 +62,7 @@ export function validarSolicitud(
   const tipoCrudo = texto(entrada.tipo);
   const tipo = (tipoEsperado ?? tipoCrudo) as TipoSolicitud;
 
-  if (tipo !== "admision" && tipo !== "contacto") {
+  if (tipo !== "admision" && tipo !== "contacto" && tipo !== "posgrado") {
     errores.tipo = "El tipo de solicitud no es válido.";
   }
 
@@ -94,20 +98,32 @@ export function validarSolicitud(
     } else {
       cedula = cedulaCruda;
     }
-  } else if (tipo === "admision") {
-    errores.cedula = "La cédula es obligatoria para la solicitud de admisión.";
+  } else if (tipo === "admision" || tipo === "posgrado") {
+    errores.cedula =
+      tipo === "posgrado"
+        ? "La cédula es obligatoria para la solicitud de posgrado."
+        : "La cédula es obligatoria para la solicitud de admisión.";
   }
 
   let programa: string | undefined;
   const programaCrudo = texto(entrada.programa);
+  const programasPermitidos: readonly string[] =
+    tipo === "posgrado" ? PROGRAMAS_POSGRADO : PROGRAMAS_ADMISION;
+
   if (programaCrudo !== "") {
-    if (!PROGRAMAS_ADMISION.includes(programaCrudo as (typeof PROGRAMAS_ADMISION)[number])) {
-      errores.programa = "Selecciona uno de los PNF disponibles.";
+    if (!programasPermitidos.includes(programaCrudo)) {
+      errores.programa =
+        tipo === "posgrado"
+          ? "Selecciona uno de los posgrados disponibles."
+          : "Selecciona uno de los PNF disponibles.";
     } else {
       programa = programaCrudo;
     }
-  } else if (tipo === "admision") {
-    errores.programa = "Selecciona el PNF de tu interés.";
+  } else if (tipo === "admision" || tipo === "posgrado") {
+    errores.programa =
+      tipo === "posgrado"
+        ? "Selecciona el posgrado de tu interés."
+        : "Selecciona el PNF de tu interés.";
   }
 
   const asunto = texto(entrada.asunto);

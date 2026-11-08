@@ -26,7 +26,7 @@ export default function CursosPage() {
           particleId="cursos-page-particles"
         />
 
-        <section className="bg-tranquil position-relative overlap-height">
+        <section id="cursos" className="bg-tranquil position-relative overlap-height">
           <div className="container overlap-gap-section">
             <div className="row justify-content-center text-center mb-5">
               <div className="col-lg-8">
@@ -51,7 +51,7 @@ export default function CursosPage() {
           </div>
         </section>
 
-        <section className="position-relative overflow-hidden">
+        <section id="como-participar" className="position-relative overflow-hidden">
           <div className="container">
             <div className="row align-items-center justify-content-center">
               <div className="col-lg-5 col-md-10 md-mb-40px">

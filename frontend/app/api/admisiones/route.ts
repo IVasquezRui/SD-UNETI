@@ -61,7 +61,10 @@ export async function POST(request: Request) {
     );
   }
 
-  return NextResponse.json({ ok: true, folio: envio.folio }, { status: 201 });
+  return NextResponse.json(
+    { ok: true, folio: envio.folio, ticket: envio.folio, id: envio.id },
+    { status: 201 },
+  );
 }
 
 export async function GET() {

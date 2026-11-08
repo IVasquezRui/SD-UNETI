@@ -34,7 +34,7 @@ export default function NosotrosPage() {
           parallax
         />
 
-        <section className="position-relative overflow-hidden">
+        <section id="somos" className="position-relative overflow-hidden">
           <div className="container">
             <div className="row align-items-center justify-content-center">
               <div className="col-lg-6 col-md-10 md-mb-40px">
@@ -94,7 +94,7 @@ export default function NosotrosPage() {
 
         <HistoriaParallax />
 
-        <section className="bg-gradient-tranquil-white position-relative overflow-hidden">
+        <section id="esencia" className="bg-gradient-tranquil-white position-relative overflow-hidden">
           <div className="container">
             <div className="row justify-content-center text-center mb-5">
               <div className="col-lg-8">
@@ -124,7 +124,7 @@ export default function NosotrosPage() {
 
         <SedesUNETI />
 
-        <section className="position-relative overflow-hidden">
+        <section id="comunidad" className="position-relative overflow-hidden">
           <div className="container">
             <div className="row justify-content-center">
               <div className="col-lg-10">
@@ -167,7 +167,7 @@ export default function NosotrosPage() {
           reverse
         />
 
-        <section className="position-relative overflow-hidden">
+        <section id="unete" className="position-relative overflow-hidden">
           <div className="container">
             <div className="row justify-content-center text-center">
               <div className="col-lg-8">

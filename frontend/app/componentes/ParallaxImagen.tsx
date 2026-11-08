@@ -11,6 +11,8 @@ type PropiedadesParallaxImagen = {
   height?: number;
   velocidad?: number;
   loading?: "lazy" | "eager";
+  /** Selector del ancestro que define el recorrido (útil dentro de bloques sticky). */
+  alcanceSelector?: string;
 };
 
 /** Imagen con desplazamiento parallax suave; el contenedor debe recortarla. */
@@ -22,9 +24,10 @@ export default function ParallaxImagen({
   height,
   velocidad = 0.06,
   loading = "lazy",
+  alcanceSelector,
 }: PropiedadesParallaxImagen) {
   const ref = useRef<HTMLImageElement>(null);
-  useParallax(ref, { velocidad });
+  useParallax(ref, { velocidad, alcanceSelector });
 
   return (
     <img

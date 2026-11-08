@@ -19,23 +19,25 @@ type GraphQLResponse<T> = {
 };
 
 type RequestOptions = {
-  /** Segundos de caché ISR. `0` fuerza una lectura sin caché (SSE, polling). */
-  revalidate?: number;
+  /**
+   * Fuerza una lectura sin caché (SSE, polling).
+   * En el modelo de Cache Components la caché se declara con `use cache` en el
+   * cargador; aquí solo se marca la excepción en tiempo de petición.
+   */
+  sinCache?: boolean;
 };
 
 export async function consultarGraphQL<T>(
   query: string,
   variables?: Record<string, unknown>,
-  { revalidate = 30 }: RequestOptions = {},
+  { sinCache = false }: RequestOptions = {},
 ): Promise<T | null> {
   try {
     const response = await fetch(WP_GRAPHQL_ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ query, variables }),
-      ...(revalidate > 0
-        ? { next: { revalidate } }
-        : { cache: "no-store" as RequestCache }),
+      ...(sinCache ? { cache: "no-store" as RequestCache } : {}),
     });
 
     if (!response.ok) {

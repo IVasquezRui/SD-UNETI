@@ -5,6 +5,14 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
   poweredByHeader: false,
+  /**
+   * Perfiles de `cacheLife` para el ISR de Next 16 con Cache Components.
+   * Se usan con `cacheLife("noticias")` dentro de funciones `'use cache'`.
+   */
+  cacheLife: {
+    noticias: { stale: 60, revalidate: 300, expire: 3600 },
+    contenido: { stale: 3600, revalidate: 86400, expire: 604800 },
+  },
   async headers() {
     const desarrollo = process.env.NODE_ENV !== "production";
     const csp = [

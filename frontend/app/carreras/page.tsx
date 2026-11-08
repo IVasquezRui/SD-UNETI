@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import EncabezadoSitio from "../componentes/EncabezadoSitio";
 import PieSitio from "../componentes/PieSitio";
+import SeccionPosgrados from "../componentes/SeccionPosgrados";
 import TarjetaCarrera from "../componentes/TarjetaCarrera";
 import TituloPagina from "../componentes/TituloPagina";
 import { CARRERAS } from "../lib/carreras";
@@ -48,7 +49,7 @@ export default function CarrerasPage() {
           particleId="carreras-page-particles"
         />
 
-        <section className="bg-tranquil position-relative overlap-height">
+        <section id="oferta" className="bg-tranquil position-relative overlap-height">
           <div className="container overlap-gap-section">
             <div className="row justify-content-center text-center mb-5">
               <div className="col-lg-8">
@@ -71,7 +72,7 @@ export default function CarrerasPage() {
               ))}
             </div>
 
-            <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4 mt-5">
+            <div id="ventajas" className="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4 mt-5">
               {VENTAJAS.map((ventaja) => (
                 <div className="col" key={ventaja.titulo}>
                   <article className="uneti-ventaja-card bg-white border-radius-6px p-30px h-100 box-shadow-large">
@@ -118,6 +119,8 @@ export default function CarrerasPage() {
             </div>
           </div>
         </section>
+
+        <SeccionPosgrados />
       </main>
       <PieSitio />
     </>
