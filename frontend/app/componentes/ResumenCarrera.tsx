@@ -3,7 +3,6 @@ import type { Carrera } from "../lib/carreras";
 const DATOS = [
   { icono: "bi bi-clock", clave: "duracion" as const, etiqueta: "Duración" },
   { icono: "bi bi-laptop", clave: "modalidad" as const, etiqueta: "Modalidad" },
-  { icono: "bi bi-mortarboard", clave: "tituloOtorgado" as const, etiqueta: "Título" },
   { icono: "bi bi-geo-alt", clave: "sedes" as const, etiqueta: "Sedes" },
 ];
 
@@ -30,7 +29,7 @@ export default function ResumenCarrera({ carrera }: { carrera: Carrera }) {
       </ul>
 
       <span className="d-block alt-font fs-18 fw-600 text-dark-gray mb-15px">
-        Salidas profesionales
+        Títulos obtenidos
       </span>
       <ul className="uneti-salidas-list list-unstyled mb-30px">
         {carrera.salidas.map((salida) => (
