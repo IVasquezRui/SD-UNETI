@@ -60,24 +60,26 @@ export default function AnimacionTFSA({
       <span className="uneti-tfsa__scrim" aria-hidden="true"></span>
 
       <div className="uneti-tfsa__card">
-        <div className="uneti-tfsa__halo" aria-hidden="true">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
+        <span className="uneti-tfsa__pulse">
+          <span className="uneti-tfsa__halo" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
 
-        <span className="uneti-tfsa__icono" aria-hidden="true">
-          <svg viewBox="0 0 120 120" role="presentation" focusable="false">
-            <circle className="uneti-tfsa__aro" cx="60" cy="60" r="52" />
-            {esExito ? (
-              <path className="uneti-tfsa__trazo" d="M34 63l18 18 34-40" />
-            ) : (
-              <>
-                <path className="uneti-tfsa__trazo" d="M42 42l36 36" />
-                <path className="uneti-tfsa__trazo uneti-tfsa__trazo--dos" d="M78 42l-36 36" />
-              </>
-            )}
-          </svg>
+          <span className="uneti-tfsa__icono" aria-hidden="true">
+            <svg viewBox="0 0 120 120" role="presentation" focusable="false">
+              <circle className="uneti-tfsa__aro" cx="60" cy="60" r="52" />
+              {esExito ? (
+                <path className="uneti-tfsa__trazo" d="M34 63l18 18 34-40" />
+              ) : (
+                <>
+                  <path className="uneti-tfsa__trazo" d="M42 42l36 36" />
+                  <path className="uneti-tfsa__trazo uneti-tfsa__trazo--dos" d="M78 42l-36 36" />
+                </>
+              )}
+            </svg>
+          </span>
         </span>
 
         <span className="uneti-tfsa__sello">TFSA</span>
