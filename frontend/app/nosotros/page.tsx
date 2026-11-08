@@ -9,8 +9,8 @@ import FlashcardValor from "../componentes/FlashcardValor";
 import HistoriaParallax from "../componentes/HistoriaParallax";
 import ModalidadHibrida from "../componentes/ModalidadHibrida";
 import ParallaxImagen from "../componentes/ParallaxImagen";
+import RedesSocialesDetalle from "../componentes/RedesSocialesDetalle";
 import Reveal from "../componentes/Reveal";
-import RutaUNETI from "../componentes/RutaUNETI";
 import SedesUNETI from "../componentes/SedesUNETI";
 import { ACTIVIDADES_NOSOTROS, PREGUNTAS_NOSOTROS, VALORES } from "../lib/institucional";
 
@@ -94,6 +94,19 @@ export default function NosotrosPage() {
 
         <HistoriaParallax />
 
+        <SeccionPreguntas
+          id="institucional"
+          eyebrow="Conoce nuestra casa de estudios"
+          title="Misión, visión y modelo educativo"
+          description="Los fundamentos que orientan la formación, la investigación y la gestión de la UNETI."
+          image="/assets/images/uneti/faq-estudiantes.webp"
+          imageAlt="Estudiante de la UNETI"
+          items={PREGUNTAS_NOSOTROS}
+          sticky
+        />
+
+        <ModalidadHibrida />
+
         <section id="esencia" className="bg-gradient-tranquil-white position-relative overflow-hidden">
           <div className="container">
             <div className="row justify-content-center text-center mb-5">
@@ -118,43 +131,12 @@ export default function NosotrosPage() {
           </div>
         </section>
 
-        <RutaUNETI />
 
-        <ModalidadHibrida />
 
         <SedesUNETI />
 
-        <section id="comunidad" className="position-relative overflow-hidden">
-          <div className="container">
-            <div className="row justify-content-center">
-              <div className="col-lg-10">
-                <div className="uneti-counter-band border-radius-6px p-50px sm-p-30px text-center">
-                  <span className="uneti-section-eyebrow text-white mb-15px">Comunidad UNETI</span>
-                  <h2 className="alt-font text-white fw-600 ls-minus-2px mb-15px">
-                    Somos innovación y creatividad.
-                  </h2>
-                  <p className="text-white opacity-7 w-80 lg-w-100 mx-auto mb-0">
-                    Creemos profundamente en el talento de miles de jóvenes venezolanos que se
-                    forman con pensamiento crítico, compromiso social y pasión por el conocimiento.
-                    Cada uno de ellos está forjando su futuro con método, innovación y visión
-                    transformadora.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        <RedesSocialesDetalle />
 
-        <SeccionPreguntas
-          id="institucional"
-          eyebrow="Conoce nuestra casa de estudios"
-          title="Misión, visión y modelo educativo"
-          description="Los fundamentos que orientan la formación, la investigación y la gestión de la UNETI."
-          image="/assets/images/uneti/faq-estudiantes.webp"
-          imageAlt="Estudiante de la UNETI"
-          items={PREGUNTAS_NOSOTROS}
-          sticky
-        />
 
         <SeccionActividades
           id="actividades"
