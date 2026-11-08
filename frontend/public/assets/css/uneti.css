@@ -6716,3 +6716,14 @@ main div[id] {
   }
 }
 
+/* ==========================================
+   Justificación: botones y flashcards se excluyen
+   ========================================== */
+main .uneti-flashcard p,
+main .uneti-flashcard__cara p,
+main .uneti-flashcard__reverso p,
+main .btn p {
+  text-align: left;
+  hyphens: none;
+}
+
