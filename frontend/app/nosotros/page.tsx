@@ -48,8 +48,8 @@ export default function NosotrosPage() {
                     velocidad={0.05}
                   />
                   <ParallaxImagen
-                    src="/assets/images/uneti/nosotros-equipo.webp"
-                    alt="Formación en telecomunicaciones e informática"
+                    src="/assets/images/uneti/STUDENTS/FotoGrupalCurso2.jpg"
+                    alt="Estudiantes de la UNETI en una actividad formativa"
                     className="uneti-about-small"
                     width={1200}
                     height={800}
