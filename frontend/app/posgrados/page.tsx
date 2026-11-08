@@ -164,7 +164,7 @@ export default function PosgradosPage() {
           </div>
         </section>
       </main>
-      <PieSitio />
+      <PieSitio conPrefooter={false} />
     </>
   );
 }

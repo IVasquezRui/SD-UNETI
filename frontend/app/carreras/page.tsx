@@ -122,7 +122,7 @@ export default function CarrerasPage() {
 
         <SeccionPosgrados />
       </main>
-      <PieSitio />
+      <PieSitio conPrefooter={false} />
     </>
   );
 }
