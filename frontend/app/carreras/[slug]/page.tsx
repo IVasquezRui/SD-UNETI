@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { CSSProperties } from "react";
 import { notFound } from "next/navigation";
 import CarruselCarrera from "../../componentes/CarruselCarrera";
 import EncabezadoSitio from "../../componentes/EncabezadoSitio";
@@ -12,6 +13,7 @@ import {
   obtenerCarreraPorSlug,
   obtenerCarrerasRelacionadas,
 } from "../../lib/carreras";
+import { POSGRADOS } from "../../lib/posgrados";
 
 type PropiedadesCarrera = {
   params: Promise<{ slug: string }>;
@@ -263,13 +265,13 @@ export default async function DetalleCarreraPage({ params }: PropiedadesCarrera)
           <div className="container">
             <div className="row justify-content-center text-center mb-5">
               <div className="col-lg-8">
-                <span className="uneti-section-eyebrow mb-15px">Salidas profesionales</span>
+                <span className="uneti-section-eyebrow mb-15px">Títulos obtenidos</span>
                 <h2 className="alt-font text-dark-gray fw-600 ls-minus-3px mb-0">
                   Avanza por etapas, obtén títulos progresivos
                 </h2>
               </div>
             </div>
-            <div className="row row-cols-1 row-cols-md-3 g-4">
+            <div className="row row-cols-1 row-cols-md-3 g-4 justify-content-center">
               {carrera.salidas.map((salida, indice) => (
                 <div className="col" key={salida.titulo}>
                   <article className="uneti-salida-etapa h-100 bg-white border-radius-6px p-35px box-shadow-large">
@@ -383,6 +385,38 @@ export default async function DetalleCarreraPage({ params }: PropiedadesCarrera)
                     </article>
                   </div>
                 ))}
+              </div>
+
+              <div className="row mt-5">
+                <div className="col-12 text-center mb-4">
+                  <span className="uneti-section-eyebrow mb-10px">Formación avanzada</span>
+                  <h3 className="alt-font text-dark-gray fw-600 ls-minus-1px mb-0">
+                    Posgrados (PNFA) que también puedes explorar
+                  </h3>
+                </div>
+                <div className="col-12">
+                  <div className="uneti-pnfa-mini-grid">
+                    {POSGRADOS.map((posgrado) => (
+                      <a
+                        key={posgrado.slug}
+                        href={`/posgrados#${posgrado.slug}`}
+                        className="uneti-pnfa-mini"
+                        style={{ "--posgrado-color": posgrado.color } as CSSProperties}
+                      >
+                        <span className="uneti-pnfa-mini__icono" aria-hidden="true">
+                          <i className={posgrado.icono}></i>
+                        </span>
+                        <span className="uneti-pnfa-mini__texto">
+                          <strong>{posgrado.nombre}</strong>
+                          <small>
+                            {posgrado.siglas} · {posgrado.nivel}
+                          </small>
+                        </span>
+                        <i className="bi bi-arrow-right uneti-pnfa-mini__flecha" aria-hidden="true"></i>
+                      </a>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </section>
