@@ -1,5 +1,11 @@
 import { NextResponse } from "next/server";
 import { revalidatePath, revalidateTag } from "next/cache";
+import { limitar, obtenerIp } from "../../lib/rate-limit";
+import {
+  LIMITE_CUERPO_REVALIDACION,
+  leerJsonLimitado,
+  tokensIguales,
+} from "../../lib/security";
 
 /**
  * Revalidación bajo demanda del contenido publicado en WordPress.
@@ -13,6 +19,14 @@ import { revalidatePath, revalidateTag } from "next/cache";
  * El token es servidor-a-servidor y nunca debe llevar el prefijo NEXT_PUBLIC_.
  */
 export async function POST(request: Request) {
+  const limite = limitar(`revalidar:${obtenerIp(request)}`, 20, 60 * 1000);
+  if (!limite.permitido) {
+    return NextResponse.json(
+      { ok: false, error: "Demasiadas revalidaciones. Espera un minuto." },
+      { status: 429, headers: { "Retry-After": "60" } },
+    );
+  }
+
   const esperado = process.env.UNETI_REVALIDATE_TOKEN ?? process.env.WP_FORM_TOKEN ?? "";
   const recibido = request.headers.get("x-uneti-token") ?? "";
 
@@ -23,12 +37,16 @@ export async function POST(request: Request) {
     );
   }
 
-  if (recibido !== esperado) {
+  if (!tokensIguales(recibido, esperado)) {
     return NextResponse.json({ ok: false, error: "No autorizado." }, { status: 403 });
   }
 
-  const cuerpo = (await request.json().catch(() => null)) as { slug?: unknown } | null;
-  const slug = typeof cuerpo?.slug === "string" ? cuerpo.slug.trim() : "";
+  const lectura = await leerJsonLimitado<{ slug?: unknown }>(
+    request,
+    LIMITE_CUERPO_REVALIDACION,
+  );
+  const slugBruto = lectura.ok && typeof lectura.datos?.slug === "string" ? lectura.datos.slug : "";
+  const slug = slugBruto.trim().slice(0, 200);
 
   revalidateTag("noticias", "max");
   revalidatePath("/");

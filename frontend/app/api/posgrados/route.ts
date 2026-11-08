@@ -2,6 +2,11 @@ import { NextResponse } from "next/server";
 import { validarSolicitud } from "../../lib/solicitudes";
 import { enviarSolicitudAWp } from "../../lib/solicitudes-wp";
 import { limitar, obtenerIp, origenValido } from "../../lib/rate-limit";
+import {
+  LIMITE_CUERPO_FORMULARIO,
+  errorCuerpo,
+  leerJsonLimitado,
+} from "../../lib/security";
 
 const MAXIMO = 5;
 const VENTANA_MS = 10 * 60 * 1000;
@@ -39,7 +44,17 @@ export async function POST(request: Request) {
     );
   }
 
-  const payload = (await request.json().catch(() => null)) as Record<string, unknown> | null;
+  const lectura = await leerJsonLimitado<Record<string, unknown>>(
+    request,
+    LIMITE_CUERPO_FORMULARIO,
+  );
+
+  if (!lectura.ok) {
+    const { status, error } = errorCuerpo(lectura.motivo);
+    return NextResponse.json({ ok: false, error }, { status });
+  }
+
+  const payload = lectura.datos;
 
   // Honeypot: un bot que complete este campo recibe una respuesta falsa de éxito.
   if (payload && typeof payload.sitio_web === "string" && payload.sitio_web.trim() !== "") {

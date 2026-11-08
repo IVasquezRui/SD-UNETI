@@ -1,5 +1,6 @@
 import { connection } from "next/server";
 import { obtenerNoticiasEnVivo } from "../../../lib/noticias";
+import { limitar, obtenerIp } from "../../../lib/rate-limit";
 
 const INTERVALO_MS = 15000;
 const encoder = new TextEncoder();
@@ -20,6 +21,18 @@ function huella(noticias: Awaited<ReturnType<typeof obtenerNoticiasEnVivo>>): st
 
 export async function GET(request: Request) {
   await connection();
+
+  const limite = limitar(`noticias-stream:${obtenerIp(request)}`, 20, 60 * 1000);
+  if (!limite.permitido) {
+    return new Response("data: {\"error\":\"Demasiadas conexiones\"}\n\n", {
+      status: 429,
+      headers: {
+        "Content-Type": "text/event-stream; charset=utf-8",
+        "Cache-Control": "no-store",
+        "Retry-After": "60",
+      },
+    });
+  }
 
   let intervalo: ReturnType<typeof setInterval> | null = null;
   let cerrado = false;
