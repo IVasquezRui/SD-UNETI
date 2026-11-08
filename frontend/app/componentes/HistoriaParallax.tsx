@@ -31,15 +31,6 @@ export default function HistoriaParallax() {
 
   return (
     <section id="nuestra-historia" className="uneti-story position-relative overflow-hidden">
-      <div className="uneti-story__fondo" aria-hidden="true">
-        <ParallaxImagen
-          src="/assets/images/uneti/nosotros-fondo.webp"
-          alt=""
-          className="uneti-story__fondo-img"
-          velocidad={0.03}
-        />
-      </div>
-
       <div className="container position-relative">
         <div className="row justify-content-center text-center mb-5">
           <div className="col-lg-8">

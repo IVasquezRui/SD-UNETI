@@ -22,8 +22,8 @@ const MOMENTOS = [
     alt: "Taller de formación tecnológica en la UNETI",
   },
   {
-    src: "/assets/images/uneti/nosotros-equipo.webp",
-    alt: "Equipo docente y estudiantes de la UNETI",
+    src: "/assets/images/uneti/STUDENTS/FotoGrupalCurso2.jpg",
+    alt: "Estudiantes de la UNETI durante un curso de formación",
   },
   {
     src: "/assets/images/uneti/faq-estudiantes.webp",
