@@ -7,7 +7,7 @@ import PortadaPrincipal from "./componentes/PortadaPrincipal";
 import SeccionInnovacion from "./componentes/SeccionInnovacion";
 import PieSitio from "./componentes/PieSitio";
 import EncabezadoSitio from "./componentes/EncabezadoSitio";
-import SeccionSoporte from "./componentes/SeccionSoporte";
+import RutaUNETI from "./componentes/RutaUNETI";
 import SeccionTestimonios from "./componentes/SeccionTestimonios";
 import SeccionVideo from "./componentes/SeccionVideo";
 import { ACTIVIDADES_INICIO, PREGUNTAS_INICIO } from "./lib/institucional";
@@ -18,7 +18,7 @@ export default function Inicio() {
       <EncabezadoSitio />
       <main>
         <PortadaPrincipal />
-        <SeccionSoporte />
+        <RutaUNETI />
         <SeccionNosotros />
         <SeccionCarreras />
         <SeccionPreguntas
