@@ -70,7 +70,7 @@ export const HISTORIA_PASOS: PasoHistoria[] = [
     eyebrow: "04 · Territorio",
     title: "Dos sedes, un mismo proyecto",
     description:
-      "La Sede Administrativa de Altagracia concentra la gestión institucional. El Núcleo CANTV San Martín reúne la docencia y las prácticas de telecomunicaciones en espacios equipados.",
+      "La UNETI tiene dos sedes propias: la Sede Administrativa, que concentra la gestión institucional, y el Núcleo CANTV San Martín, donde se desarrollan la docencia y las prácticas. La cobertura nacional se apoya en instalaciones de CANTV y Movilnet, la red de Infocentros y convenios con el MPPEU y universidades politécnicas territoriales.",
     image: "/assets/images/uneti/BannerSedeSanMartin.jpg",
     alt: "Sede del Núcleo CANTV San Martín de la UNETI",
   },
@@ -177,7 +177,7 @@ export const REQUISITOS_MODALIDAD: RequisitoModalidad[] = [
 export const SEDES_UNETI: SedeUNETI[] = [
   {
     name: "Sede Administrativa",
-    kind: "Altagracia, Caracas",
+    kind: "Caracas, Venezuela",
     address:
       "Av. Universidad, esquina El Chorro, Edificio del Ministerio de Ciencia y Tecnología (Mincyt), Piso 12, Parroquia Altagracia, Caracas 1010, Venezuela.",
     reference: "A una cuadra de la estación de metro La Hoyada.",
@@ -187,7 +187,7 @@ export const SEDES_UNETI: SedeUNETI[] = [
     mapsEmbed:
       "https://maps.google.com/maps?q=Torre%20Ministerial%20El%20Chorro%20Caracas&z=16&output=embed",
     image: "/assets/images/uneti/nosotros-principal.webp",
-    alt: "Sede administrativa de la UNETI en Altagracia, Caracas",
+    alt: "Sede administrativa de la UNETI en Caracas",
   },
   {
     name: "Núcleo CANTV",
