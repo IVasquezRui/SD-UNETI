@@ -1,0 +1,88 @@
+name: 09 · Seguridad y dependencias
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - "frontend/**"
+      - "docker-compose.yml"
+      - ".env.example"
+      - ".github/workflows/09-seguridad.yml"
+  pull_request:
+    paths:
+      - "frontend/**"
+      - "docker-compose.yml"
+      - ".github/workflows/09-seguridad.yml"
+  schedule:
+    # Revisión mensual de dependencias aunque no haya cambios.
+    - cron: "0 6 1 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: seguridad-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  dependencias:
+    name: Auditoría de dependencias
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js 26
+        uses: actions/setup-node@v4
+        with:
+          node-version: "26.13.0"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Instalar dependencias
+        working-directory: frontend
+        run: npm ci --no-audit --no-fund
+
+      - name: Vulnerabilidades altas o críticas en producción
+        working-directory: frontend
+        run: npm audit --omit=dev --audit-level=high
+
+      - name: Vulnerabilidades del árbol completo (informativo)
+        working-directory: frontend
+        continue-on-error: true
+        run: npm audit --audit-level=high
+
+  secretos:
+    name: Escaneo de secretos
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout completo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_ENABLE_UPLOAD_ARTIFACT: "false"
+
+  configuracion:
+    name: Configuración de contenedores
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validar docker compose
+        run: |
+          cp .env.example .env
+          docker compose -f docker-compose.yml config -q
+          rm -f .env
