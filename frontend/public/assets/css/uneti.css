@@ -6269,3 +6269,52 @@ main div[id] {
   font-size: 16px;
 }
 
+/* ==========================================
+   Flashcards: transición 2D sin planos 3D
+   (elimina los artefactos de píxeles al pasar el mouse)
+   ========================================== */
+.uneti-flashcard {
+  perspective: none;
+}
+
+.uneti-flashcard .uneti-flashcard__inner,
+.uneti-flashcard.is-flipped .uneti-flashcard__inner,
+.uneti-flashcard:not(.is-flipped):hover .uneti-flashcard__inner,
+.uneti-flashcard.is-flipped:hover .uneti-flashcard__inner {
+  transform: none;
+}
+
+.uneti-flashcard__inner {
+  transform-style: flat;
+  transition: none;
+}
+
+.uneti-flashcard__cara {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.uneti-flashcard__frente {
+  transform: none;
+}
+
+.uneti-flashcard__reverso {
+  transform: translateY(14px);
+  opacity: 0;
+  pointer-events: none;
+  border: 1px solid var(--flash-a);
+}
+
+.uneti-flashcard.is-flipped .uneti-flashcard__frente {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-14px);
+}
+
+.uneti-flashcard.is-flipped .uneti-flashcard__reverso {
+  opacity: 1;
+  pointer-events: auto;
+  transform: none;
+}
+
