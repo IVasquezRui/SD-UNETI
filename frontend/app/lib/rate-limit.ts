@@ -52,18 +52,36 @@ export function obtenerIp(request: Request): string {
 
 /**
  * Rechaza peticiones de navegador con un Origin distinto al sitio público.
- * Las llamadas sin Origin (curl, pruebas internas) se permiten porque el
- * endpoint solo crea solicitudes y está protegido por token en WordPress.
+ *
+ * Acepta además el host real de la petición para que los formularios funcionen
+ * cuando el portal se abre desde la IP de la red local (móvil) o desde un
+ * dominio alternativo del mismo despliegue. Las llamadas sin Origin (curl,
+ * pruebas internas) se permiten porque el endpoint está protegido por token en
+ * WordPress.
  */
 export function origenValido(request: Request): boolean {
   const origen = request.headers.get("origin");
   if (!origen) return true;
 
-  const sitio = process.env.NEXT_PUBLIC_SITE_URL;
-  if (!sitio) return true;
-
   try {
-    return new URL(origen).origin === new URL(sitio).origin;
+    const origenUrl = new URL(origen);
+    const hostPedido = (
+      request.headers.get("x-forwarded-host") ??
+      request.headers.get("host") ??
+      ""
+    )
+      .split(",")[0]
+      .trim()
+      .toLowerCase();
+
+    if (hostPedido && origenUrl.host.toLowerCase() === hostPedido) {
+      return true;
+    }
+
+    const sitio = process.env.NEXT_PUBLIC_SITE_URL;
+    if (!sitio) return true;
+
+    return origenUrl.origin === new URL(sitio).origin;
   } catch {
     return false;
   }
