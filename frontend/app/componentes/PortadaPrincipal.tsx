@@ -10,21 +10,6 @@ const HERO_STATS = [
 
 const HERO_SLIDES: DiapositivaHero[] = [
   {
-    desktopSrc: "/assets/images/uneti/contacto-estudiantes.webp",
-    mobileSrc: "/assets/images/uneti/contacto-estudiantes-mobile.webp",
-    alt: "Estudiantes de la UNETI durante una actividad académica",
-    width: 1280,
-    height: 960,
-    posicion: "50% 38%",
-  },
-  {
-    desktopSrc: "/assets/images/uneti/FotoGrupalCurso3.jpg",
-    alt: "Participantes de un curso de formación de la UNETI",
-    width: 570,
-    height: 600,
-    posicion: "50% 32%",
-  },
-  {
     desktopSrc: "/assets/images/uneti/EquipoDeDesarrolloDeSoftware.jpg",
     alt: "Equipo de desarrollo de software de la UNETI",
     width: 896,
