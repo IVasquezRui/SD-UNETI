@@ -4235,23 +4235,36 @@ main > section.uneti-article-header {
   box-shadow: 0 40px 90px rgba(60, 12, 20, 0.2);
 }
 
+.uneti-tfsa__pulse {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 140px;
+  height: 140px;
+  margin: 0 auto 10px;
+}
+
 .uneti-tfsa__halo {
   position: absolute;
   inset: 0;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
-  padding-top: 46px;
   pointer-events: none;
 }
 
 .uneti-tfsa__halo span {
   position: absolute;
+  top: 50%;
+  left: 50%;
   width: 132px;
   height: 132px;
+  margin: 0;
   border-radius: 50%;
   border: 2px solid rgba(15, 157, 118, 0.4);
   opacity: 0;
+  transform: translate(-50%, -50%);
   animation: uneti-tfsa-halo 2.4s ease-out infinite;
 }
 
@@ -4269,10 +4282,13 @@ main > section.uneti-article-header {
 
 .uneti-tfsa__icono {
   position: relative;
+  z-index: 1;
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 132px;
   height: 132px;
-  margin-bottom: 8px;
+  margin: 0;
 }
 
 .uneti-tfsa__icono svg {
@@ -4469,14 +4485,14 @@ main > section.uneti-article-header {
 @keyframes uneti-tfsa-halo {
   0% {
     opacity: 0.5;
-    transform: scale(0.78);
+    transform: translate(-50%, -50%) scale(0.78);
   }
   70% {
     opacity: 0;
   }
   100% {
     opacity: 0;
-    transform: scale(1.55);
+    transform: translate(-50%, -50%) scale(1.55);
   }
 }
 
