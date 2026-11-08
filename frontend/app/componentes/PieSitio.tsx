@@ -35,10 +35,11 @@ function esEnlaceExterno(href: string) {
   return href.startsWith("http");
 }
 
-export default function PieSitio() {
+export default function PieSitio({ conPrefooter = true }: { conPrefooter?: boolean }) {
   return (
     <>
-      <section className="uneti-prefooter" aria-labelledby="uneti-instagram-title">
+      {conPrefooter && (
+        <section className="uneti-prefooter" aria-labelledby="uneti-instagram-title">
         <div className="container">
           <div className="uneti-prefooter-card">
             <div className="uneti-prefooter-card__copy">
@@ -87,7 +88,8 @@ export default function PieSitio() {
             </div>
           </div>
         </div>
-      </section>
+        </section>
+      )}
 
       <footer id="site-footer" className="bg-gradient-aztec-green position-relative">
         <div
