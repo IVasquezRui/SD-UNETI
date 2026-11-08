@@ -6079,3 +6079,168 @@ main div[id] {
   }
 }
 
+/* ==========================================
+   Títulos obtenidos: azul-morado UNETI
+   ========================================== */
+:root {
+  --uneti-violet: #7c5cff;
+}
+
+.uneti-titulos {
+  margin: 6px 0 26px;
+  padding: 22px 18px;
+  border-radius: 14px;
+  background: linear-gradient(160deg, rgba(69, 130, 255, 0.1), rgba(124, 92, 255, 0.12));
+  text-align: center;
+}
+
+.uneti-titulos__titulo {
+  display: block;
+  margin-bottom: 14px;
+  color: #0f2239;
+  font-family: var(--alt-font, inherit);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.uneti-titulos__lista {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.uneti-titulos__lista li {
+  padding: 14px 12px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 8px 20px rgba(15, 34, 57, 0.08);
+}
+
+.uneti-titulos__nivel {
+  display: inline-block;
+  margin-bottom: 6px;
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #4582ff, #7c5cff);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Etapas de títulos en el detalle del PNF */
+.uneti-salida-etapa {
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.uneti-salida-etapa::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #4582ff, #7c5cff);
+}
+
+.uneti-salida-etapa .uneti-etapa-numero {
+  display: block;
+  margin: 0 auto 10px;
+  background: linear-gradient(135deg, #4582ff, #7c5cff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-family: var(--alt-font, inherit);
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.uneti-salida-etapa .uneti-salida-nivel {
+  display: inline-block;
+  margin-bottom: 10px;
+  padding: 4px 14px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #4582ff, #7c5cff);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.uneti-salida-etapa .text-base-color {
+  color: var(--uneti-violet);
+}
+
+/* PNFA dentro de "Otra ruta" */
+.uneti-pnfa-mini-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+.uneti-pnfa-mini {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid rgba(15, 34, 57, 0.08);
+  border-left: 4px solid var(--posgrado-color, var(--base-color));
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 10px 24px rgba(15, 34, 57, 0.07);
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.uneti-pnfa-mini:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 32px rgba(15, 34, 57, 0.12);
+  text-decoration: none;
+}
+
+.uneti-pnfa-mini__icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  border-radius: 10px;
+  background: var(--posgrado-color, var(--base-color));
+  color: #fff;
+  font-size: 18px;
+}
+
+.uneti-pnfa-mini__texto {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.uneti-pnfa-mini__texto strong {
+  color: #0f2239;
+  font-size: 13.5px;
+  line-height: 1.3;
+}
+
+.uneti-pnfa-mini__texto small {
+  color: #5b6b84;
+  font-size: 11.5px;
+}
+
+.uneti-pnfa-mini__flecha {
+  margin-left: auto;
+  flex: 0 0 auto;
+  color: var(--posgrado-color, var(--base-color));
+  font-size: 16px;
+}
+
