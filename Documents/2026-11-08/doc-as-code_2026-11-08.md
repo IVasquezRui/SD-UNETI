@@ -1,3 +1,7 @@
+> **Estado (08/11/2026):** plan ejecutado en seis PRs temáticos. Informe en
+> `Documents/2026-11-08/implementacion_2026-11-08.md`, QA en `Documents/2026-11-08/qa-2026-11-08.md`
+> y controles de seguridad en `Documents/seguridad/2026-11-08-hardening.md`.
+
 SD-UNETI 08/11/2026
 
 Estamos trabajando en el repo SD-UNETI ahora mismo. Antes que nada vas a subir a la rama develop la version del proyecto actual al repositorio SD-UNETI en el cual soy owner y colaborador directo. Vas a subirlo a la rama develop el cual la URL es "https://github.com/IVasquezRui/SD-UNETI/tree/develop". y Luego de subirlo, harás un PR a la rama main conmentando en el commit todos los avances del proyecto actual.
