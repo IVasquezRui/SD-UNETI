@@ -6523,3 +6523,196 @@ main div[id] {
   }
 }
 
+/* ==========================================
+   Ajuste compacto para móvil ("Fit", no XXXL)
+   ========================================== */
+@media (max-width: 767.98px) {
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
+  .uneti-hero {
+    min-height: 620px;
+  }
+
+  .uneti-hero__container {
+    padding-top: 92px;
+    padding-bottom: 46px;
+  }
+
+  .uneti-hero__title {
+    font-size: clamp(2.3rem, 8.4vw, 3rem);
+    line-height: 1.03;
+  }
+
+  .uneti-hero__lead {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .uneti-hero__stat-value {
+    font-size: 26px;
+  }
+
+  .uneti-hero__stat-label {
+    font-size: 11.5px;
+  }
+
+  .uneti-hero__admission {
+    font-size: 13px;
+  }
+
+  .uneti-page-header {
+    min-height: 300px;
+    padding: 88px 0 52px;
+  }
+
+  .uneti-page-header h1 {
+    font-size: clamp(2rem, 8vw, 2.6rem);
+  }
+
+  .uneti-page-header__content p {
+    font-size: 15px;
+  }
+
+  .uneti-story,
+  .uneti-modality,
+  .uneti-redes,
+  .uneti-redes-detalle,
+  .uneti-cursos-inicio,
+  .uneti-modalidad-inicio,
+  .uneti-posgrados-section {
+    padding: 52px 0;
+  }
+
+  .uneti-story__media {
+    height: 380px;
+  }
+
+  .uneti-story__paso {
+    padding: 18px 16px 18px 18px;
+  }
+
+  .uneti-story__datos {
+    gap: 14px;
+    margin-top: 36px;
+    padding-top: 24px;
+  }
+
+  .uneti-story__datos strong {
+    font-size: 26px;
+  }
+
+  .uneti-admision__cabecera {
+    padding: 16px;
+  }
+
+  .uneti-admision__panel {
+    padding: 20px 16px;
+  }
+
+  .uneti-campo input,
+  .uneti-campo textarea {
+    min-height: 48px;
+    font-size: 16px;
+  }
+
+  .uneti-campo--textarea textarea {
+    min-height: 132px;
+  }
+
+  .uneti-admision__acciones {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .uneti-admision__acciones .btn,
+  .uneti-admision__acciones .uneti-admision__atras {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .uneti-tfsa {
+    padding: 12px;
+  }
+
+  .uneti-tfsa__card {
+    max-height: 92vh;
+    padding: 30px 20px 24px;
+  }
+
+  .uneti-tfsa__pulse {
+    width: 118px;
+    height: 118px;
+  }
+
+  .uneti-tfsa__icono,
+  .uneti-tfsa__halo span {
+    width: 110px;
+    height: 110px;
+  }
+
+  .uneti-tfsa__titulo {
+    font-size: 1.35rem;
+  }
+
+  .uneti-tfsa__subtitulo {
+    font-size: 14.5px;
+  }
+
+  .uneti-tfsa__acciones {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .uneti-tfsa__btn {
+    width: 100%;
+  }
+
+  .uneti-titulos,
+  .uneti-territorio,
+  .uneti-mapa-sede__ficha {
+    padding: 22px 18px;
+  }
+
+  .uneti-posgrado-detalle {
+    padding: 24px 18px;
+  }
+
+  .uneti-posgrado-detalle__proposito {
+    padding: 14px;
+    font-size: 14px;
+  }
+
+  .uneti-mapa-sede__mapa {
+    min-height: 280px;
+  }
+
+  .uneti-red-card,
+  .uneti-curso-mini,
+  .uneti-modalidad-card,
+  .uneti-posgrado-card {
+    padding: 20px 18px;
+  }
+
+  .uneti-quicknav__panel {
+    max-height: 88vh;
+  }
+
+  .uneti-consentimiento {
+    font-size: 12.5px;
+  }
+
+  .p-50px,
+  .p-40px {
+    padding: 22px !important;
+  }
+
+  h1,
+  .uneti-hero__title {
+    overflow-wrap: anywhere;
+  }
+}
+
