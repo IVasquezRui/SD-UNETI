@@ -2,7 +2,7 @@
 
 > Documento de estado del MVP de la plataforma headless de la Universidad Nacional Experimental de las Telecomunicaciones e Informática.
 >
-> **Última actualización:** 31 de octubre de 2026
+> **Última actualización:** 8 de noviembre de 2026
 >
 > **Rama de integración:** `main`
 >
@@ -494,4 +494,57 @@ docker run --rm -v "$PWD:/app" -w /app --entrypoint node node:26.13.0-slim build
 
 - Cursos: «Obtener información» abre WhatsApp (`wa.me/584241427051`) con el nombre del curso.
 - `qa-frontend.sh` y `probar-formulario.mjs` ampliados con posgrados, contacto y WhatsApp.
+
+---
+
+## 15. Actualización 2026-11-08
+
+Ejecución completa del plan `Documents/2026-11-08/doc-as-code_2026-11-08.md` (22 puntos) en seis PRs
+temáticos. El informe detallado está en `Documents/2026-11-08/implementacion_2026-11-08.md` y la
+evidencia de pruebas en `Documents/2026-11-08/qa-2026-11-08.md`.
+
+### Portada
+
+- Hero reducido a las dos últimas imágenes: `EquipoDeDesarrolloDeSoftware.jpg` y `DiLorenzoEnseña.jpg`.
+- «Tu ruta» reemplaza al bloque «Ecosistema UNETI» (`SeccionSoporte`).
+- Cuatro tarjetas de cursos reales con iconos, viñeta de color y enlace a `/cursos#curso-<slug>`.
+  Se retira el curso inexistente **Modelado 3D** y la sección de áreas de innovación.
+- Resumen de las cuatro redes sociales en lugar del bloque de YouTube.
+- Cuatro flashcards de la modalidad híbrida territorial a mitad de página.
+
+### Carreras y posgrados
+
+- Ficha sin el ítem «Título»; «Salidas profesionales» pasa a **Títulos obtenidos**, centrados y con
+  degradado azul-morado.
+- Etapas TSU/Ingeniería centradas y «Otra ruta» incorpora los siete PNFA.
+- `/carreras` y `/posgrados` dejan de mostrar el prefooter de comunidad.
+- Corregida la narrativa de territorio: solo dos sedes propias y cobertura mediante CANTV/Movilnet,
+  Infocentros y convenios con el MPPEU y universidades politécnicas.
+
+### Nosotros
+
+- Storytelling sin `sticky`: el bloque baja con el scroll y cambia de imagen por punto, con barra de progreso.
+- Flashcards con transición 2D: desaparecen los artefactos de píxeles.
+- `RedesSocialesDetalle` sustituye la banda «Comunidad UNETI».
+- «Conoce nuestra casa de estudios» se coloca tras el parallax y se añade el detalle del modelo
+  híbrido territorial.
+
+### Responsive y móvil
+
+- `origenValido` acepta el host real de la petición: los formularios funcionan desde la IP de la LAN
+  (antes devolvían 403 por `Origin`).
+- Ajuste compacto en móvil (hero, cabeceras, secciones, tarjetas, campos de 16 px y TFSA).
+- CTA de `/cursos` convertido en «Solicitar información» por WhatsApp.
+- Animación TFSA alineada y navegación rápida actualizada.
+
+### Seguridad y privacidad (punto 21)
+
+- `app/lib/security.ts`: comparación de tokens en tiempo constante y lectura de JSON con límite.
+- Rate limit y límites de cuerpo en todas las rutas; revalidación con token seguro.
+- Cabeceras COOP/CORP, CSP con `script-src-attr 'none'` y `proxy.ts` para TRACE/TRACK.
+- `/privacidad`, `security.txt`, `robots.txt` y `sitemap.xml`.
+- WordPress, Apache, PHP y Docker endurecidos; retención de solicitudes a 12 meses.
+- CI de seguridad (npm audit, gitleaks, compose) y mapa de controles SOC 2 / ISO 27001 / ISO 27701 en
+  `Documents/seguridad/2026-11-08-hardening.md`.
+
 

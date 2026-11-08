@@ -72,9 +72,21 @@ con `'use cache'`, `cacheLife` y `cacheTag`.
 abren WhatsApp con el mensaje «Hola UNETI, quiero saber más información al respecto de los cursos:
 {curso}».
 
+## Seguridad y privacidad
+
+- Cabeceras globales en `next.config.ts` (CSP, COOP, CORP, `X-Permitted-Cross-Domain-Policies`,
+  `Permissions-Policy`). `proxy.ts` corta `TRACE`/`TRACK`.
+- `app/lib/security.ts`: comparación de tokens en tiempo constante y lectura de JSON con límite.
+- `app/lib/rate-limit.ts`: límite por IP en formularios, comentarios, noticias, stream y revalidación;
+  `origenValido` acepta el host real de la petición (acceso por IP de LAN) y rechaza orígenes ajenos.
+- `/privacidad` con la política de tratamiento y enlaces desde el pie y los consentimientos.
+- `public/.well-known/security.txt`, `app/robots.ts` y `app/sitemap.ts`.
+- Mapa de controles SOC 2 / ISO 27001 / ISO 27701 en `../Documents/seguridad/2026-11-08-hardening.md`.
+
 ## QA
 
 ```bash
 bash ../scripts/ci/qa-frontend.sh http://localhost:3000
 node ../scripts/ci/probar-formulario.mjs
+bash ../scripts/ci/pentest-nextjs.sh http://localhost:3000
 ```

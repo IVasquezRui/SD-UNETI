@@ -33,11 +33,17 @@ ADMISIONES="$TMP/admisiones.html"
 POSGRADOS="$TMP/posgrados.html"
 CURSOS="$TMP/cursos.html"
 
-# Heroes intercambiados (tarea 1)
-if grep -q 'contacto-estudiantes.webp' "$INICIO"; then
-  registrar_ok "El hero del inicio usa contacto-estudiantes.webp"
+# Hero de la portada: solo las dos últimas imágenes (punto 17)
+if grep -q 'EquipoDeDesarrolloDeSoftware.jpg' "$INICIO" && grep -q 'DiLorenzoEnseña.jpg' "$INICIO"; then
+  registrar_ok "El hero del inicio usa las dos últimas imágenes del equipo"
 else
-  registrar_fallo "El hero del inicio no contiene contacto-estudiantes.webp"
+  registrar_fallo "El hero del inicio no contiene las dos imágenes esperadas"
+fi
+
+if grep -q 'contacto-estudiantes.webp' "$INICIO"; then
+  registrar_fallo "El hero del inicio todavía referencia contacto-estudiantes.webp"
+else
+  registrar_ok "El hero del inicio ya no usa contacto-estudiantes.webp"
 fi
 
 if grep -q 'hero-comunidad.webp' "$CONTACTO"; then
