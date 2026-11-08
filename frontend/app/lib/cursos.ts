@@ -5,6 +5,8 @@ export type Curso = {
   descripcion: string;
   icono: string;
   tono: "light-blue" | "blue" | "green" | "orange";
+  /** Color identificador del curso (viñeta y acentos). */
+  color: string;
   duracion: string;
   modalidad: string;
   nivel: string;
@@ -20,6 +22,7 @@ export type PasoCurso = {
 export const CURSOS: Curso[] = [
   {
     slug: "blockchain",
+    color: "#4582ff",
     titulo: "Blockchain y contratos inteligentes",
     resumen: "Diseña registros verificables y automatiza acuerdos sin intermediarios.",
     descripcion:
@@ -39,6 +42,7 @@ export const CURSOS: Curso[] = [
   },
   {
     slug: "inteligencia-artificial",
+    color: "#0f9d76",
     titulo: "Inteligencia artificial aplicada",
     resumen: "Convierte datos en decisiones con modelos generativos y aprendizaje automático.",
     descripcion:
@@ -58,6 +62,7 @@ export const CURSOS: Curso[] = [
   },
   {
     slug: "criptografia",
+    color: "#ff7f46",
     titulo: "Criptografía y seguridad de la información",
     resumen: "Protege la información y firma digitalmente los documentos de la universidad.",
     descripcion:
@@ -77,6 +82,7 @@ export const CURSOS: Curso[] = [
   },
   {
     slug: "vibe-coding",
+    color: "#7c5cff",
     titulo: "Programación asistida con IA — Vibe Coding",
     resumen: "Del prompt al producto: construye software acompañado por asistentes de IA.",
     descripcion:
