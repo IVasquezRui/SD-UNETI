@@ -28,18 +28,18 @@ export default function ResumenCarrera({ carrera }: { carrera: Carrera }) {
         ))}
       </ul>
 
-      <span className="d-block alt-font fs-18 fw-600 text-dark-gray mb-15px">
-        Títulos obtenidos
-      </span>
-      <ul className="uneti-salidas-list list-unstyled mb-30px">
-        {carrera.salidas.map((salida) => (
-          <li key={salida.titulo}>
-            <span className="uneti-salida-nivel">{salida.nivel}</span>
-            <span className="d-block fw-600 text-dark-gray">{salida.titulo}</span>
-            <span className="fs-14">{salida.duracion}</span>
-          </li>
-        ))}
-      </ul>
+      <div className="uneti-titulos">
+        <span className="uneti-titulos__titulo">Títulos obtenidos</span>
+        <ul className="uneti-titulos__lista list-unstyled mb-0">
+          {carrera.salidas.map((salida) => (
+            <li key={salida.titulo}>
+              <span className="uneti-titulos__nivel">{salida.nivel}</span>
+              <span className="d-block fw-600 text-dark-gray">{salida.titulo}</span>
+              <span className="fs-14">{salida.duracion}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
 
       <a
         href="/admisiones"
