@@ -7,6 +7,8 @@ import ParallaxImagen from "./ParallaxImagen";
 export default function HistoriaParallax() {
   const [activo, setActivo] = useState(0);
   const pasosRef = useRef<(HTMLLIElement | null)[]>([]);
+  const seccionRef = useRef<HTMLElement>(null);
+  const mediaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (typeof IntersectionObserver === "undefined") return;
@@ -29,8 +31,60 @@ export default function HistoriaParallax() {
     return () => observer.disconnect();
   }, []);
 
+  // El bloque de imágenes baja con el scroll (no se queda fijo arriba).
+  useEffect(() => {
+    const seccion = seccionRef.current;
+    const media = mediaRef.current;
+    if (!seccion || !media) return;
+
+    const movimientoReducido = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const escritorio = window.matchMedia("(min-width: 992px)");
+
+    let frame = 0;
+
+    const aplicar = () => {
+      frame = 0;
+
+      if (!escritorio.matches || movimientoReducido.matches) {
+        media.style.removeProperty("--story-shift");
+        return;
+      }
+
+      const rect = seccion.getBoundingClientRect();
+      const altoVentana = window.innerHeight;
+      const progreso = Math.min(1, Math.max(0, (altoVentana - rect.top) / (altoVentana + rect.height)));
+      const desplazamiento = -40 + progreso * 220;
+
+      media.style.setProperty("--story-shift", `${desplazamiento.toFixed(1)}px`);
+    };
+
+    const programar = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(aplicar);
+    };
+
+    aplicar();
+    window.addEventListener("scroll", programar, { passive: true });
+    window.addEventListener("resize", programar);
+    escritorio.addEventListener("change", programar);
+    movimientoReducido.addEventListener("change", programar);
+
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", programar);
+      window.removeEventListener("resize", programar);
+      escritorio.removeEventListener("change", programar);
+      movimientoReducido.removeEventListener("change", programar);
+      media.style.removeProperty("--story-shift");
+    };
+  }, []);
+
   return (
-    <section id="nuestra-historia" className="uneti-story position-relative overflow-hidden">
+    <section
+      ref={seccionRef}
+      id="nuestra-historia"
+      className="uneti-story position-relative overflow-hidden"
+    >
       <div className="container position-relative">
         <div className="row justify-content-center text-center mb-5">
           <div className="col-lg-8">
@@ -47,20 +101,26 @@ export default function HistoriaParallax() {
 
         <div className="row align-items-start g-5">
           <div className="col-lg-5 d-none d-lg-block">
-            <div className="uneti-story__media">
+            <div ref={mediaRef} className="uneti-story__media">
               {HISTORIA_PASOS.map((paso, indice) => (
-                <ParallaxImagen
+                <img
                   key={paso.id}
                   src={paso.image}
-                  alt={paso.alt}
+                  alt={indice === activo ? paso.alt : ""}
                   className={`uneti-story__imagen${indice === activo ? " is-active" : ""}`}
-                  velocidad={0.045}
-                  alcanceSelector=".uneti-story"
+                  width={1280}
+                  height={853}
                   loading={indice === 0 ? "eager" : "lazy"}
+                  decoding="async"
                 />
               ))}
               <span className="uneti-story__contador" aria-hidden="true">
                 <strong>0{activo + 1}</strong> / 0{HISTORIA_PASOS.length}
+              </span>
+              <span className="uneti-story__barra" aria-hidden="true">
+                <span
+                  style={{ width: `${((activo + 1) / HISTORIA_PASOS.length) * 100}%` }}
+                ></span>
               </span>
             </div>
           </div>
