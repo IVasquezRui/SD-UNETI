@@ -44,9 +44,33 @@ docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d frontend
 ## Formularios
 
 - `/api/contacto`: mensajes de contacto y altas del boletín.
-- `/api/admisiones`: solicitud de admisión; reenvía a WordPress con `WP_FORM_TOKEN`.
+- `/api/admisiones`: solicitud de admisión a los PNF; reenvía a WordPress con `WP_FORM_TOKEN`.
+- `/api/posgrados`: solicitud de admisión a un PNFA (posgrado), mismo flujo y mismo token.
+
+Los tres formularios comparten validación (`app/lib/solicitudes.ts`), rate limit por IP, honeypot y
+control de tiempo mínimo. WordPress responde con `folio`/`ticket` e `id`, que el frontend muestra en
+la animación de confirmación **TFSA**.
 
 El token debe coincidir con `UNETI_FORM_TOKEN` en el contenedor WordPress. Nunca uses el prefijo `NEXT_PUBLIC_` para este valor.
+
+## Caché e ISR
+
+El proyecto usa **Cache Components** (`cacheComponents: true`) con Partial Prefetching. En Next 16
+con esta opción `revalidate`/`dynamic` ya no existen como *route segment config*: el ISR se declara
+con `'use cache'`, `cacheLife` y `cacheTag`.
+
+- Perfiles en `next.config.ts`: `noticias` (5 min, expira 1 h) y `contenido` (1 día).
+- Cargadores en `app/lib/noticias.ts`: `obtenerNoticias`, `obtenerNoticiaPorSlug` (con tags) y
+  `obtenerNoticiasEnVivo` (sin caché para SSE/polling).
+- `generateStaticParams` prerenderiza las carreras y las noticias publicadas.
+- Revalidación bajo demanda: `POST /api/revalidar` con `X-UNETI-Token`
+  (`UNETI_REVALIDATE_TOKEN` o `WP_FORM_TOKEN`) y cuerpo `{ "slug": "<slug>" }`.
+
+## WhatsApp
+
+`app/lib/whatsapp.ts` centraliza el número de atención (`584241427051`). Las tarjetas de `/cursos`
+abren WhatsApp con el mensaje «Hola UNETI, quiero saber más información al respecto de los cursos:
+{curso}».
 
 ## QA
 

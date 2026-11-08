@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from "react";
 import { PROGRAMAS_ADMISION, validarSolicitud } from "../lib/solicitudes";
+import AnimacionTFSA from "./AnimacionTFSA";
 
 type Datos = {
   nombre: string;
@@ -46,7 +47,11 @@ export default function FormularioAdmision() {
   const [consentimiento, setConsentimiento] = useState(false);
   const [estado, setEstado] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [mensajeError, setMensajeError] = useState("");
-  const [folio, setFolio] = useState<string | null>(null);
+  const [tfsa, setTfsa] = useState<{
+    estado: "exito" | "error";
+    ticket?: string | null;
+    detalle?: string;
+  } | null>(null);
   const inicio = useRef(0);
   const panel = useRef<HTMLDivElement>(null);
   const honeypot = useRef<HTMLInputElement>(null);
@@ -133,7 +138,6 @@ export default function FormularioAdmision() {
     setErrores({});
     setEstado("idle");
     setMensajeError("");
-    setFolio(null);
     setPaso(1);
     inicio.current = Date.now();
   }
@@ -175,7 +179,7 @@ export default function FormularioAdmision() {
       });
 
       const body = (await response.json().catch(() => null)) as
-        | { ok?: boolean; folio?: string; error?: string; errores?: Errores }
+        | { ok?: boolean; folio?: string; ticket?: string; id?: number; error?: string; errores?: Errores }
         | null;
 
       if (!response.ok) {
@@ -183,56 +187,25 @@ export default function FormularioAdmision() {
         throw new Error(body?.error ?? "No pudimos registrar tu solicitud.");
       }
 
-      setFolio(body?.folio ?? null);
-      setEstado("sent");
+      const ticket = body?.ticket ?? body?.folio ?? null;
+      setEstado("idle");
+      setTfsa({ estado: "exito", ticket });
     } catch (error) {
-      setMensajeError(
+      const mensaje =
         error instanceof Error
           ? error.message
-          : "No pudimos registrar tu solicitud. Inténtalo de nuevo.",
-      );
+          : "No pudimos registrar tu solicitud. Inténtalo de nuevo.";
+      setMensajeError(mensaje);
       setEstado("error");
+      setTfsa({ estado: "error", detalle: mensaje });
     }
   }
 
   const progreso = Math.round((paso / PASOS.length) * 100);
 
-  if (estado === "sent") {
-    return (
-      <div className="uneti-admision__exito" role="status">
-        <span className="uneti-admision__exito-icono" aria-hidden="true">
-          <i className="bi bi-check2-circle"></i>
-        </span>
-        <h4 className="alt-font text-dark-gray fw-600 mb-10px">¡Recibimos tu solicitud!</h4>
-        <p className="mb-15px">
-          Nuestro equipo revisará tus datos y te contactará por correo o teléfono para continuar
-          con el proceso de admisión.
-        </p>
-        {folio && (
-          <p className="uneti-admision__folio mb-25px">
-            Folio de seguimiento: <strong>{folio}</strong>
-          </p>
-        )}
-        <button
-          type="button"
-          className="btn btn-large btn-dark-gray btn-rounded btn-box-shadow btn-switch-text"
-          onClick={reiniciar}
-        >
-          <span>
-            <span className="btn-double-text" data-text="Enviar otra solicitud">
-              Enviar otra solicitud
-            </span>
-            <span>
-              <i className="fa-solid fa-arrow-right"></i>
-            </span>
-          </span>
-        </button>
-      </div>
-    );
-  }
-
   return (
-    <form onSubmit={enviar} className="uneti-admision" noValidate>
+    <>
+      <form onSubmit={enviar} className="uneti-admision" noValidate>
       <div className="uneti-admision__cabecera">
         <span className="uneti-admision__etiqueta">
           Paso {paso} de {PASOS.length}
@@ -589,6 +562,29 @@ export default function FormularioAdmision() {
           )}
         </div>
       </div>
-    </form>
+      </form>
+
+      {tfsa && (
+        <AnimacionTFSA
+          estado={tfsa.estado}
+          ticket={tfsa.ticket}
+          detalle={tfsa.detalle}
+          etiquetaCerrar={tfsa.estado === "exito" ? "Enviar otra solicitud" : undefined}
+          onCerrar={() => {
+            const eraExito = tfsa.estado === "exito";
+            setTfsa(null);
+            if (eraExito) reiniciar();
+          }}
+          onReintentar={
+            tfsa.estado === "error"
+              ? () => {
+                  setTfsa(null);
+                  setPaso(3);
+                }
+              : undefined
+          }
+        />
+      )}
+    </>
   );
 }

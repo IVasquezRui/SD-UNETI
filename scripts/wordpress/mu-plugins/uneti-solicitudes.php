@@ -23,6 +23,40 @@ const UNETI_SOLICITUD_ESTADOS      = array(
 	'descartada'  => 'Descartada',
 );
 
+/**
+ * Programas válidos por tipo de solicitud. Los PNFA se listan con la misma
+ * etiqueta que envía el frontend (`app/lib/posgrados.ts`).
+ */
+const UNETI_SOLICITUD_PROGRAMAS_ADMISION = array(
+	'PNF en Telecomunicaciones',
+	'PNF en Informática',
+);
+
+const UNETI_SOLICITUD_PROGRAMAS_POSGRADO = array(
+	'Especialización y Maestría en Gestión de Operaciones Satelitales (PNFA-OPSAT)',
+	'Especialización y Maestría en Ciberseguridad',
+	'Especialización y Maestría en Automatización, Control y Robótica (PNFA-ACR)',
+	'Especialización y Maestría en Economía Digital y Tecnologías Blockchain',
+	'Especialización y Maestría en Gestión en Telecomunicaciones (PNFA-GT)',
+	'Especialización y Maestría en Interoperabilidad y Bases de Datos',
+	'Doctorado en Gerencia Evaluativa Tecnológica, Empresarial y Educativa',
+);
+
+/**
+ * Etiqueta legible del tipo de solicitud (título, panel, CSV y correo).
+ */
+function uneti_solicitud_etiqueta_tipo( $tipo ) {
+	switch ( $tipo ) {
+		case 'admision':
+			return 'Admisión';
+		case 'posgrado':
+			return 'Posgrado';
+		default:
+			return 'Contacto';
+	}
+}
+
+
 add_action( 'init', 'uneti_solicitud_registrar_cpt' );
 add_action( 'init', 'uneti_solicitud_registrar_taxonomia' );
 add_action( 'init', 'uneti_solicitud_crear_estados' );
@@ -256,7 +290,7 @@ function uneti_solicitud_crear( WP_REST_Request $request ) {
 	}
 
 	$tipo = sanitize_key( (string) $request->get_param( 'tipo' ) );
-	if ( ! in_array( $tipo, array( 'admision', 'contacto' ), true ) ) {
+	if ( ! in_array( $tipo, array( 'admision', 'contacto', 'posgrado' ), true ) ) {
 		return new WP_Error( 'uneti_solicitud_tipo', 'El tipo de solicitud no es válido.', array( 'status' => 400 ) );
 	}
 
@@ -285,17 +319,25 @@ function uneti_solicitud_crear( WP_REST_Request $request ) {
 		return new WP_Error( 'uneti_solicitud_cedula', 'La cédula no es válida.', array( 'status' => 400 ) );
 	}
 
-	if ( 'admision' === $tipo && '' === $cedula_cruda ) {
+	if ( in_array( $tipo, array( 'admision', 'posgrado' ), true ) && '' === $cedula_cruda ) {
 		return new WP_Error( 'uneti_solicitud_cedula_requerida', 'La cédula es obligatoria.', array( 'status' => 400 ) );
 	}
 
 	$programa = sanitize_text_field( (string) $request->get_param( 'programa' ) );
-	if ( $programa !== '' && ! in_array( $programa, array( 'PNF en Telecomunicaciones', 'PNF en Informática' ), true ) ) {
+	$programas_permitidos = 'posgrado' === $tipo
+		? UNETI_SOLICITUD_PROGRAMAS_POSGRADO
+		: UNETI_SOLICITUD_PROGRAMAS_ADMISION;
+
+	if ( $programa !== '' && ! in_array( $programa, $programas_permitidos, true ) ) {
 		return new WP_Error( 'uneti_solicitud_programa', 'El programa no es válido.', array( 'status' => 400 ) );
 	}
 
-	if ( 'admision' === $tipo && '' === $programa ) {
-		return new WP_Error( 'uneti_solicitud_programa_requerido', 'Selecciona un PNF.', array( 'status' => 400 ) );
+	if ( in_array( $tipo, array( 'admision', 'posgrado' ), true ) && '' === $programa ) {
+		return new WP_Error(
+			'uneti_solicitud_programa_requerido',
+			'posgrado' === $tipo ? 'Selecciona un posgrado.' : 'Selecciona un PNF.',
+			array( 'status' => 400 )
+		);
 	}
 
 	$asunto = sanitize_text_field( (string) $request->get_param( 'asunto' ) );
@@ -342,9 +384,10 @@ function uneti_solicitud_crear( WP_REST_Request $request ) {
 
 	$respuesta = rest_ensure_response(
 		array(
-			'ok'    => true,
-			'folio' => $resultado['folio'],
-			'id'    => $resultado['id'],
+			'ok'     => true,
+			'folio'  => $resultado['folio'],
+			'ticket' => $resultado['folio'],
+			'id'     => $resultado['id'],
 		)
 	);
 	$respuesta->set_status( 201 );
@@ -356,7 +399,7 @@ function uneti_solicitud_crear( WP_REST_Request $request ) {
  * Inserta el CPT, los metadatos y el estado inicial.
  */
 function uneti_solicitud_insertar( array $datos ) {
-	$etiqueta = 'admision' === $datos['tipo'] ? 'admisión' : 'contacto';
+	$etiqueta = strtolower( uneti_solicitud_etiqueta_tipo( $datos['tipo'] ) );
 	$titulo   = sprintf(
 		'Solicitud de %s — %s — %s',
 		$etiqueta,
@@ -469,7 +512,7 @@ function uneti_solicitud_columna_valor( $columna, $post_id ) {
 			echo esc_html( '' !== $programa ? $programa : '—' );
 			break;
 		case 'uneti_tipo':
-			echo esc_html( 'admision' === $tipo ? 'Admisión' : 'Contacto' );
+			echo esc_html( uneti_solicitud_etiqueta_tipo( $tipo ) );
 			break;
 	}
 }
@@ -490,7 +533,7 @@ function uneti_solicitud_meta_boxes() {
 function uneti_solicitud_meta_box( $post ) {
 	$campos = array(
 		'Folio'          => get_post_meta( $post->ID, '_uneti_folio', true ),
-		'Tipo'           => 'admision' === get_post_meta( $post->ID, '_uneti_tipo', true ) ? 'Admisión' : 'Contacto',
+		'Tipo'           => uneti_solicitud_etiqueta_tipo( get_post_meta( $post->ID, '_uneti_tipo', true ) ),
 		'Nombre'         => get_post_meta( $post->ID, '_uneti_nombre', true ),
 		'Cédula'         => get_post_meta( $post->ID, '_uneti_cedula', true ),
 		'Correo'         => get_post_meta( $post->ID, '_uneti_correo', true ),
@@ -615,7 +658,7 @@ function uneti_solicitud_exportar_csv() {
 		$fila = array(
 			get_post_meta( $solicitud->ID, '_uneti_folio', true ),
 			get_post_meta( $solicitud->ID, '_uneti_fecha', true ),
-			'admision' === get_post_meta( $solicitud->ID, '_uneti_tipo', true ) ? 'Admisión' : 'Contacto',
+			uneti_solicitud_etiqueta_tipo( get_post_meta( $solicitud->ID, '_uneti_tipo', true ) ),
 			get_post_meta( $solicitud->ID, '_uneti_nombre', true ),
 			get_post_meta( $solicitud->ID, '_uneti_cedula', true ),
 			get_post_meta( $solicitud->ID, '_uneti_correo', true ),
@@ -650,7 +693,7 @@ function uneti_solicitud_notificar( $post_id, $datos, $folio ) {
 
 	$cuerpo = array(
 		'Folio: ' . $folio,
-		'Tipo: ' . ( 'admision' === $datos['tipo'] ? 'Admisión' : 'Contacto' ),
+		'Tipo: ' . uneti_solicitud_etiqueta_tipo( $datos['tipo'] ),
 		'Nombre: ' . $datos['nombre'],
 		'Correo: ' . $datos['correo'],
 		'Teléfono: ' . $datos['telefono'],

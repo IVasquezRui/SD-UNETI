@@ -28,7 +28,7 @@ export default async function NoticiasPage() {
           particleId="noticias-page-particles"
         />
 
-        <section className="bg-gradient-tranquil-white overflow-hidden position-relative overlap-height">
+        <section id="listado" className="bg-gradient-tranquil-white overflow-hidden position-relative overlap-height">
           <div className="container overlap-gap-section">
             <div className="row mb-4 md-mb-6">
               <div className="col-12">

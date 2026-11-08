@@ -31,6 +31,8 @@ export type SedeUNETI = {
   reference: string;
   activity: string;
   mapsUrl: string;
+  /** URL del iframe de Google Maps para incrustar el mapa de la sede. */
+  mapsEmbed: string;
   image: string;
   alt: string;
 };
@@ -42,8 +44,8 @@ export const HISTORIA_PASOS: PasoHistoria[] = [
     title: "Educación pública y gratuita",
     description:
       "La UNETI es una universidad pública: la docencia de pregrado es gratuita. El ingreso se gestiona por los canales oficiales del Sistema Nacional de Ingreso (SNI/OPSU).",
-    image: "/assets/images/uneti/nosotros-principal.webp",
-    alt: "Comunidad universitaria de la UNETI reunida en Caracas",
+    image: "/assets/images/uneti/contacto-estudiantes.webp",
+    alt: "Estudiantes de la UNETI durante una actividad académica",
   },
   {
     id: "pnf",
@@ -51,8 +53,8 @@ export const HISTORIA_PASOS: PasoHistoria[] = [
     title: "Dos PNF, dos formas de construir el futuro",
     description:
       "La oferta se compone de los PNF en Informática y en Telecomunicaciones. Cada uno ofrece salida de TSU en 2 años e Ingeniería en 4 años, con prosecución dentro del mismo programa.",
-    image: "/assets/images/uneti/nosotros-equipo.webp",
-    alt: "Docentes y estudiantes de la UNETI durante una actividad formativa",
+    image: "/assets/images/uneti/carreras-hero-2026.webp",
+    alt: "Estudiantes de la UNETI en el campus universitario",
   },
   {
     id: "modalidad",
@@ -60,8 +62,8 @@ export const HISTORIA_PASOS: PasoHistoria[] = [
     title: "Predominio a distancia, prácticas presenciales",
     description:
       "La mayor parte de la formación se desarrolla a distancia con apoyo del Campus Virtual. Las prácticas son obligatorias y se realizan en espacios equipados, como el Núcleo CANTV San Martín.",
-    image: "/assets/images/uneti/nosotros-estudiantes.webp",
-    alt: "Estudiantes de la UNETI en una actividad académica",
+    image: "/assets/images/uneti/RectorConferencia2.jpg",
+    alt: "Rector de la UNETI durante una conferencia institucional",
   },
   {
     id: "sedes",
@@ -69,8 +71,8 @@ export const HISTORIA_PASOS: PasoHistoria[] = [
     title: "Dos sedes, un mismo proyecto",
     description:
       "La Sede Administrativa de Altagracia concentra la gestión institucional. El Núcleo CANTV San Martín reúne la docencia y las prácticas de telecomunicaciones en espacios equipados.",
-    image: "/assets/images/uneti/nosotros-graduados.webp",
-    alt: "Graduados de la UNETI celebrando junto a sus docentes",
+    image: "/assets/images/uneti/BannerSedeSanMartin.jpg",
+    alt: "Sede del Núcleo CANTV San Martín de la UNETI",
   },
 ];
 
@@ -154,6 +156,8 @@ export const SEDES_UNETI: SedeUNETI[] = [
     activity: "Gestión administrativa e institucional de la UNETI.",
     mapsUrl:
       "https://www.google.com/maps/search/?api=1&query=Torre+Ministerial+El+Chorro+Caracas",
+    mapsEmbed:
+      "https://maps.google.com/maps?q=Torre%20Ministerial%20El%20Chorro%20Caracas&z=16&output=embed",
     image: "/assets/images/uneti/nosotros-principal.webp",
     alt: "Sede administrativa de la UNETI en Altagracia, Caracas",
   },
@@ -166,7 +170,9 @@ export const SEDES_UNETI: SedeUNETI[] = [
     activity: "Docencia y prácticas de telecomunicaciones en espacios equipados.",
     mapsUrl:
       "https://www.google.com/maps/search/?api=1&query=Centro+de+Estudios+de+Telecomunicaciones+Cantv+San+Martin+Caracas",
-    image: "/assets/images/uneti/actividades-taller.webp",
-    alt: "Estudiantes de la UNETI en prácticas de laboratorio",
+    mapsEmbed:
+      "https://maps.google.com/maps?q=Centro%20de%20Estudios%20de%20Telecomunicaciones%20Cantv%20San%20Martin%20Caracas&z=16&output=embed",
+    image: "/assets/images/uneti/BannerSedeSanMartin.jpg",
+    alt: "Núcleo CANTV San Martín de la UNETI en Caracas",
   },
 ];

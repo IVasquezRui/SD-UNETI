@@ -453,3 +453,45 @@ docker run --rm -v "$PWD:/app" -w /app --entrypoint node node:26.13.0-slim build
 - Sitemap de usuarios y acceso directo a `mu-plugins` bloqueados; WPScan sin usuarios enumerados.
 - Workflows `01`–`08` con QA y pentests, optimizados para el plan gratuito.
 - Documentos [`solicitudes-wordpress-2026.md`](solicitudes-wordpress-2026.md) y [`ci-cd-2026.md`](ci-cd-2026.md).
+
+## 14. Actualización 2026-11-05
+
+> Detalle completo y checklist por punto: [`2026-11-05/doc-as-code_2026-11-05.md`](2026-11-05/doc-as-code_2026-11-05.md).
+> Evidencias de pruebas: [`2026-11-05/qa-2026-11-05.md`](2026-11-05/qa-2026-11-05.md).
+
+### ISR y caché
+
+- ISR implementado con el modelo de Next 16 + Cache Components: `'use cache'`, `cacheLife('noticias')`,
+  `cacheTag('noticias', 'noticia-<slug>')` y perfiles en `next.config.ts`.
+- Nuevo webhook `POST /api/revalidar` (`revalidateTag` + `revalidatePath`) protegido por token.
+- Lectura sin caché separada para SSE y polling (`obtenerNoticiasEnVivo`).
+
+### Contenido y diseño
+
+- Hero principal con carrusel de 4 imágenes cada 5 s, imagen más luminosa y puntos de navegación.
+- Parallax del storytelling corregido: el alcance se mide sobre la sección, no sobre el bloque sticky.
+- Nuevas fotografías del storytelling, de «Cómo se estudia» y carruseles por PNF en `/carreras`.
+- Logo del footer a color y nítido sobre placa blanca (`logo@2x.png`).
+- Corrección del destello/cruz de las flashcards (hover fuera del plano 3D y caras separadas 1 px).
+- Justificación tipográfica de párrafos con excepciones para bloques centrados e interfaz.
+- `/contacto` muestra las dos sedes con Google Maps y fichas independientes.
+- Hamburguesa global de navegación rápida (`NavegacionRapida`) en todas las rutas.
+
+### Posgrados (PNFA)
+
+- Nueva vista `/posgrados` con los 7 programas, malla por ejes, requisitos y formulario.
+- Resumen de posgrados en `/carreras` y enlaces «Solicitar Cupo» con preselección.
+- Nuevo `tipo: posgrado` en el mu-plugin de WordPress, whitelist de programas y etiqueta dedicada.
+
+### Formularios
+
+- `FormularioContacto` rediseñado en tres pasos, con motivos de contacto y confirmación TFSA.
+- Nuevo `FormularioPosgrado` (`/api/posgrados`) con tarjetas por color y confirmación TFSA.
+- TFSA (checklist verde/rojo a pantalla completa) aplicado a Admisiones PNF, Posgrados y Contacto.
+- WordPress devuelve `ticket` (folio) e `id` en la respuesta de todas las solicitudes.
+
+### Otros
+
+- Cursos: «Obtener información» abre WhatsApp (`wa.me/584241427051`) con el nombre del curso.
+- `qa-frontend.sh` y `probar-formulario.mjs` ampliados con posgrados, contacto y WhatsApp.
+
