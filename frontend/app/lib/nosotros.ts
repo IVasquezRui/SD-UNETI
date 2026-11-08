@@ -118,6 +118,34 @@ export const MODALIDAD_PRESENCIAL = [
   "Planificación previa de cada encuentro presencial.",
 ];
 
+/** Modelo híbrido territorial (Documents/Modalidad_Hibrida.md). */
+export const MODALIDAD_TERRITORIAL: RequisitoModalidad[] = [
+  {
+    icon: "bi bi-broadcast-pin",
+    title: "Centros CANTV y Movilnet",
+    description:
+      "Prácticas, pasantías y evaluaciones presenciales en infraestructura real de fibra óptica, radiofrecuencia y conmutación de datos.",
+  },
+  {
+    icon: "bi bi-building",
+    title: "Red de Infocentros",
+    description:
+      "Aulas informáticas con equipos, conectividad y soporte para cumplir los trayectos académicos en el Campus Virtual.",
+  },
+  {
+    icon: "bi bi-mortarboard",
+    title: "Convenios MPPEU y UPT",
+    description:
+      "Aulas territoriales en universidades politécnicas para encuentros puntuales que requieren presencia de estudiantes o docentes.",
+  },
+  {
+    icon: "bi bi-diagram-3",
+    title: "Nodos de Conocimiento",
+    description:
+      "Celdas operativas transversales donde docentes y estudiantes validan proyectos de investigación, innovación y software libre.",
+  },
+];
+
 export const REQUISITOS_MODALIDAD: RequisitoModalidad[] = [
   {
     icon: "bi bi-display",

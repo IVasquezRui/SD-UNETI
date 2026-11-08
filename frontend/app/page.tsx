@@ -2,6 +2,7 @@ import SeccionNosotros from "./componentes/SeccionNosotros";
 import SeccionActividades from "./componentes/SeccionActividades";
 import SeccionArticulos from "./componentes/SeccionArticulos";
 import SeccionCarreras from "./componentes/SeccionCarreras";
+import SeccionModalidadInicio from "./componentes/SeccionModalidadInicio";
 import SeccionPreguntas from "./componentes/SeccionPreguntas";
 import PortadaPrincipal from "./componentes/PortadaPrincipal";
 import SeccionCursosInicio from "./componentes/SeccionCursosInicio";
@@ -21,6 +22,7 @@ export default function Inicio() {
         <RutaUNETI />
         <SeccionNosotros />
         <SeccionCarreras />
+        <SeccionModalidadInicio />
         <SeccionPreguntas
           id="preguntas"
           eyebrow="Preguntas y respuestas"
