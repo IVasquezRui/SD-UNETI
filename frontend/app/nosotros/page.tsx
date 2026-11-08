@@ -11,7 +11,6 @@ import ModalidadHibrida from "../componentes/ModalidadHibrida";
 import ParallaxImagen from "../componentes/ParallaxImagen";
 import RedesSocialesDetalle from "../componentes/RedesSocialesDetalle";
 import Reveal from "../componentes/Reveal";
-import RutaUNETI from "../componentes/RutaUNETI";
 import SedesUNETI from "../componentes/SedesUNETI";
 import { ACTIVIDADES_NOSOTROS, PREGUNTAS_NOSOTROS, VALORES } from "../lib/institucional";
 
@@ -95,6 +94,19 @@ export default function NosotrosPage() {
 
         <HistoriaParallax />
 
+        <SeccionPreguntas
+          id="institucional"
+          eyebrow="Conoce nuestra casa de estudios"
+          title="Misión, visión y modelo educativo"
+          description="Los fundamentos que orientan la formación, la investigación y la gestión de la UNETI."
+          image="/assets/images/uneti/faq-estudiantes.webp"
+          imageAlt="Estudiante de la UNETI"
+          items={PREGUNTAS_NOSOTROS}
+          sticky
+        />
+
+        <ModalidadHibrida />
+
         <section id="esencia" className="bg-gradient-tranquil-white position-relative overflow-hidden">
           <div className="container">
             <div className="row justify-content-center text-center mb-5">
@@ -119,24 +131,12 @@ export default function NosotrosPage() {
           </div>
         </section>
 
-        <RutaUNETI />
 
-        <ModalidadHibrida />
 
         <SedesUNETI />
 
         <RedesSocialesDetalle />
 
-        <SeccionPreguntas
-          id="institucional"
-          eyebrow="Conoce nuestra casa de estudios"
-          title="Misión, visión y modelo educativo"
-          description="Los fundamentos que orientan la formación, la investigación y la gestión de la UNETI."
-          image="/assets/images/uneti/faq-estudiantes.webp"
-          imageAlt="Estudiante de la UNETI"
-          items={PREGUNTAS_NOSOTROS}
-          sticky
-        />
 
         <SeccionActividades
           id="actividades"
