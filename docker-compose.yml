@@ -24,6 +24,9 @@ services:
       timeout: 5s
       retries: 12
       start_period: 20s
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 512
     networks:
       - frontend_net
 
@@ -44,6 +47,8 @@ services:
       WORDPRESS_DB_NAME: ${MYSQL_DATABASE:-wordpress_db}
       # Token compartido con Next.js para el endpoint de solicitudes.
       UNETI_FORM_TOKEN: ${UNETI_FORM_TOKEN:-}
+      # Fuerza HTTPS en el panel cuando el despliegue lo indique.
+      WP_FORCE_SSL: ${WP_FORCE_SSL:-0}
       WORDPRESS_CONFIG_EXTRA: |
         define( 'WP_HOME', '${WORDPRESS_URL:-http://localhost:8080}' );
         define( 'WP_SITEURL', '${WORDPRESS_URL:-http://localhost:8080}' );
@@ -61,6 +66,15 @@ services:
       # WPGraphQL se versiona en el repo para que un clon limpio lo tenga.
       - ./wp_content/plugins/wp-graphql:/var/www/html/wp-content/plugins/wp-graphql:ro
       - ./scripts/wordpress:/opt/uneti-scripts:ro
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1/wp-login.php > /dev/null || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 40s
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 512
     networks:
       - frontend_net
 
@@ -87,10 +101,26 @@ services:
       # URL interna (resolución por DNS de Docker dentro de frontend_net)
       WP_INTERNAL_URL: http://wordpress
       WP_GRAPHQL_URL: http://wordpress/graphql
+      # Token del webhook de revalidación ISR (servidor a servidor).
+      UNETI_REVALIDATE_TOKEN: ${UNETI_REVALIDATE_TOKEN:-}
     volumes:
       - ./frontend:/app
       # node_modules vive dentro del contenedor: evita binarios linux en el host
       - /app/node_modules
+    init: true
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "node -e \"fetch('http://127.0.0.1:3000/').then((r) => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))\"",
+        ]
+      interval: 20s
+      timeout: 8s
+      retries: 10
+      start_period: 60s
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 512
     depends_on:
       wordpress:
         condition: service_started

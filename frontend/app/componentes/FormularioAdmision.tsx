@@ -484,7 +484,8 @@ export default function FormularioAdmision() {
               />
               <span>
                 Autorizo el tratamiento de mis datos para que la UNETI pueda gestionar esta
-                solicitud de admisión, conforme a su política de privacidad.
+                solicitud de admisión, conforme a su política de privacidad.{" "}
+              <a href="/privacidad" target="_blank" rel="noreferrer">Ver política</a>
               </span>
             </label>
             {errores.consentimiento && (

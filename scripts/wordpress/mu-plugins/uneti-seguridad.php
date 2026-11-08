@@ -96,6 +96,66 @@ add_action(
 		header( 'X-Frame-Options: SAMEORIGIN' );
 		header( 'Referrer-Policy: strict-origin-when-cross-origin' );
 		header( 'Permissions-Policy: camera=(), microphone=(), geolocation=()' );
+		header( 'Cross-Origin-Opener-Policy: same-origin' );
+		header( 'X-Permitted-Cross-Domain-Policies: none' );
+
+		if ( is_ssl() ) {
+			header( 'Strict-Transport-Security: max-age=31536000; includeSubDomains' );
+		}
+	}
+);
+
+/* Pingbacks internos desactivados. */
+add_filter( 'pings_open', '__return_false', 10, 0 );
+
+/* Límite de intentos de acceso: 5 fallos por IP en 15 minutos. */
+const UNETI_SEG_LOGIN_MAX     = 5;
+const UNETI_SEG_LOGIN_VENTANA = 900;
+
+function uneti_seg_ip_hash() {
+	$ip = isset( $_SERVER['REMOTE_ADDR'] )
+		? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) )
+		: '0.0.0.0';
+
+	return md5( $ip );
+}
+
+add_filter(
+	'authenticate',
+	function ( $usuario, $nombre ) {
+		if ( empty( $nombre ) ) {
+			return $usuario;
+		}
+
+		$intentos = (int) get_transient( 'uneti_seg_login_' . uneti_seg_ip_hash() );
+
+		if ( $intentos >= UNETI_SEG_LOGIN_MAX ) {
+			return new WP_Error(
+				'uneti_seg_bloqueado',
+				'Demasiados intentos. Inténtalo de nuevo más tarde.'
+			);
+		}
+
+		return $usuario;
+	},
+	30,
+	2
+);
+
+add_action(
+	'wp_login_failed',
+	function () {
+		$clave    = 'uneti_seg_login_' . uneti_seg_ip_hash();
+		$intentos = (int) get_transient( $clave );
+
+		set_transient( $clave, $intentos + 1, UNETI_SEG_LOGIN_VENTANA );
+	}
+);
+
+add_action(
+	'wp_login',
+	function () {
+		delete_transient( 'uneti_seg_login_' . uneti_seg_ip_hash() );
 	}
 );
 
@@ -106,3 +166,8 @@ add_filter(
 		return 'Las credenciales no son correctas.';
 	}
 );
+
+/* Fuerza HTTPS en el panel cuando el despliegue lo indique. */
+if ( '1' === (string) getenv( 'WP_FORCE_SSL' ) ) {
+	define( 'FORCE_SSL_ADMIN', true );
+}
