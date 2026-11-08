@@ -22,6 +22,7 @@ const nextConfig: NextConfig = {
       "frame-ancestors 'self'",
       "form-action 'self'",
       `script-src 'self' 'unsafe-inline'${desarrollo ? " 'unsafe-eval'" : ""}`,
+      "script-src-attr 'none'",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' data: https://fonts.gstatic.com",
       "img-src 'self' data: blob: https: http://localhost:8080",
@@ -30,6 +31,7 @@ const nextConfig: NextConfig = {
       `connect-src 'self'${desarrollo ? " ws: wss:" : ""}`,
       "frame-src https://www.youtube.com https://www.youtube-nocookie.com https://maps.google.com https://www.google.com",
       "manifest-src 'self'",
+      ...(desarrollo ? [] : ["upgrade-insecure-requests"]),
     ].join("; ");
 
     const cabeceras = [
@@ -37,7 +39,15 @@ const nextConfig: NextConfig = {
       { key: "X-Content-Type-Options", value: "nosniff" },
       { key: "X-Frame-Options", value: "SAMEORIGIN" },
       { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-      { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+      {
+        key: "Permissions-Policy",
+        value:
+          "camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=(), interest-cohort=()",
+      },
+      { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
+      { key: "Cross-Origin-Resource-Policy", value: "same-origin" },
+      { key: "X-Permitted-Cross-Domain-Policies", value: "none" },
+      { key: "Origin-Agent-Cluster", value: "?1" },
       { key: "X-DNS-Prefetch-Control", value: "on" },
     ];
 
