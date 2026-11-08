@@ -2,6 +2,7 @@ import { CONTACTO } from "../lib/institucional";
 import {
   MODALIDAD_A_DISTANCIA,
   MODALIDAD_PRESENCIAL,
+  MODALIDAD_TERRITORIAL,
   REQUISITOS_MODALIDAD,
 } from "../lib/nosotros";
 import ParallaxImagen from "./ParallaxImagen";
@@ -117,6 +118,32 @@ export default function ModalidadHibrida() {
                   </span>
                   <strong>{requisito.title}</strong>
                   <p>{requisito.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Reveal>
+        <Reveal className="mt-5">
+          <div className="uneti-territorio">
+            <div className="uneti-territorio__intro">
+              <span className="uneti-section-eyebrow mb-10px">Cobertura territorial</span>
+              <h3 className="alt-font text-dark-gray fw-600 mb-10px">
+                Dos sedes propias y una red de espacios aliados.
+              </h3>
+              <p className="mb-0">
+                La UNETI cuenta únicamente con dos sedes propias: la Sede Administrativa y el Núcleo
+                CANTV San Martín. Para prácticas y encuentros fuera de Caracas se apoya en
+                infraestructura del Estado venezolano.
+              </p>
+            </div>
+            <div className="uneti-territorio__grid">
+              {MODALIDAD_TERRITORIAL.map((item) => (
+                <div className="uneti-territorio__item" key={item.title}>
+                  <span className="uneti-territorio__icono" aria-hidden="true">
+                    <i className={item.icon}></i>
+                  </span>
+                  <strong>{item.title}</strong>
+                  <p>{item.description}</p>
                 </div>
               ))}
             </div>
