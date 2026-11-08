@@ -2,6 +2,11 @@ import { NextResponse } from "next/server";
 import { validarSolicitud } from "../../lib/solicitudes";
 import { enviarSolicitudAWp } from "../../lib/solicitudes-wp";
 import { limitar, obtenerIp, origenValido } from "../../lib/rate-limit";
+import {
+  LIMITE_CUERPO_FORMULARIO,
+  errorCuerpo,
+  leerJsonLimitado,
+} from "../../lib/security";
 
 const PATRON_CORREO = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAXIMO = 5;
@@ -52,7 +57,14 @@ export async function POST(request: Request) {
     );
   }
 
-  const payload = (await request.json().catch(() => null)) as PayloadContacto | null;
+  const lectura = await leerJsonLimitado<PayloadContacto>(request, LIMITE_CUERPO_FORMULARIO);
+
+  if (!lectura.ok) {
+    const { status, error } = errorCuerpo(lectura.motivo);
+    return NextResponse.json({ ok: false, error }, { status });
+  }
+
+  const payload = lectura.datos;
 
   if (!payload) {
     return NextResponse.json(
