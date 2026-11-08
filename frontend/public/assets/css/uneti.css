@@ -5908,3 +5908,115 @@ main div[id] {
   }
 }
 
+/* ==========================================
+   Cursos: resumen en portada y viñetas de color
+   ========================================== */
+.uneti-cursos-inicio {
+  padding: 90px 0;
+  background: linear-gradient(180deg, #f7fafd 0%, #ffffff 100%);
+}
+
+.uneti-curso-mini {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 26px 22px 22px 26px;
+  border: 1px solid rgba(15, 34, 57, 0.08);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 16px 36px rgba(15, 34, 57, 0.08);
+  text-decoration: none;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.uneti-curso-mini:hover {
+  transform: translateY(-6px);
+  border-color: var(--curso-color, var(--base-color));
+  box-shadow: 0 24px 50px rgba(15, 34, 57, 0.16);
+  text-decoration: none;
+}
+
+.uneti-curso-mini__vineta,
+.uneti-course-card__vineta {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  background: var(--curso-color, var(--base-color));
+}
+
+.uneti-curso-mini__icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 14px;
+  border-radius: 14px;
+  background: var(--curso-color, var(--base-color));
+  color: #fff;
+  font-size: 22px;
+}
+
+.uneti-curso-mini h3 {
+  margin: 0 0 8px;
+  color: #0f2239;
+  font-family: var(--alt-font, inherit);
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.uneti-curso-mini p {
+  margin: 0 0 14px;
+  color: #4d5b70;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+
+.uneti-curso-mini__meta {
+  color: #8a97a8;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.uneti-curso-mini__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: 12px;
+  color: var(--curso-color, var(--base-color));
+  font-size: 12.5px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.uneti-curso-mini__cta i {
+  transition: transform 0.2s ease;
+}
+
+.uneti-curso-mini:hover .uneti-curso-mini__cta i {
+  transform: translateX(3px);
+}
+
+.uneti-course-card--color {
+  position: relative;
+  overflow: hidden;
+}
+
+.uneti-course-card--color .uneti-course-card__head .uneti-icon-tone {
+  background: var(--curso-color, var(--base-color));
+  color: #fff;
+}
+
+@media (max-width: 767.98px) {
+  .uneti-cursos-inicio {
+    padding: 64px 0;
+  }
+}
+

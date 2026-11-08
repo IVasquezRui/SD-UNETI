@@ -4,7 +4,7 @@ import SeccionArticulos from "./componentes/SeccionArticulos";
 import SeccionCarreras from "./componentes/SeccionCarreras";
 import SeccionPreguntas from "./componentes/SeccionPreguntas";
 import PortadaPrincipal from "./componentes/PortadaPrincipal";
-import SeccionInnovacion from "./componentes/SeccionInnovacion";
+import SeccionCursosInicio from "./componentes/SeccionCursosInicio";
 import PieSitio from "./componentes/PieSitio";
 import EncabezadoSitio from "./componentes/EncabezadoSitio";
 import RutaUNETI from "./componentes/RutaUNETI";
@@ -30,7 +30,7 @@ export default function Inicio() {
           imageAlt="Estudiante de la UNETI"
           items={PREGUNTAS_INICIO}
         />
-        <SeccionInnovacion />
+        <SeccionCursosInicio />
         <SeccionTestimonios />
         <SeccionActividades
           id="actividades"

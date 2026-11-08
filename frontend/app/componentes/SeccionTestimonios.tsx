@@ -6,7 +6,6 @@ const HIGHLIGHTS = [
   { icon: "bi bi-currency-bitcoin", label: "Blockchain" },
   { icon: "bi bi-badge-vr", label: "Metaverso" },
   { icon: "bi bi-robot", label: "Inteligencia artificial" },
-  { icon: "bi bi-box", label: "Modelado 3D" },
   { icon: "bi bi-broadcast", label: "Telecomunicaciones" },
 ];
 
