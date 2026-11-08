@@ -254,7 +254,12 @@ export default function PieSitio({ conPrefooter = true }: { conPrefooter?: boole
               </ul>
             </div>
             <div className="col-xl-5 last-paragraph-no-margin text-center text-xl-end">
-              <p className="fs-16">© 2026 UNETI. Todos los derechos reservados.</p>
+              <p className="fs-16">
+                <a href="/privacidad" className="text-white text-decoration-line-bottom">
+                  Política de privacidad
+                </a>
+                {" · "}© 2026 UNETI. Todos los derechos reservados.
+              </p>
             </div>
           </div>
         </div>
