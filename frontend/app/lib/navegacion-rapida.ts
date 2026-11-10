@@ -21,7 +21,7 @@ export const PAGINAS_RAPIDAS: PaginaRapida[] = [
   { href: "/cursos", etiqueta: "Cursos", icono: "bi bi-journal-code" },
   { href: "/noticias", etiqueta: "Noticias", icono: "bi bi-newspaper" },
   { href: "/admisiones", etiqueta: "Admisiones", icono: "bi bi-clipboard-check" },
-  { href: "/contacto", etiqueta: "Contacto", icono: "bi bi-envelope" },
+  { href: "/contacto#formulario-contacto", etiqueta: "Contacto", icono: "bi bi-envelope" },
 ];
 
 const DETALLE_CARRERA: SeccionRapida[] = [

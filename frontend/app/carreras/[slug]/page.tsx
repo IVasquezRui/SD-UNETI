@@ -61,6 +61,7 @@ export default async function DetalleCarreraPage({ params }: PropiedadesCarrera)
           title={carrera.nombre}
           subtitle={carrera.lema}
           image={carrera.portada}
+          imagePosition="center 45%"
           crumbs={[
             { label: "Inicio", href: "/" },
             { label: "Carreras", href: "/carreras" },

@@ -35,7 +35,9 @@ export default function PosgradosPage() {
           title="Posgrados"
           subtitle="Especializaciones, maestrías y doctorado para la Venezuela Digital."
           image="/assets/images/uneti/NEW_IMAGES/Posgrados/robotica/photo_5143169628853964102_y.jpg"
-          imagePosition="center 45%"
+          imagePosition="center 40%"
+          imageFit="completo"
+          imageHeight="alto"
           crumbs={[{ label: "Inicio", href: "/" }, { label: "Posgrados" }]}
           particleId="posgrados-page-particles"
         />

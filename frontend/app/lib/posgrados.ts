@@ -58,7 +58,7 @@ export const POSGRADOS: Posgrado[] = [
     proposito:
       "Preparar profesionales capaces de operar segmentos de vuelo y de terreno, gestionar cargas útiles, aplicar astrodinámica y administrar redes satelitales en coordinación con la Agencia Bolivariana para Actividades Espaciales (ABAE).",
     color: "#4582ff",
-    icono: "bi bi-satellite",
+    icono: "bi bi-broadcast",
     ejes: [
       {
         eje: "Eje sociocrítico",

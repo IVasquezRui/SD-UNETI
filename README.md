@@ -201,6 +201,8 @@ Los pentests se ejecutan manualmente y una vez al mes (días 1, 8 y 15) para no 
 - [`Documents/ci-cd-2026.md`](Documents/ci-cd-2026.md): workflows, presupuesto del plan gratuito y pentests.
 - [`Documents/doc-as-code_20102026.md`](Documents/doc-as-code_20102026.md): plan del seed portable y criterios de aceptación.
 - [`Documents/nextSteps.md`](Documents/nextSteps.md): siguientes fases.
+- [`Documents/informe-tecnico-2026-11-10.md`](Documents/informe-tecnico-2026-11-10.md): informe técnico integral (tecnologías, metodología, fases, veredicto de producción y runbook Proxmox + Caddy).
+- [`Documents/informe-tecnico-2026-11-10.html`](Documents/informe-tecnico-2026-11-10.html): vista navegable del informe (hecha por Iván Vásquez) con índice, búsqueda, tema claro/oscuro y checklist del go-live.
 - [`seed/README.md`](seed/README.md): contrato de los fixtures.
 - [`seed/CREDITS.md`](seed/CREDITS.md): procedencia y licencia de las imágenes.
 

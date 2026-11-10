@@ -82,7 +82,7 @@ export default function SeccionNosotros() {
                     Estudiantes confían en UNETI
                   </span>
                   <a
-                    href="/contacto"
+                    href="/contacto#formulario-contacto"
                     className="text-white fs-16 text-decoration-line-bottom"
                   >
                     Únete a nuestra comunidad
