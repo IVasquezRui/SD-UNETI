@@ -33,7 +33,7 @@ export default function SeccionTestimonios() {
               trayectorias.
             </p>
             <a
-              href="/contacto"
+              href="/contacto#formulario-contacto"
               className="btn btn-large btn-base-color btn-rounded btn-switch-text fw-600"
             >
               <span>

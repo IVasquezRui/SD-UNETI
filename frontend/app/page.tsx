@@ -28,8 +28,8 @@ export default function Inicio() {
           eyebrow="Preguntas y respuestas"
           title="Nuestros estudiantes nos preguntan."
           description="Estos son los puntos que nuestros estudiantes nos han estado preguntando con más frecuencia."
-          image="/assets/images/uneti/faq-estudiantes.webp"
-          imageAlt="Estudiante de la UNETI"
+          image="/assets/images/uneti/DocentesDebatiendo.jpg"
+          imageAlt="Docentes de la UNETI debatiendo en una jornada académica"
           items={PREGUNTAS_INICIO}
         />
         <SeccionCursosInicio />

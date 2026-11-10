@@ -496,6 +496,66 @@ body {
   box-shadow: 0 0 0 5px rgba(22, 179, 127, 0.15);
 }
 
+/* Esqueleto del listado de noticias mientras el servidor resuelve la lectura. */
+.uneti-esqueleto-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 100%;
+  padding: 0 0 30px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 18px 40px rgba(15, 34, 57, 0.08);
+}
+
+.uneti-esqueleto-media,
+.uneti-esqueleto-linea,
+.uneti-esqueleto-pie {
+  display: block;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #eef2f7 25%, #e1e8f1 37%, #eef2f7 63%);
+  background-size: 400% 100%;
+  animation: uneti-esqueleto-pulso 1.6s ease-in-out infinite;
+}
+
+.uneti-esqueleto-media {
+  height: 210px;
+  border-radius: 0;
+}
+
+.uneti-esqueleto-linea {
+  height: 13px;
+  margin: 0 30px;
+}
+
+.uneti-esqueleto-linea--corta {
+  width: 55%;
+}
+
+.uneti-esqueleto-pie {
+  height: 34px;
+  margin: auto 30px 0;
+  border-radius: 999px;
+}
+
+@keyframes uneti-esqueleto-pulso {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .uneti-esqueleto-media,
+  .uneti-esqueleto-linea,
+  .uneti-esqueleto-pie {
+    animation: none;
+  }
+}
+
 .uneti-noticia-contenido {
   font-size: 17px;
   line-height: 31px;
@@ -2940,6 +3000,39 @@ main > section.uneti-article-header {
   will-change: transform;
 }
 
+/* Hero con la fotografía completa: una copia desenfocada rellena el encuadre. */
+section.uneti-page-header--alto {
+  min-height: 540px;
+}
+
+.uneti-page-header__encuadre {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.uneti-page-header__desenfoque {
+  position: absolute;
+  inset: -8%;
+  background-position: center;
+  background-size: cover;
+  filter: blur(26px) brightness(0.55) saturate(1.1);
+  transform: scale(1.05);
+}
+
+.uneti-page-header__media--completo {
+  inset: 0;
+  height: 100%;
+  object-fit: contain;
+}
+
+@media (max-width: 767.98px) {
+  section.uneti-page-header--alto {
+    min-height: 400px;
+  }
+}
+
 .uneti-page-header__overlay {
   z-index: 1;
 }
@@ -3242,52 +3335,39 @@ main > section.uneti-article-header {
   object-fit: cover;
 }
 
+.uneti-story__escenario {
+  position: relative;
+}
+
 .uneti-story__media {
   position: relative;
-  top: auto;
   height: 520px;
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 30px 70px rgba(0, 0, 0, 0.35);
-  transform: translate3d(0, var(--story-shift, 0px), 0);
-  transition: transform 0.12s linear;
+  transform: translate3d(0, var(--story-y, 0px), 0);
+  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: transform;
 }
 
-.uneti-story__barra {
+.uneti-story__capa {
   position: absolute;
-  left: 22px;
-  right: 22px;
-  bottom: 12px;
-  z-index: 2;
-  height: 3px;
-  border-radius: 3px;
-  background: rgba(255, 255, 255, 0.25);
-  overflow: hidden;
-}
-
-.uneti-story__barra > span {
-  display: block;
-  height: 100%;
-  border-radius: 3px;
-  background: linear-gradient(90deg, var(--base-color), #f2b705);
-  transition: width 0.4s ease;
+  inset: -8% 0;
+  transform: translate3d(0, var(--story-drift, 0px), 0);
 }
 
 .uneti-story__imagen {
-  position: absolute;
-  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   opacity: 0;
-  transform: scale(1.05);
-  transition: opacity 0.6s ease, transform 0.9s ease;
+  transform: scale(1.04);
+  transition: opacity 0.7s ease, transform 1.2s ease;
 }
 
-.uneti-story__imagen.is-active {
+.uneti-story__capa.is-active .uneti-story__imagen {
   opacity: 1;
-  transform: scale(1.09);
+  transform: scale(1.1);
 }
 
 .uneti-story__contador {
@@ -4160,7 +4240,9 @@ main > section.uneti-article-header {
   }
 
   .uneti-parallax-img,
-  .uneti-page-header__media {
+  .uneti-page-header__media,
+  .uneti-story__media,
+  .uneti-story__capa {
     transform: none !important;
   }
 
@@ -4896,8 +4978,8 @@ main > section.uneti-article-header {
 }
 
 /* El desplazamiento del storytelling necesita margen de imagen suficiente. */
-.uneti-story__imagen.uneti-parallax-img {
-  transform: translate3d(0, var(--parallax-y, 0px), 0) scale(1.16);
+.uneti-story__capa {
+  will-change: transform;
 }
 
 @media (max-width: 991.98px) {

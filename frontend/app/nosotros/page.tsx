@@ -99,8 +99,8 @@ export default function NosotrosPage() {
           eyebrow="Conoce nuestra casa de estudios"
           title="Misión, visión y modelo educativo"
           description="Los fundamentos que orientan la formación, la investigación y la gestión de la UNETI."
-          image="/assets/images/uneti/faq-estudiantes.webp"
-          imageAlt="Estudiante de la UNETI"
+          image="/assets/images/uneti/DocentesDebatiendo.jpg"
+          imageAlt="Docentes de la UNETI debatiendo en una jornada académica"
           items={PREGUNTAS_NOSOTROS}
           sticky
         />
@@ -174,7 +174,7 @@ export default function NosotrosPage() {
                   </span>
                 </a>
                 <a
-                  href="/contacto"
+                  href="/contacto#formulario-contacto"
                   className="btn btn-extra-large btn-dark-gray btn-rounded btn-box-shadow btn-switch-text mb-15px"
                 >
                   <span>

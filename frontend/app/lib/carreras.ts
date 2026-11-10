@@ -24,6 +24,9 @@ export type PreguntaCarrera = {
   respuesta: string;
 };
 
+/** Imágenes institucionales 2026 de los PNF (portada y galería). */
+const IMAGENES_PNF = "/assets/images/uneti/NEW_IMAGES";
+
 export type Carrera = {
   slug: string;
   nombre: string;
@@ -98,23 +101,39 @@ export const CARRERAS: Carrera[] = [
       "El plan de estudios combina proyectos sociotecnológicos, laboratorios especializados y prácticas profesionalizantes. El estudiante avanza desde la alfabetización computacional hasta la ingeniería de software, la ciberseguridad y la analítica de datos.",
       "La modalidad multimodal permite estudiar con acompañamiento docente y recursos virtuales, manteniendo el vínculo con los laboratorios y los proyectos de territorio.",
     ],
-    portada: "/assets/images/carreras/pnf-informatica/portada.jpg",
+    portada: `${IMAGENES_PNF}/5154555681644940475.jpg`,
     galeria: [
       {
-        imagen: "/assets/images/carreras/pnf-informatica/carrusel-1.jpg",
-        alt: "Estudiantes del PNF en Informática durante una práctica de laboratorio",
+        imagen: `${IMAGENES_PNF}/5154555681644940474.jpg`,
+        alt: "Estudiante del PNF en Informática programando con varios monitores",
       },
       {
-        imagen: "/assets/images/carreras/pnf-informatica/carrusel-2.jpg",
-        alt: "Formación en desarrollo de software del PNF en Informática",
+        imagen: `${IMAGENES_PNF}/5154555681644940477.jpg`,
+        alt: "Equipo de estudiantes revisando código en la sala de servidores",
       },
       {
-        imagen: "/assets/images/carreras/pnf-informatica/carrusel-3.jpg",
-        alt: "Práctica de redes y ciberseguridad del PNF en Informática",
+        imagen: `${IMAGENES_PNF}/5154555681644940478.jpg`,
+        alt: "Proyecto colaborativo de Informática con laptops y el panel de la UNETI",
       },
       {
-        imagen: "/assets/images/carreras/pnf-informatica/carrusel-4.jpg",
-        alt: "Encuentro académico de estudiantes de Informática de la UNETI",
+        imagen: `${IMAGENES_PNF}/5154555681644940491.jpg`,
+        alt: "Tecnologías emergentes: programación y prótesis robótica en la UNETI",
+      },
+      {
+        imagen: `${IMAGENES_PNF}/PNF-I/photo_5143169628853964101_y.jpg`,
+        alt: "Analítica de datos frente a tableros de métricas del PNF en Informática",
+      },
+      {
+        imagen: `${IMAGENES_PNF}/PNF-I/photo_5143169628853964106_y.jpg`,
+        alt: "Revisión de código en equipo frente a los monitores del laboratorio",
+      },
+      {
+        imagen: `${IMAGENES_PNF}/PNF-I/photo_5143169628853964107_y.jpg`,
+        alt: "Infraestructura y soporte de sistemas en el centro de datos",
+      },
+      {
+        imagen: `${IMAGENES_PNF}/PNF-I/photo_5143169628853964109_y.jpg`,
+        alt: "Cableado estructurado y redes en el gabinete de comunicaciones",
       },
     ],
     icono: "bi bi-cpu",
@@ -274,19 +293,39 @@ export const CARRERAS: Carrera[] = [
       "El estudiante trabaja con señales, electrónica, sistemas de transmisión, redes de datos y comunicaciones inalámbricas y ópticas. Los laboratorios y las pasantías permiten aplicar los conocimientos en infraestructura real.",
       "La formación incorpora la dimensión social de la conectividad: llevar servicios de calidad a zonas rurales, fortalecer la telemedicina, la teleeducación y la gestión de emergencias.",
     ],
-    portada: "/assets/images/carreras/pnf-telecomunicaciones/portada.jpg",
+    portada: `${IMAGENES_PNF}/PNF-T/photo_5143169628853964105_y.jpg`,
     galeria: [
       {
-        imagen: "/assets/images/carreras/pnf-telecomunicaciones/carrusel-1.jpg",
-        alt: "Estudiantes del PNF en Telecomunicaciones en práctica de laboratorio",
+        imagen: `${IMAGENES_PNF}/5154555681644940486.jpg`,
+        alt: "Revisión de la configuración de red con documentación técnica en el centro de datos",
       },
       {
-        imagen: "/assets/images/carreras/pnf-telecomunicaciones/carrusel-2.jpg",
-        alt: "Formación en redes y transmisión del PNF en Telecomunicaciones",
+        imagen: `${IMAGENES_PNF}/5154555681644940481.jpg`,
+        alt: "Configuración de equipos de conmutación en el rack de telecomunicaciones",
       },
       {
-        imagen: "/assets/images/carreras/pnf-telecomunicaciones/carrusel-3.jpg",
-        alt: "Práctica de telecomunicaciones en los espacios de la UNETI",
+        imagen: `${IMAGENES_PNF}/5154555681644940483.jpg`,
+        alt: "Sala de monitoreo de red (NOC) del PNF en Telecomunicaciones",
+      },
+      {
+        imagen: `${IMAGENES_PNF}/5154555681644940484.jpg`,
+        alt: "Operación y verificación de red desde el centro de datos",
+      },
+      {
+        imagen: `${IMAGENES_PNF}/5154555681644940485.jpg`,
+        alt: "Inventario y verificación de cableado en los gabinetes de comunicaciones",
+      },
+      {
+        imagen: `${IMAGENES_PNF}/5154555681644940487.jpg`,
+        alt: "Tendido de cableado y conexión de equipos de transmisión",
+      },
+      {
+        imagen: `${IMAGENES_PNF}/5154555681644940489.jpg`,
+        alt: "Auditoría de puertos en el rack de comunicaciones",
+      },
+      {
+        imagen: `${IMAGENES_PNF}/PNF-T/photo_5143169628853964108_y.jpg`,
+        alt: "Planificación de red entre estudiantes en el centro de datos",
       },
     ],
     icono: "bi bi-broadcast",

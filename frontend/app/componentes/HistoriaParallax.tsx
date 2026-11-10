@@ -7,8 +7,9 @@ import ParallaxImagen from "./ParallaxImagen";
 export default function HistoriaParallax() {
   const [activo, setActivo] = useState(0);
   const pasosRef = useRef<(HTMLLIElement | null)[]>([]);
-  const seccionRef = useRef<HTMLElement>(null);
-  const mediaRef = useRef<HTMLDivElement>(null);
+  const filaRef = useRef<HTMLDivElement>(null);
+  const escenarioRef = useRef<HTMLDivElement>(null);
+  const tarjetaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (typeof IntersectionObserver === "undefined") return;
@@ -31,11 +32,12 @@ export default function HistoriaParallax() {
     return () => observer.disconnect();
   }, []);
 
-  // El bloque de imágenes baja con el scroll (no se queda fijo arriba).
+  // La tarjeta de imágenes viaja hasta el paso que se está leyendo.
   useEffect(() => {
-    const seccion = seccionRef.current;
-    const media = mediaRef.current;
-    if (!seccion || !media) return;
+    const fila = filaRef.current;
+    const escenario = escenarioRef.current;
+    const tarjeta = tarjetaRef.current;
+    if (!fila || !escenario || !tarjeta) return;
 
     const movimientoReducido = window.matchMedia("(prefers-reduced-motion: reduce)");
     const escritorio = window.matchMedia("(min-width: 992px)");
@@ -46,16 +48,70 @@ export default function HistoriaParallax() {
       frame = 0;
 
       if (!escritorio.matches || movimientoReducido.matches) {
-        media.style.removeProperty("--story-shift");
+        tarjeta.style.removeProperty("--story-y");
         return;
       }
 
-      const rect = seccion.getBoundingClientRect();
-      const altoVentana = window.innerHeight;
-      const progreso = Math.min(1, Math.max(0, (altoVentana - rect.top) / (altoVentana + rect.height)));
-      const desplazamiento = -40 + progreso * 220;
+      const paso = pasosRef.current[activo];
+      if (!paso) return;
 
-      media.style.setProperty("--story-shift", `${desplazamiento.toFixed(1)}px`);
+      const rectFila = fila.getBoundingClientRect();
+      const rectPaso = paso.getBoundingClientRect();
+      const altoTarjeta = tarjeta.offsetHeight;
+      const recorrido = Math.max(0, escenario.clientHeight - altoTarjeta);
+      const centroPaso = rectPaso.top + rectPaso.height / 2 - rectFila.top;
+      const destino = centroPaso - altoTarjeta / 2;
+      const desplazamiento = Math.min(recorrido, Math.max(0, destino));
+
+      tarjeta.style.setProperty("--story-y", `${desplazamiento.toFixed(1)}px`);
+    };
+
+    const programar = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(aplicar);
+    };
+
+    programar();
+    window.addEventListener("resize", programar);
+    escritorio.addEventListener("change", programar);
+    movimientoReducido.addEventListener("change", programar);
+
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener("resize", programar);
+      escritorio.removeEventListener("change", programar);
+      movimientoReducido.removeEventListener("change", programar);
+      tarjeta.style.removeProperty("--story-y");
+    };
+  }, [activo]);
+
+  // Deriva parallax de la imagen dentro de la tarjeta según el avance de la fila.
+  useEffect(() => {
+    const fila = filaRef.current;
+    if (!fila) return;
+
+    const movimientoReducido = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const escritorio = window.matchMedia("(min-width: 992px)");
+
+    let frame = 0;
+
+    const aplicar = () => {
+      frame = 0;
+
+      if (!escritorio.matches || movimientoReducido.matches) {
+        fila.style.removeProperty("--story-drift");
+        return;
+      }
+
+      const rect = fila.getBoundingClientRect();
+      const altoVentana = window.innerHeight;
+      if (rect.bottom < 0 || rect.top > altoVentana) return;
+
+      const progreso = (altoVentana - rect.top) / (altoVentana + rect.height);
+      const limitado = Math.min(1, Math.max(0, progreso));
+      const deriva = (limitado - 0.5) * 56;
+
+      fila.style.setProperty("--story-drift", `${deriva.toFixed(1)}px`);
     };
 
     const programar = () => {
@@ -75,16 +131,12 @@ export default function HistoriaParallax() {
       window.removeEventListener("resize", programar);
       escritorio.removeEventListener("change", programar);
       movimientoReducido.removeEventListener("change", programar);
-      media.style.removeProperty("--story-shift");
+      fila.style.removeProperty("--story-drift");
     };
   }, []);
 
   return (
-    <section
-      ref={seccionRef}
-      id="nuestra-historia"
-      className="uneti-story position-relative overflow-hidden"
-    >
+    <section id="nuestra-historia" className="uneti-story position-relative overflow-hidden">
       <div className="container position-relative">
         <div className="row justify-content-center text-center mb-5">
           <div className="col-lg-8">
@@ -99,28 +151,27 @@ export default function HistoriaParallax() {
           </div>
         </div>
 
-        <div className="row align-items-start g-5">
-          <div className="col-lg-5 d-none d-lg-block">
-            <div ref={mediaRef} className="uneti-story__media">
+        <div ref={filaRef} className="row align-items-stretch g-5">
+          <div ref={escenarioRef} className="col-lg-5 d-none d-lg-block uneti-story__escenario">
+            <div ref={tarjetaRef} className="uneti-story__media">
               {HISTORIA_PASOS.map((paso, indice) => (
-                <img
+                <span
                   key={paso.id}
-                  src={paso.image}
-                  alt={indice === activo ? paso.alt : ""}
-                  className={`uneti-story__imagen${indice === activo ? " is-active" : ""}`}
-                  width={1280}
-                  height={853}
-                  loading={indice === 0 ? "eager" : "lazy"}
-                  decoding="async"
-                />
+                  className={`uneti-story__capa${indice === activo ? " is-active" : ""}`}
+                >
+                  <img
+                    src={paso.image}
+                    alt={indice === activo ? paso.alt : ""}
+                    className="uneti-story__imagen"
+                    width={1280}
+                    height={853}
+                    loading={indice === 0 ? "eager" : "lazy"}
+                    decoding="async"
+                  />
+                </span>
               ))}
               <span className="uneti-story__contador" aria-hidden="true">
                 <strong>0{activo + 1}</strong> / 0{HISTORIA_PASOS.length}
-              </span>
-              <span className="uneti-story__barra" aria-hidden="true">
-                <span
-                  style={{ width: `${((activo + 1) / HISTORIA_PASOS.length) * 100}%` }}
-                ></span>
               </span>
             </div>
           </div>

@@ -1,10 +1,9 @@
+import { Suspense } from "react";
 import { CONTACTO } from "../lib/institucional";
-import { obtenerNoticias } from "../lib/noticias";
-import SeccionNoticiasEnVivo from "./SeccionNoticiasEnVivo";
+import EsqueletoArticulos from "./EsqueletoArticulos";
+import NoticiasRecientes from "./NoticiasRecientes";
 
-export default async function SeccionArticulos() {
-  const noticias = await obtenerNoticias(3);
-
+export default function SeccionArticulos() {
   return (
     <section
       id="articulos"
@@ -39,7 +38,9 @@ export default async function SeccionArticulos() {
           </div>
         </div>
 
-        <SeccionNoticiasEnVivo noticiasIniciales={noticias} limite={3} />
+        <Suspense fallback={<EsqueletoArticulos />}>
+          <NoticiasRecientes limite={3} />
+        </Suspense>
 
         <div className="row justify-content-center mt-5">
           <div className="col-auto icon-with-text-style-08 md-mb-10px xs-mb-15px pe-25px md-pe-15px">
@@ -51,7 +52,7 @@ export default async function SeccionArticulos() {
                 <span className="text-dark-gray fw-500 fs-20 xs-fs-18 ls-minus-05px">
                   ¿Necesitas ayuda?{" "}
                   <a
-                    href="/contacto"
+                    href="/contacto#formulario-contacto"
                     className="text-decoration-line-bottom-medium text-dark-gray fw-600"
                   >
                     Contáctanos hoy

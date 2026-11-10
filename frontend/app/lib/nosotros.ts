@@ -100,7 +100,7 @@ export const RUTAS_UNETI: RutaUNETI[] = [
     title: "Soy empresa",
     description:
       "Usa los canales oficiales de contacto para organizaciones interesadas en nuestros PNF y proyectos.",
-    href: "/contacto",
+    href: "/contacto#formulario-contacto",
     cta: "Hablar con la UNETI",
     tone: "green",
   },

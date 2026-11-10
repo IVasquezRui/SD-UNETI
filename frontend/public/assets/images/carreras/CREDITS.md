@@ -4,6 +4,10 @@ Las fotografías de esta carpeta provienen de [Unsplash](https://unsplash.com) y
 material de apoyo visual para la oferta académica. Cada archivo conserva su identificador de
 origen para facilitar la trazabilidad.
 
+> Portadas y galerías de los PNF: desde 2026 se sirven desde
+> `public/assets/images/uneti/NEW_IMAGES` (`lib/carreras.ts`), por lo que `portada.jpg`,
+> `carrusel-*.jpg` y `galeria-*.jpg` de esta carpeta quedan como material histórico.
+
 ## PNF en Informática
 
 | Archivo | Fotografía de Unsplash |

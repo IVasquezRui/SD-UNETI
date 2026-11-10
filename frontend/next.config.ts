@@ -64,8 +64,8 @@ const nextConfig: NextConfig = {
     return [
       { source: "/about", destination: "/nosotros", statusCode: 301 },
       { source: "/admissions", destination: "/admisiones", statusCode: 301 },
-      { source: "/contact", destination: "/contacto", statusCode: 301 },
-      { source: "/contactanos", destination: "/contacto", statusCode: 301 },
+      { source: "/contact", destination: "/contacto#formulario-contacto", statusCode: 301 },
+      { source: "/contactanos", destination: "/contacto#formulario-contacto", statusCode: 301 },
       { source: "/api/contact", destination: "/api/contacto", statusCode: 301 },
       { source: "/news", destination: "/noticias", statusCode: 301 },
       { source: "/news/:slug*", destination: "/noticias/:slug*", statusCode: 301 },

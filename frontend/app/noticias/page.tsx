@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import EncabezadoSitio from "../componentes/EncabezadoSitio";
+import EsqueletoArticulos from "../componentes/EsqueletoArticulos";
+import ListadoNoticias from "../componentes/ListadoNoticias";
 import PieSitio from "../componentes/PieSitio";
-import SeccionNoticiasEnVivo from "../componentes/SeccionNoticiasEnVivo";
 import TituloPagina from "../componentes/TituloPagina";
 import { CONTACTO } from "../lib/institucional";
-import { obtenerNoticias } from "../lib/noticias";
 
 export const metadata: Metadata = {
   title: "Noticias | UNETI",
@@ -12,9 +13,7 @@ export const metadata: Metadata = {
     "Noticias institucionales, vida universitaria, investigación y novedades académicas de la UNETI, publicadas desde WordPress.",
 };
 
-export default async function NoticiasPage() {
-  const noticias = await obtenerNoticias(50);
-
+export default function NoticiasPage() {
   return (
     <>
       <EncabezadoSitio />
@@ -32,7 +31,9 @@ export default async function NoticiasPage() {
           <div className="container overlap-gap-section">
             <div className="row mb-4 md-mb-6">
               <div className="col-12">
-                <SeccionNoticiasEnVivo noticiasIniciales={noticias} />
+                <Suspense fallback={<EsqueletoArticulos />}>
+                  <ListadoNoticias limite={50} />
+                </Suspense>
               </div>
             </div>
 
@@ -46,7 +47,7 @@ export default async function NoticiasPage() {
                     <span className="text-dark-gray fw-500 fs-20 xs-fs-18 ls-minus-05px">
                       ¿Buscas ayuda?{" "}
                       <a
-                        href="/contacto"
+                        href="/contacto#formulario-contacto"
                         className="text-decoration-line-bottom-medium text-dark-gray fw-600"
                       >
                         Contáctanos hoy

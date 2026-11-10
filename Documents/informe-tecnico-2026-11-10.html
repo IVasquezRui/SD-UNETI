@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<!-- Vista del informe técnico SD-UNETI · Hecho por Iván Vásquez · generado desde el Markdown -->
+<html lang="es" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Informe técnico — SD-UNETI · 2026-11-10</title>
+<meta name="description" content="Informe técnico integral del portal SD-UNETI: tecnologías, metodología, fases, estado actual, veredicto de producción y runbook Proxmox + Caddy.">
+<meta name="author" content="Iván Vásquez">
+<meta name="theme-color" content="#002f6c">
+<link rel="icon" href="../frontend/public/assets/images/uneti/logo.png">
+<link rel="stylesheet" href="informe-tecnico-2026-11-10.css">
+<script>
+  (function () {
+    try {
+      var guardado = localStorage.getItem('uneti-tema');
+      var oscuro = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme =
+        guardado === 'claro' ? 'light' : guardado === 'oscuro' ? 'dark' : (oscuro ? 'dark' : 'light');
+    } catch (error) {
+      document.documentElement.dataset.theme = 'light';
+    }
+  })();
+</script>
+</head>
+<body>
+
+<a class="salto-contenido" href="#contenido">Saltar al contenido</a>
+
+<div class="progreso" aria-hidden="true"><span class="progreso__barra" data-progreso></span></div>
+
+<header class="barra">
+  <button class="boton-icono boton-menu" type="button" data-menu aria-label="Abrir índice" aria-expanded="false" aria-controls="indice">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+  </button>
+
+  <a class="marca" href="#inicio">
+    <span class="marca__placa">
+      <img class="marca__logo" src="../frontend/public/assets/images/uneti/logo.png" alt="UNETI" width="104" height="32" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'UNETI',className:'marca__respaldo'}))">
+    </span>
+    <span class="marca__texto">
+      <span class="marca__titulo">Informe técnico SD-UNETI</span>
+      <span class="marca__sub">Soberanía Digital 2026-2030</span>
+    </span>
+  </a>
+
+  <div class="barra__acciones">
+    <button class="boton-buscar" type="button" data-abrir-buscador aria-label="Buscar en el informe">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <span>Buscar</span>
+      <kbd>⌘K</kbd>
+    </button>
+
+    <button class="boton-icono" type="button" data-tema aria-label="Cambiar entre tema claro y oscuro" title="Cambiar tema">
+      <svg class="icono-luna" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      <svg class="icono-sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg>
+    </button>
+
+    <button class="boton-icono" type="button" data-imprimir aria-label="Imprimir o guardar como PDF" title="Imprimir / PDF">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="7" rx="1"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="diseno">
+  <aside class="lateral" id="indice" aria-label="Índice del informe">
+    <p class="lateral__titulo">Contenido</p>
+    <nav><ul class="toc" data-indice></ul></nav>
+  </aside>
+
+  <main class="contenido" id="contenido">
+    <article>
+      <header class="portada" id="inicio">
+        <span class="portada__logo">
+          <img src="../frontend/public/assets/images/uneti/logo@2x.png" alt="Universidad Nacional Experimental de las Telecomunicaciones e Informática" width="168" height="51">
+        </span>
+        <p class="portada__etiqueta">Proyecto Soberanía Digital 2026-2030</p>
+        <h1>Informe técnico — SD-UNETI</h1>
+        <p class="portada__entradilla">
+          Análisis integral del portal institucional: tecnologías, metodología, fases de construcción,
+          estado actual, veredicto de aptitud para producción y procedimiento de salida a producción.
+        </p>
+
+        <div class="portada__chips">
+          <span class="chip"><b>Versión</b> 1.0</span>
+          <span class="chip"><b>Fecha</b> 10/11/2026</span>
+          <span class="chip"><b>Commit</b> 0658af1</span>
+          <span class="chip chip--alerta"><b>Veredicto</b> No apto aún para exposición pública</span>
+        </div>
+
+        <div class="kpis">
+          <div class="kpi"><span class="kpi__valor">3</span><span class="kpi__texto">Contenedores</span></div>
+          <div class="kpi"><span class="kpi__valor">11</span><span class="kpi__texto">Rutas públicas</span></div>
+          <div class="kpi"><span class="kpi__valor">7</span><span class="kpi__texto">Endpoints propios</span></div>
+          <div class="kpi"><span class="kpi__valor">6</span><span class="kpi__texto">Noticias sembradas</span></div>
+          <div class="kpi"><span class="kpi__valor">2 + 7</span><span class="kpi__texto">PNF y posgrados</span></div>
+          <div class="kpi"><span class="kpi__valor">10</span><span class="kpi__texto">Workflows de CI</span></div>
+        </div>
+
+        <p class="portada__firma">
+          <strong>Hecho por Iván Vásquez</strong>
+          <span>Universidad Nacional Experimental de las Telecomunicaciones e Informática</span>
+        </p>
+      </header>
+
+      <section class="seccion">
+<h2 id="control" class="titulo-seccion"><span>Control del documento</span></h2>
+<div class="tabla-envoltura">
+<table class="tabla">
+<thead>
+<tr><th>Campo</th><th>Valor</th></tr>
+</thead>
+<tbody>
+<tr><td>Documento</td><td>Informe técnico integral de SD-UNETI</td></tr>
+<tr><td>Versión</td><td>1.0</td></tr>
+<tr><td>Fecha de corte</td><td>10/11/2026</td></tr>
+<tr><td>Repositorio</td><td><code>https://github.com/IVasquezRui/SD-UNETI</code></td></tr>
+<tr><td>Rama observada</td><td><code>develop</code></td></tr>
+<tr><td>Commit de referencia</td><td><code>0658af1</code> — <em>docs(progreso): registrar la ronda de imagenes, heroes y anclas</em> (09/11/2026)</td></tr>
+<tr><td>Alcance</td><td><code>SD-UNETI/</code> — portal Next.js, WordPress headless, MariaDB, scripts y CI</td></tr>
+<tr><td>Estado declarado</td><td>MVP funcional validado en entorno local; <strong>no desplegado públicamente</strong></td></tr>
+<tr><td>Veredicto</td><td><strong>No apto todavía para exposición pública</strong>; apto para staging en red controlada (§11)</td></tr>
+<tr><td>Documento de estado vivo</td><td><a href="./PROGRESS.md"><code>PROGRESS.md</code></a></td></tr>
+<tr><td>Documento de metodología y arquitectura</td><td><a href="./Soberanía%20Digital%202026.md"><code>Soberanía Digital 2026.md</code></a></td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>Convención de lectura.</strong> Todo el informe usa cuatro estados, igual que la documentación previa del proyecto:</p>
+<ul>
+<li><strong>Implementado:</strong> existe en el repositorio y fue validado con evidencia.</li>
+<li><strong>Parcial:</strong> existe una base funcional, pero falta un requisito de producción.</li>
+<li><strong>Pendiente:</strong> no está implementado o no fue verificado.</li>
+<li><strong>Propuesta:</strong> recomendación de este informe, <strong>no ejecutada</strong> en el repositorio.</li>
+</ul>
+<p><strong>Método de verificación.</strong> El informe se construyó leyendo el código (<code>frontend/app</code>, <code>scripts/</code>, <code>docker-compose.yml</code>, <code>.github/workflows/</code>) y la documentación de <code>Documents/</code>, y re-ejecutando las validaciones que no requieren infraestructura levantada. Se indica en cada caso si un dato proviene de una validación propia del 10/11/2026 o de un informe previo del repositorio.</p>
+<div class="aviso"><p><strong>Nota sobre trazabilidad.</strong> La copia observada del repositorio presenta <strong>un único commit</strong> en <code>develop</code>. La cronología de fases se reconstruye por tanto desde <code>Documents/</code> (planes, QA e informes de implementación), no desde el historial de Git. Esto se señala porque es, en sí mismo, un riesgo de trazabilidad (§10).</p></div>
+</section>
+<section class="seccion">
+<h2 id="s1" class="titulo-seccion"><span class="titulo-seccion__num">01</span><span>Resumen ejecutivo</span></h2>
+<p>SD-UNETI es el portal institucional de la UNETI construido con una arquitectura <strong>headless</strong>: WordPress administra el contenido y Next.js renderiza toda la experiencia pública. El objetivo institucional es reducir la dependencia de terceros, concentrar la lógica en infraestructura propia y sostener una plataforma mantenible y documentada durante el horizonte 2026-2030.</p>
+<p>El proyecto <strong>reemplazó la propuesta original</strong> (tema WordPress con Elementor Pro y widgets React embebidos) por esta separación de responsabilidades, decisión registrada como <strong>ADR-001</strong> en <code>Documents/Soberanía Digital 2026.md</code>. El resultado es un MVP completo y funcional: sitio en español con once rutas públicas, noticias dinámicas con actualización en vivo, comentarios persistidos en la base nativa de WordPress, oferta académica de dos PNF y siete posgrados, tres formularios con persistencia y folio, y un entorno reproducible con Docker Compose y contenido sembrado desde fixtures JSON.</p>
+<div class="tabla-envoltura">
+<table class="tabla">
+<thead>
+<tr><th>Indicador</th><th>Valor observado</th></tr>
+</thead>
+<tbody>
+<tr><td>Contenedores</td><td>3 (<code>next_frontend</code>, <code>wp_site</code>, <code>wp_mariadb</code>) + override de producción</td></tr>
+<tr><td>Rutas de página</td><td>11 (<code>/</code>, <code>/nosotros</code>, <code>/carreras</code>, <code>/carreras/[slug]</code>, <code>/posgrados</code>, <code>/cursos</code>, <code>/admisiones</code>, <code>/contacto</code>, <code>/noticias</code>, <code>/noticias/[slug]</code>, <code>/privacidad</code>)</td></tr>
+<tr><td>Endpoints propios del frontend</td><td>7 (<code>admisiones</code>, <code>contacto</code>, <code>posgrados</code>, <code>noticias</code>, <code>noticias/stream</code>, <code>noticias/[slug]/comentarios</code>, <code>revalidar</code>)</td></tr>
+<tr><td>Endpoints de WordPress</td><td><code>POST /wp-json/uneti/v1/solicitudes</code>, <code>GET|POST /wp-json/uneti/v1/comentarios/{slug}</code>, <code>/graphql</code></td></tr>
+<tr><td>Contenido sembrado</td><td>6 noticias, 6 medios, 3 comentarios, 6 categorías, 18 etiquetas</td></tr>
+<tr><td>Oferta académica</td><td>2 PNF + 7 PNFA de posgrado, contenido estático en TypeScript</td></tr>
+<tr><td>Workflows de CI</td><td>10 + 1 acción compuesta</td></tr>
+<tr><td>Código propio</td><td>~18–20 mil líneas (el resto del árbol es <em>vendor</em> de WordPress)</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>Lo que está bien resuelto.</strong> La reproducibilidad es el rasgo más maduro del proyecto: no hay dump SQL, el contenido vive en <code>seed/</code> con checksums SHA-256 y la importación es idempotente mediante marcas <code>_uneti_seed_*</code>. Python solo orquesta y valida; PHP usa las APIs nativas de WordPress, evitando escrituras directas a MariaDB. La capa de seguridad de aplicación también está por encima de la media de un MVP: CSP, HSTS, COOP/CORP, límite de cuerpo por ruta, rate limiting, honeypot, control de tiempo mínimo, tokens comparados en tiempo constante, XML-RPC y enumeración de usuarios bloqueados, y retención automática de datos personales a los 365 días.</p>
+<p><strong>Lo que falta.</strong> Todo lo que convierte un MVP en un servicio público: no hay TLS ni proxy inverso, no hay firewall, no hay backups ni restauración probada, no hay monitoreo ni alertas, el <em>frontend</em> se ejecuta con <code>npm run dev</code> y código montado por <em>bind mount</em>, no existe <code>Dockerfile</code> y los secretos viven en un <code>.env</code> sin rotación ni gestor. A eso se suman dos pendientes de calidad (pruebas E2E automatizadas y auditoría de accesibilidad) y uno legal (licencia del código y créditos de activos).</p>
+<p><strong>Conclusión adelantada.</strong> El producto está listo en lo funcional y en seguridad de aplicación, pero <strong>no en lo operativo</strong>. Con siete bloqueadores P0 cerrados —estimación de 3 a 5 jornadas técnicas más 1 o 2 de verificación— el portal puede publicarse con un riesgo aceptable. La ruta recomendada es Caddy 2 sobre el host de una VM Debian en Proxmox, con Docker escuchando solo en <code>127.0.0.1</code>, firewall restrictivo y administración de WordPress únicamente por Tailscale. El procedimiento completo está en §12.</p>
+</section>
+<section class="seccion">
+<h2 id="s2" class="titulo-seccion"><span class="titulo-seccion__num">02</span><span>Contexto institucional y propósito</span></h2>
+<h3 id="s2-1" class="subtitulo"><span class="subtitulo__num">2.1</span><span>El proyecto</span></h3>
+<p>El Proyecto Soberanía Digital 2026-2030 articula la modernización de la infraestructura web de la UNETI alrededor de tres principios: <strong>soberanía tecnológica</strong> (el contenido y la lógica permanecen en infraestructura controlada por la universidad), <strong>separación de responsabilidades</strong> y <strong>reproducibilidad del entorno</strong>. La universidad concentra su planta física en dos sedes en Caracas y cubre el territorio mediante un modelo híbrido —instalaciones de CANTV y Movilnet, la red de Infocentros y convenios con universidades territoriales—, lo que hace del portal el canal institucional de mayor alcance y justifica la inversión en una plataforma mantenible.</p>
+<h3 id="s2-2" class="subtitulo"><span class="subtitulo__num">2.2</span><span>Qué cambió respecto de la propuesta original</span></h3>
+<p>El documento metodológico base planteaba un tema WordPress con <strong>Elementor Pro</strong>, widgets React embebidos y Tailwind JIT. La versión 2.0 sustituyó ese esquema por una arquitectura headless. La comparación está registrada en <code>Documents/Soberanía Digital 2026.md</code> §2.3:</p>
+<div class="tabla-envoltura">
+<table class="tabla">
+<thead>
+<tr><th>Elemento</th><th>Propuesta original</th><th>Implementación v2.0</th><th>Tratamiento</th></tr>
+</thead>
+<tbody>
+<tr><td>CMS</td><td>WordPress administrable</td><td>WordPress headless</td><td>Conservado</td></tr>
+<tr><td>Constructor visual</td><td>Elementor Pro</td><td>No forma parte del stack</td><td>Sustituido</td></tr>
+<tr><td>Frontend</td><td>Tema WP + widgets React</td><td>Next.js 16 App Router + React 19</td><td>Sustituido</td></tr>
+<tr><td>Estilos</td><td>Tailwind JIT</td><td>Template <code>demo-elearning</code> + <code>uneti.css</code> (Tailwind v4 sin preflight)</td><td>Adaptado</td></tr>
+<tr><td>Infraestructura</td><td>Proxmox local</td><td>Docker Compose local; Proxmox como destino</td><td>Transitorio</td></tr>
+<tr><td>Trabajo remoto</td><td>Proxmox + Tailscale + VS Code Remote</td><td>Docker local; misma dirección</td><td>Pendiente de institucionalizar</td></tr>
+</tbody>
+</table>
+</div>
+<p>La decisión tiene consecuencias explícitas (ADR-001): menor acoplamiento y control total del HTML, los metadatos y el rendimiento, a cambio de mantener WPGraphQL, CORS interno y contratos de datos propios. También implica que WordPress deja de ser responsable del sitio público: no renderiza tema, no sirve CSS institucional y no expone el frontend.</p>
+<h3 id="s2-3" class="subtitulo"><span class="subtitulo__num">2.3</span><span>Alcance del MVP y límites declarados</span></h3>
+<p>Dentro del alcance: sitio institucional, noticias, actualización en vivo, comentarios, carreras y posgrados, formularios con persistencia, CMS administrable, datos demo reproducibles, infraestructura Docker y documentación.</p>
+<p>Fuera del alcance de esta fase, según el propio proyecto: inscripción en línea con expediente académico, pagos o facturación, gestión de cursos y lecciones, despliegue público y alta del dominio, auditoría WCAG completa, integración con CRM/SMTP/analítica, y estrategia de backups y recuperación ante desastres.</p>
+<p>Esta distinción importa para el veredicto de §11: el proyecto <strong>no incumplió su alcance</strong>; lo que ocurre es que el alcance del MVP no equivale al de producción.</p>
+</section>
+<section class="seccion">
+<h2 id="s3" class="titulo-seccion"><span class="titulo-seccion__num">03</span><span>Tecnologías</span></h2>
+<h3 id="s3-1" class="subtitulo"><span class="subtitulo__num">3.1</span><span>Stack por capa</span></h3>
+<div class="tabla-envoltura">
+<table class="tabla">
+<thead>
+<tr><th>Capa</th><th>Tecnología</th><th>Versión</th><th>Función</th></tr>
+</thead>
+<tbody>
+<tr><td>Frontend</td><td>Next.js (App Router)</td><td><code>16.4.3</code></td><td>Render, rutas, ISR, route handlers, metadatos</td></tr>
+<tr><td>UI</td><td>React / React DOM</td><td><code>19.3.1</code></td><td>Componentes, Server Components, hooks de cliente</td></tr>
+<tr><td>Lenguaje</td><td>TypeScript</td><td><code>5.9.3</code></td><td>Tipado estricto del frontend</td></tr>
+<tr><td>Lint</td><td>ESLint + <code>eslint-config-next</code></td><td><code>9.39.5</code> / <code>16.4.3</code></td><td>Calidad estática</td></tr>
+<tr><td>Estilos</td><td>Template <code>demo-elearning</code> + <code>uneti.css</code> + Tailwind v4</td><td><code>4.3.3</code></td><td>Identidad visual y utilidades</td></tr>
+<tr><td>Runtime frontend</td><td>Node.js LTS + npm</td><td><code>26.13.0</code> / <code>11.20.0</code></td><td>Ejecución y build (<code>engines: &gt;=26.13.0</code>)</td></tr>
+<tr><td>CMS</td><td>WordPress</td><td><code>7.1.4</code> (PHP <code>8.5</code>)</td><td>Administración de contenido</td></tr>
+<tr><td>API de contenido</td><td>WPGraphQL</td><td><code>2.26.0</code></td><td>Consultas GraphQL de noticias y medios</td></tr>
+<tr><td>API propia</td><td>REST de WordPress (mu-plugins)</td><td>—</td><td>Solicitudes y comentarios</td></tr>
+<tr><td>Base de datos</td><td>MariaDB</td><td><code>11.8.9</code></td><td>Persistencia de posts, medios, comentarios y solicitudes</td></tr>
+<tr><td>Orquestación</td><td>Docker Compose</td><td>3 servicios</td><td>Entorno reproducible</td></tr>
+<tr><td>Automatización</td><td>Python (solo stdlib)</td><td>3.10+</td><td><code>seed.py</code>: export, import, bootstrap, verify, validate</td></tr>
+<tr><td>CI/CD</td><td>GitHub Actions</td><td>10 workflows + 1 acción compuesta</td><td>Calidad, despliegue de prueba, QA y pentesting</td></tr>
+<tr><td>Memoria técnica</td><td><code>lookdown</code></td><td>v1.0.0</td><td>Grafo de navegación para agentes (no versionado)</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="s3-2" class="subtitulo"><span class="subtitulo__num">3.2</span><span>Inventario de dependencias</span></h3>
+<p><code>frontend/package.json</code> declara <strong>tres dependencias de ejecución</strong> (<code>next</code>, <code>react</code>, <code>react-dom</code>) y siete de desarrollo (<code>@tailwindcss/turbopack</code>, <code>@types/node</code>, <code>@types/react</code>, <code>@types/react-dom</code>, <code>eslint</code>, <code>eslint-config-next</code>, <code>tailwindcss</code>, <code>typescript</code>). Es un árbol deliberadamente mínimo: <code>npm ci</code> instala 358 paquetes.</p>
+<p>No se usan clientes GraphQL pesados (Apollo, urql): <code>frontend/app/lib/wordpress.ts</code> implementa un cliente mínimo sobre <code>fetch</code> nativo. Tampoco hay librería de componentes, gestor de estado ni framework CSS adicional. Esa austeridad reduce superficie de ataque, tamaño de bundle y deuda de actualización.</p>
+<h3 id="s3-3" class="subtitulo"><span class="subtitulo__num">3.3</span><span>Decisiones tecnológicas y su justificación</span></h3>
+<div class="tabla-envoltura">
+<table class="tabla">
+<thead>
+<tr><th>Decisión</th><th>Motivo</th><th>Consecuencia</th></tr>
+</thead>
+<tbody>
+<tr><td>Server Components por defecto</td><td>Menos JavaScript cliente, datos resueltos en servidor</td><td>El equipo debe dominar los límites RSC y la caché de Next</td></tr>
+<tr><td><code>fetch</code> nativo en lugar de cliente GraphQL</td><td>Menos dependencias y control explícito de la caché</td><td>Consultas escritas a mano; sin normalización de caché</td></tr>
+<tr><td>WordPress solo como CMS</td><td>Separar contenido de presentación</td><td>Hay que mantener WPGraphQL y los contratos REST</td></tr>
+<tr><td>Comentarios en <code>wp_comments</code></td><td>Moderación, avatares y compatibilidad nativa</td><td>Se hereda el esquema y la moderación de WordPress</td></tr>
+<tr><td>Carreras estáticas en TypeScript</td><td>Evitar sobredimensionar el CMS en el MVP</td><td>El cambio de oferta exige despliegue, no edición editorial</td></tr>
+<tr><td>SSE con polling de respaldo</td><td>Tiempo real sin WebSockets ni infraestructura extra</td><td>Caché en memoria por conexión; no escala horizontal sin pub/sub</td></tr>
+<tr><td>Navegación con recarga completa</td><td>El template mutaba el DOM y rompía la hidratación</td><td>No hay navegación SPA (deuda aceptada)</td></tr>
+<tr><td>Node 26 LTS + npm</td><td>Sustituir Bun y estabilizar el build</td><td><code>package-lock.json</code> versionado; el host debe usar la misma versión</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="s3-4" class="subtitulo"><span class="subtitulo__num">3.4</span><span>Herramientas de calidad y seguridad</span></h3>
+<ul>
+<li><strong>GitHub Actions</strong>: <code>seed.yml</code>, <code>01-despliegue.yml</code>, <code>02-wordpress.yml</code>, <code>03-frontend.yml</code>, <code>04-formulario.yml</code>, <code>05-qa.yml</code>, <code>06-pentest-nextjs.yml</code>, <code>07-pentest-wordpress.yml</code>, <code>08-pentest-mariadb.yml</code>, <code>09-seguridad.yml</code>.</li>
+<li><strong>Pentesting</strong>: scripts propios (<code>scripts/ci/pentest-*.sh</code>) con salida <code>[POSITIVO]/[NEGATIVO]</code>, más WPScan y Nuclei cuando hay token o binario disponible.</li>
+<li><strong>QA funcional</strong>: <code>qa-frontend.sh</code> (rutas, enlaces, imágenes, marcadores de contenido) y <code>probar-formulario.mjs</code> (envío real y verificación en base de datos).</li>
+<li><strong>Auditoría headless</strong>: Playwright se usó en la validación del 31/10/2026 (11 rutas × 2 viewports, consola, overflow, <code>alt</code>, <code>h1</code>), <strong>no</strong> está integrado en CI ni declarado en <code>package.json</code>.</li>
+<li><strong>Escaneo de secretos</strong>: <code>gitleaks</code> en <code>09-seguridad.yml</code>; <code>npm audit --omit=dev --audit-level=high</code> como puerta.</li>
+</ul>
+</section>
+<section class="seccion">
+<h2 id="s4" class="titulo-seccion"><span class="titulo-seccion__num">04</span><span>Arquitectura</span></h2>
+<h3 id="s4-1" class="subtitulo"><span class="subtitulo__num">4.1</span><span>Vista de contexto</span></h3>
+<div class="bloque-codigo" data-lenguaje="text"><pre><code class="lenguaje-text">Navegador
+   │
+   ├── HTML / SSE ──────────────► Next.js  :3000
+   │                                 │
+   │                                 ├── WPGraphQL ─────────► WordPress :8080
+   │                                 │                         │
+   │                                 ├── REST comentarios ────┤
+   │                                 │                         │
+   │                                 └── POST solicitudes ────┤
+   │                                      (token de servidor)  ▼
+   └─────────────────────────────────────────────────────► MariaDB :3306
+                                                               │
+                                        wp_posts · wp_postmeta · wp_comments
+                                        CPT solicitud_uneti · estado_solicitud</code></pre></div>
+<p>Toda lectura de datos ocurre <strong>en el servidor de Next.js</strong>. El navegador nunca llama a WordPress: no consume GraphQL, no consume la REST de comentarios y no conoce el token de solicitudes. Esa es la decisión que permite, en producción, cerrar WordPress al público salvo los archivos subidos (§12.6).</p>
+<h3 id="s4-2" class="subtitulo"><span class="subtitulo__num">4.2</span><span>Componentes</span></h3>
+<div class="tabla-envoltura">
+<table class="tabla">
+<thead>
+<tr><th>Componente</th><th>Contenedor</th><th>Responsabilidad</th><th>Estado</th></tr>
+</thead>
+<tbody>
+<tr><td>Portal Next.js</td><td><code>next_frontend</code></td><td>Render, rutas, metadatos, ISR, SSE, formularios, proxy de comentarios</td><td>Implementado</td></tr>
+<tr><td>CMS WordPress</td><td><code>wp_site</code></td><td>Contenido, medios, comentarios, solicitudes, administración</td><td>Implementado</td></tr>
+<tr><td>Base de datos</td><td><code>wp_mariadb</code></td><td>Persistencia única del sistema</td><td>Implementado</td></tr>
+<tr><td>Mu-plugins</td><td>volumen en <code>wp_site</code></td><td>Solicitudes, comentarios, seguridad y privacidad</td><td>Implementado</td></tr>
+<tr><td>WPGraphQL</td><td>volumen en <code>wp_site</code></td><td>API GraphQL de contenido</td><td>Implementado</td></tr>
+<tr><td>Seed portable</td><td><code>seed/</code> + <code>scripts/</code></td><td>Reconstrucción idempotente del contenido</td><td>Implementado</td></tr>
+<tr><td>CI</td><td>GitHub Actions</td><td>Validación, QA y pentesting</td><td>Implementado</td></tr>
+<tr><td>Proxy inverso y TLS</td><td>—</td><td>Publicación segura</td><td><strong>Pendiente</strong></td></tr>
+<tr><td>Backups y monitoreo</td><td>—</td><td>Operación</td><td><strong>Pendiente</strong></td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="s4-3" class="subtitulo"><span class="subtitulo__num">4.3</span><span>Flujos de datos</span></h3>
+<ol>
+<li><strong>Contenido (lectura).</strong> Server Component → <code>consultarGraphQL()</code> → <code>/graphql</code> de WordPress → mapeo a <code>Noticia</code> → HTML con <code>cacheLife('noticias')</code>. El listado y el detalle se revalidan por etiqueta (<code>noticias</code>, <code>noticia-&lt;slug&gt;</code>).</li>
+<li><strong>Comentarios (lectura y escritura).</strong> Componente cliente → <code>POST /api/noticias/[slug]/comentarios</code> (Next) → REST propia de WordPress → <code>wp_insert_comment</code> en <code>wp_comments</code>. La lectura se refresca por polling de 20 s y tras publicar.</li>
+<li><strong>Solicitudes (escritura).</strong> Formulario → <code>/api/admisiones</code>, <code>/api/posgrados</code> o <code>/api/contacto</code> → validación → rate limit → honeypot y tiempo mínimo → <code>POST /wp-json/uneti/v1/solicitudes</code> con <code>X-UNETI-Token</code> → CPT privado <code>solicitud_uneti</code> → folio <code>UNETI-AAAA-NNNNNN</code>.</li>
+<li><strong>Tiempo real.</strong> <code>GET /api/noticias/stream</code> (SSE) consulta WordPress cada 15 s y emite solo si cambia el hash del contenido; el cliente cae a polling de 30 s si <code>EventSource</code> falla.</li>
+<li><strong>Revalidación.</strong> WordPress o un operador llama <code>POST /api/revalidar</code> con <code>X-UNETI-Token</code>; el handler compara en tiempo constante y ejecuta <code>revalidateTag</code> + <code>revalidatePath</code>.</li>
+</ol>
+<h3 id="s4-4" class="subtitulo"><span class="subtitulo__num">4.4</span><span>Rutas públicas</span></h3>
+<div class="tabla-envoltura">
+<table class="tabla">
+<thead>
+<tr><th>Ruta</th><th>Tipo</th><th>Contenido</th><th>Estrategia</th></tr>
+</thead>
+<tbody>
+<tr><td><code>/</code></td><td>Estática + ISR</td><td>Portada institucional</td><td>Shell parcial + noticias en Suspense</td></tr>
+<tr><td><code>/nosotros</code></td><td>Estática</td><td>Misión, visión, historia, modalidad híbrida</td><td>Prerender</td></tr>
+<tr><td><code>/carreras</code></td><td>Estática</td><td>Oferta PNF y posgrados</td><td>Prerender</td></tr>
+<tr><td><code>/carreras/[slug]</code></td><td>Dinámica</td><td>Detalle de PNF (2)</td><td><code>generateStaticParams</code> + ISR</td></tr>
+<tr><td><code>/posgrados</code></td><td>Estática</td><td>7 PNFA con malla y requisitos</td><td>Prerender</td></tr>
+<tr><td><code>/cursos</code></td><td>Estática</td><td>Cursos cortos con CTA a WhatsApp</td><td>Prerender</td></tr>
+<tr><td><code>/admisiones</code></td><td>Estática</td><td>Proceso y formulario</td><td>Prerender</td></tr>
+<tr><td><code>/contacto</code></td><td>Estática</td><td>Sedes, mapas y formulario</td><td>Prerender</td></tr>
+<tr><td><code>/noticias</code></td><td>ISR</td><td>Listado</td><td><code>cacheLife('noticias')</code> (5 min)</td></tr>
+<tr><td><code>/noticias/[slug]</code></td><td>ISR</td><td>Detalle, relacionadas y comentarios</td><td>Tag por slug + revalidación</td></tr>
+<tr><td><code>/privacidad</code></td><td>Estática</td><td>Aviso de privacidad</td><td>Prerender</td></tr>
+<tr><td><code>robots.txt</code>, <code>sitemap.xml</code></td><td>Metadata routes</td><td>SEO técnico</td><td>Dinámicas con <code>NEXT_PUBLIC_SITE_URL</code></td></tr>
+<tr><td><code>/.well-known/security.txt</code></td><td>Estático</td><td>Canal de reporte de seguridad</td><td>Servido desde <code>public</code></td></tr>
+</tbody>
+</table>
+</div>
+<p>Redirecciones permanentes (301) en <code>next.config.ts</code>: <code>/about</code> → <code>/nosotros</code>, <code>/admissions</code> → <code>/admisiones</code>, <code>/contact</code> y <code>/contactanos</code> → <code>/contacto#formulario-contacto</code>, <code>/news</code> y <code>/news/:slug*</code> → <code>/noticias…</code>, <code>/courses</code> y <code>/courses/:slug*</code> → <code>/carreras…</code>, <code>/api/contact</code> → <code>/api/contacto</code>.</p>
+<h3 id="s4-5" class="subtitulo"><span class="subtitulo__num">4.5</span><span>Endpoints propios</span></h3>
+<div class="tabla-envoltura">
+<table class="tabla">
+<thead>
+<tr><th>Endpoint</th><th>Método</th><th>Función</th><th>Protecciones</th></tr>
+</thead>
+<tbody>
+<tr><td><code>/api/admisiones</code></td><td>POST / GET(405)</td><td>Solicitud de admisión PNF</td><td>Origin, <code>application/json</code>, rate limit 5/10 min, cuerpo 16 KB, honeypot, tiempo mínimo, validación</td></tr>
+<tr><td><code>/api/posgrados</code></td><td>POST / GET(405)</td><td>Solicitud de posgrado</td><td>Ídem, whitelist de 7 programas</td></tr>
+<tr><td><code>/api/contacto</code></td><td>POST / GET(405)</td><td>Mensaje de contacto</td><td>Ídem</td></tr>
+<tr><td><code>/api/noticias</code></td><td>GET</td><td>Listado para clientes</td><td>Sin caché</td></tr>
+<tr><td><code>/api/noticias/stream</code></td><td>GET (SSE)</td><td>Cambios en vivo</td><td>Hash de contenido, cierre limpio</td></tr>
+<tr><td><code>/api/noticias/[slug]/comentarios</code></td><td>GET / POST</td><td>Comentarios</td><td>Cuerpo 8 KB, rate limit, validación, 404/403</td></tr>
+<tr><td><code>/api/revalidar</code></td><td>POST / GET(405)</td><td>Invalidación ISR</td><td>Token en tiempo constante, cuerpo 2 KB, rate limit 20/min</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="s4-6" class="subtitulo"><span class="subtitulo__num">4.6</span><span>Modelo de contenido y de datos</span></h3>
+<ul>
+<li><strong>Noticias:</strong> <code>wp_posts</code> + <code>wp_postmeta</code>, con imagen destacada, categorías, etiquetas, autor genérico y comentarios nativos.</li>
+<li><strong>Medios:</strong> originales en <code>seed/media/AAAA/MM/</code>; WordPress genera variantes y miniaturas en <code>wp_data/wp-content/uploads/</code>.</li>
+<li><strong>Comentarios:</strong> tabla nativa <code>wp_comments</code>. Se guardan aprobados en el flujo demo; en producción deben moderarse (§11).</li>
+<li><strong>Solicitudes:</strong> CPT privado <code>solicitud_uneti</code> + <code>wp_postmeta</code>, clasificado por la taxonomía <code>estado_solicitud</code>. Campos: tipo (<code>admision</code> | <code>posgrado</code> | <code>contacto</code>), nombre, cédula, correo, teléfono, programa, asunto, mensaje, consentimiento, origen, IP hasheada y folio. Exportación CSV desde el panel.</li>
+<li><strong>Carreras y posgrados:</strong> contenido estático en <code>frontend/app/lib/carreras.ts</code> (2 PNF), <code>posgrados.ts</code> (7 PNFA) y <code>cursos.ts</code>. No pasan por el CMS.</li>
+<li><strong>Retención:</strong> <code>uneti-privacidad.php</code> borra a diario las solicitudes con más de <strong>365 días</strong> (<code>UNETI_PRIV_RETENCION_DIAS</code>, ajustable con el filtro <code>uneti_dias_retencion</code>) y expone el CPT en las herramientas de privacidad de WordPress.</li>
+</ul>
+<h3 id="s4-7" class="subtitulo"><span class="subtitulo__num">4.7</span><span>Caché, render y topología</span></h3>
+<p><strong>Render.</strong> <code>cacheComponents: true</code> y <code>partialPrefetching: true</code> en <code>next.config.ts</code>. Los perfiles <code>cacheLife</code> son <code>noticias</code> (stale 60 s, revalidate 300 s, expire 3600 s) y <code>contenido</code> (3600 / 86400 / 604800). Los route handlers son dinámicos; SSE y polling leen con <code>cache: "no-store"</code>.</p>
+<p><strong>Topología actual.</strong> Un host con Docker Compose, tres contenedores en la red <code>frontend_net</code>, dos puertos publicados (<code>3000</code>, <code>8080</code>) y sin proxy. Es una topología de desarrollo, no de servicio.</p>
+<p><strong>Topología objetivo.</strong> Un proxy inverso con TLS en el borde, los contenedores accesibles solo por loopback o red interna, base de datos sin puerto publicado, administración del CMS por red privada, backups fuera del host y monitoreo activo. El detalle ejecutable está en §12.</p>
+<p><strong>Límites de confianza.</strong> Internet → proxy → Next.js (zona expuesta); Next.js → WordPress (zona interna, token de servicio); WordPress → MariaDB (zona de datos); operadores → <code>wp-admin</code> (zona administrativa, acceso restringido).</p>
+</section>
+<section class="seccion">
+<h2 id="s5" class="titulo-seccion"><span class="titulo-seccion__num">05</span><span>Metodología</span></h2>
+<h3 id="s5-1" class="subtitulo"><span class="subtitulo__num">5.1</span><span>Base metodológica</span></h3>
+<p>El proyecto declara una hibridación de <strong>Scrum</strong> para la organización del trabajo y <strong>Programación Extrema (XP)</strong> para la calidad del código, alineada con <strong>ISO/IEC/IEEE 12207</strong> (ciclo de vida, verificación, validación y trazabilidad). Sobre esa base se añaden tres prácticas documentales: <strong>Docs-as-Code</strong> (documentación versionada junto al código), <strong>ADR</strong> (registro de decisiones con su contexto y consecuencias) y <strong>Feature Branching</strong>.</p>
+<div class="tabla-envoltura">
+<table class="tabla">
+<thead>
+<tr><th>Práctica</th><th>Aplicación concreta en SD-UNETI</th></tr>
+</thead>
+<tbody>
+<tr><td>Scrum</td><td>Backlog priorizado, iteraciones cortas, demo y revisión al cierre de cada ronda</td></tr>
+<tr><td>XP</td><td>Simplicidad, feedback rápido, refactor continuo y validaciones automatizadas</td></tr>
+<tr><td>ISO/IEC/IEEE 12207</td><td>Ciclo de vida, verificación, validación, mantenimiento y trazabilidad</td></tr>
+<tr><td>Docs-as-Code</td><td><code>PROGRESS.md</code>, <code>Documents/</code>, QA e informes de implementación versionados</td></tr>
+<tr><td>ADR</td><td>Decisiones registradas en <code>Soberanía Digital 2026.md</code> §13.5</td></tr>
+<tr><td>Feature Branching</td><td><code>main</code> estable, <code>develop</code> de integración, ramas cortas por funcionalidad</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="s5-2" class="subtitulo"><span class="subtitulo__num">5.2</span><span>Ciclo de trabajo</span></h3>
+<ol>
+<li><strong>Descubrimiento:</strong> necesidad, alcance, rutas, datos y restricciones.</li>
+<li><strong>Diseño:</strong> contrato de datos, impacto arquitectónico y criterios de aceptación.</li>
+<li><strong>Implementación:</strong> rama corta con commits atómicos y mensajes imperativos.</li>
+<li><strong>Validación:</strong> tipos, lint, build, smoke tests y pruebas manuales.</li>
+<li><strong>Documentación:</strong> actualización de <code>PROGRESS.md</code> y ADR cuando corresponde.</li>
+<li><strong>Revisión:</strong> regresiones, seguridad, accesibilidad y coherencia visual.</li>
+<li><strong>Cierre:</strong> integración, evidencia registrada y actualización de la hoja de ruta.</li>
+</ol>
+<h3 id="s5-3" class="subtitulo"><span class="subtitulo__num">5.3</span><span>Definition of Ready y Definition of Done</span></h3>
+<p><strong>Ready:</strong> necesidad y alcance comprendidos; rutas, componentes y fuente de datos identificados; criterios de aceptación escritos; impacto de seguridad, privacidad y accesibilidad evaluado; dependencias y riesgos conocidos.</p>
+<p><strong>Done:</strong> código implementado y tipado; <code>npx tsc --noEmit</code> sin errores; <code>npm run lint</code> sin errores nuevos; <code>npm run build</code> exitoso; smoke tests de las rutas afectadas; persistencia o contrato verificado; documentación y ADR actualizados; <code>lookdown</code> regenerado si cambió la estructura; sin secretos en el diff; revisión responsive y de accesibilidad básica.</p>
+<h3 id="s5-4" class="subtitulo"><span class="subtitulo__num">5.4</span><span>Priorización y roles</span></h3>
+<p>El backlog se ordena por valor institucional, riesgo de seguridad o privacidad, dependencia técnica, impacto en la experiencia y esfuerzo disponible. En la etapa actual una misma persona cubre varios roles (producto, arquitectura, frontend, backend/CMS, operaciones, contenido y seguridad), lo que constituye un riesgo de concentración de conocimiento (§10).</p>
+<h3 id="s5-5" class="subtitulo"><span class="subtitulo__num">5.5</span><span>Gobernanza documental</span></h3>
+<div class="tabla-envoltura">
+<table class="tabla">
+<thead>
+<tr><th>Necesidad</th><th>Documento</th><th>Regla de actualización</th></tr>
+</thead>
+<tbody>
+<tr><td>Metodología y arquitectura</td><td><code>Soberanía Digital 2026.md</code></td><td>Cambio relevante o revisión de versión</td></tr>
+<tr><td>Estado operativo</td><td><code>PROGRESS.md</code></td><td>Después de cada hito</td></tr>
+<tr><td>Decisiones</td><td>ADR en <code>Soberanía Digital 2026.md</code> §13.5</td><td>Al decidir o revertir</td></tr>
+<tr><td>Navegación del código</td><td><code>lookdown/</code></td><td>Tras cambio estructural</td></tr>
+<tr><td>Créditos de activos</td><td><code>seed/CREDITS.md</code> e <code>instituciones/CREDITS.md</code></td><td>Al agregar activos</td></tr>
+<tr><td>QA y evidencias</td><td><code>Documents/qa-*.md</code>, <code>Documents/2026-11-*/</code></td><td>Al cerrar cada ronda</td></tr>
+</tbody>
+</table>
+</div>
+<p>La regla es explícita: las afirmaciones de cumplimiento deben incluir evidencia verificable, y los secretos nunca se documentan con su valor real.</p>
+</section>
+<section class="seccion">
+<h2 id="s6" class="titulo-seccion"><span class="titulo-seccion__num">06</span><span>Fases de construcción</span></h2>
+
+<ul class="fases" aria-label="Fases del proyecto">
+  <li class="fases__paso" data-estado="hecha"><b>Fase 0</b><span>MVP local</span></li>
+  <li class="fases__paso" data-estado="hecha"><b>Fase 1</b><span>Seed portable</span></li>
+  <li class="fases__paso" data-estado="hecha"><b>Fase 2</b><span>Portabilidad</span></li>
+  <li class="fases__paso" data-estado="hecha"><b>Fase 3</b><span>CI y docs</span></li>
+  <li class="fases__paso" data-estado="hecha"><b>Fase 4</b><span>Limpieza</span></li>
+  <li class="fases__paso" data-estado="curso"><b>Fase 5</b><span>UI/UX · cierre</span></li>
+  <li class="fases__paso" data-estado="pendiente"><b>Fase 6</b><span>Producción</span></li>
+</ul>
+
+<h3 id="s6-1" class="subtitulo"><span class="subtitulo__num">6.1</span><span>Cronología</span></h3>
+<div class="tabla-envoltura">
+<table class="tabla">
+<thead>
+<tr><th>Fase</th><th>Periodo</th><th>Objetivo</th><th>Entregables principales</th><th>Estado</th></tr>
+</thead>
+<tbody>
+<tr><td>Antecedente</td><td>—</td><td>Propuesta original: tema WP + Elementor Pro</td><td>Documento metodológico <code>.docx</code></td><td>Reemplazado</td></tr>
+<tr><td><strong>Fase 0</strong></td><td>Hasta 18/10/2026</td><td>MVP local headless</td><td>Next.js 16, WordPress headless, MariaDB, noticias, SSE, comentarios, carreras, Docker</td><td><strong>Completada</strong></td></tr>
+<tr><td><strong>Fase 1</strong></td><td>20/10/2026</td><td>Seed portable</td><td><code>seed/</code>, <code>seed.py</code>, <code>export.php</code>, <code>importar.php</code>, montaje de WPGraphQL, créditos</td><td><strong>Completada</strong></td></tr>
+<tr><td><strong>Fase 2</strong></td><td>20/10/2026</td><td>Bootstrap limpio y portabilidad</td><td><code>bootstrap.php</code>, eliminación de <code>database/init.sql</code>, <code>.env.example</code>, URLs y puertos configurables, imágenes fijadas</td><td><strong>Completada</strong></td></tr>
+<tr><td><strong>Fase 3</strong></td><td>20/10/2026</td><td>Validación continua y documentación</td><td><code>seed.yml</code>, <code>validate</code>/<code>verify</code>, actualización documental, regeneración de <code>lookdown</code></td><td><strong>Completada</strong></td></tr>
+<tr><td><strong>Fase 4</strong></td><td>29/10/2026</td><td>Limpieza opcional</td><td>Poda de <code>wp_content</code>, evaluación de LFS, separación de backup operativo</td><td><strong>Completada</strong></td></tr>
+<tr><td><strong>Fase 5</strong></td><td>27/10 – 09/11/2026</td><td>Renovación UI/UX y madurez funcional</td><td>Retiro de jQuery, React, imágenes WebP, <code>/cursos</code>, ISR, posgrados, formularios, hardening</td><td><strong>En cierre</strong></td></tr>
+<tr><td><strong>Fase 6</strong></td><td>Sin iniciar</td><td>Despliegue productivo</td><td>Proxy, TLS, firewall, backups, monitoreo, staging, runbook</td><td><strong>Pendiente</strong></td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="s6-2" class="subtitulo"><span class="subtitulo__num">6.2</span><span>Fases 0 a 4 — de la plantilla al entorno reproducible</span></h3>
+<p>La <strong>Fase 0</strong> construyó el MVP headless y validó las rutas críticas: noticias desde WPGraphQL, SSE con latencia menor a 20 segundos, comentarios persistidos en <code>wp_comments</code>, carreras completas y build de producción. El criterio de salida se cumplió el 18/10/2026.</p>
+<p>La <strong>Fase 1</strong> resolvió el problema estructural del proyecto. El diagnóstico previo identificó ocho hallazgos, entre ellos que <code>wp_data/</code> estaba fuera de Git, que <code>database/init.sql</code> era un dump con usuarios, sesiones e IPs, y que el script de seed no era portable. Se evaluaron cuatro alternativas y se eligió <strong>fixtures JSON + APIs nativas de WordPress + orquestador Python</strong>. El principio rector quedó escrito: <em>Python no escribe en MariaDB; orquesta y valida. PHP usa <code>wp_insert_post</code>, <code>media_handle_sideload</code> y <code>wp_insert_comment</code></em>. Así se respetan metadatos serializados, miniaturas, términos y cachés.</p>
+<p>La <strong>Fase 2</strong> completó la portabilidad: <code>bootstrap.php</code> instala WordPress solo si la base está vacía, se eliminó el dump SQL, se externalizaron contraseñas, URLs, puertos y nombres de contenedor en <code>.env</code>, y se fijaron las imágenes por etiqueta. La <strong>Fase 3</strong> añadió el workflow de clon limpio (<code>seed.yml</code>), los subcomandos <code>validate</code> y <code>verify</code>, y la documentación de estado. La <strong>Fase 4</strong> podó el árbol de WordPress y separó el respaldo operativo del repositorio.</p>
+<p>El resultado verificable de este bloque es que un clon sin <code>wp_data/</code> ni <code>db_data/</code> reconstruye el sitio con <code>docker compose up -d</code> y <code>python3 scripts/seed/seed.py bootstrap</code>, sin duplicar contenido en una segunda ejecución.</p>
+<h3 id="s6-3" class="subtitulo"><span class="subtitulo__num">6.3</span><span>Fase 5 — renovación UI/UX (27–29/10/2026)</span></h3>
+<p>Objetivo: eliminar el runtime heredado del template y recuperar identidad institucional. Se retiró <code>ScriptsPlantilla</code>, <code>jquery.js</code>, <code>vendors.min.js</code> y <code>main.js</code>; las interacciones se reimplementaron como componentes React (<code>EncabezadoSitio</code>, <code>CarruselSimple</code>, <code>ContadorAnimado</code>, <code>SeccionPreguntas</code>, <code>Reveal</code>, <code>ParticulasDecorativas</code>). Se corrigió un defecto crítico de cascada: el selector <code>[class*=ti-]</code> de <code>style.css</code> coincidía con todas las clases <code>uneti-*</code> y aplicaba <code>display:inline-block</code>, rompiendo rejillas completas; se acotó a tokens completos. Se incorporaron imágenes WebP institucionales, <code>imagePosition</code> en <code>TituloPagina</code> y la ruta <code>/cursos</code>.</p>
+<p>Quedaron pendientes tres entregables: la nueva fotografía del hero, el organigrama institucional en <code>/nosotros</code> (E-09, con fuente oficial en <code>organigrama-uneti-2026.pdf</code>) y la verificación Playwright en escritorio y móvil como puerta automatizada.</p>
+<h3 id="s6-4" class="subtitulo"><span class="subtitulo__num">6.4</span><span>Ronda del 31/10/2026 — migración de runtime y auditoría headless</span></h3>
+<p>Se sustituyó Bun por <strong>Node.js 26.13.0 LTS + npm</strong>, con <code>package-lock.json</code> versionado. Se actualizaron Next.js <code>16.4.3</code>, React <code>19.3.1</code>, WordPress <code>7.1.4</code>, WPGraphQL <code>2.26.0</code> y MariaDB <code>11.8.9</code>. La auditoría con Playwright sobre 11 rutas y dos viewports reportó <strong>0 errores de hidratación, 0 overflow, 0 IDs duplicados, 0 imágenes sin <code>alt</code> y un solo <code>h1</code> por vista</strong>. El build generó 23 páginas y las 6 noticias quedaron prerenderizadas. También se corrigió el fallo de <code>/_global-error</code>, causado por fijar <code>NODE_ENV=development</code> en el servicio <code>frontend</code>.</p>
+<h3 id="s6-5" class="subtitulo"><span class="subtitulo__num">6.5</span><span>Ronda del 05/11/2026 — ISR, posgrados y formularios</span></h3>
+<p>Se implementó <strong>ISR con Cache Components</strong> (<code>'use cache'</code> + <code>cacheLife</code> + <code>cacheTag</code> + <code>/api/revalidar</code>) porque en Next 16 con <code>cacheComponents</code> las opciones <code>dynamic</code>, <code>revalidate</code> y <code>fetchCache</code> dejan de existir como configuración de segmento. Se añadieron <code>/posgrados</code> con siete PNFA, el formulario de posgrado, los mapas de las dos sedes, la navegación rápida, WhatsApp centralizado y <code>/privacidad</code>. Los tres formularios comparten el mismo patrón de validación, rate limit, honeypot, control de tiempo mínimo y reenvío con token.</p>
+<h3 id="s6-6" class="subtitulo"><span class="subtitulo__num">6.6</span><span>Ronda del 08/11/2026 — 22 puntos y endurecimiento</span></h3>
+<p>Se ejecutaron 22 requerimientos en <strong>6 PRs temáticos</strong> (<code>grupo-1-ui-portada</code> a <code>grupo-6-docs</code>) con 31 commits descriptivos. El alcance combinó rediseño (portada, carreras, posgrados, nosotros, responsive), corrección de defectos (TFSA, flashcards, parallax, justificación tipográfica) y —el punto de mayor impacto— un <strong>proceso de hardening alineado con SOC 2, ISO/IEC 27001 e ISO/IEC 27701</strong>. El cierre reportó:</p>
+<div class="tabla-envoltura">
+<table class="tabla">
+<thead>
+<tr><th>Validación</th><th>Resultado</th></tr>
+</thead>
+<tbody>
+<tr><td><code>npx tsc --noEmit</code></td><td>Sin errores</td></tr>
+<tr><td><code>npm run lint</code></td><td>Sin errores</td></tr>
+<tr><td><code>npm run build</code></td><td>Correcto, ISR activo</td></tr>
+<tr><td><code>docker compose config -q</code></td><td>Correcto</td></tr>
+<tr><td>Contenedores</td><td>3 en estado <code>healthy</code></td></tr>
+<tr><td><code>qa-frontend.sh</code></td><td><strong>29/29</strong>, 120 enlaces e imágenes verificados, 0 brechas</td></tr>
+<tr><td><code>probar-formulario.mjs</code></td><td><strong>12/12</strong>, folios UNETI-2026-000035 a 000038</td></tr>
+<tr><td><code>pentest-nextjs.sh</code></td><td><strong>26/26</strong>, 0 brechas</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="s6-7" class="subtitulo"><span class="subtitulo__num">6.7</span><span>Fase 6 — despliegue productivo (no iniciada)</span></h3>
+<p>Es la fase actual pendiente. Sus entregables están definidos en la hoja de ruta: contenedores o VM reproducibles en Proxmox, acceso remoto seguro por Tailscale y SSH, proxy inverso y TLS, dominio institucional, backups automáticos con restauración probada, monitoreo y alertas, staging previo y runbook de despliegue y rollback. El §12 de este informe desarrolla ese procedimiento.</p>
+</section>
+<section class="seccion">
+<h2 id="s7" class="titulo-seccion"><span class="titulo-seccion__num">07</span><span>Fase actual</span></h2>
+<h3 id="s7-1" class="subtitulo"><span class="subtitulo__num">7.1</span><span>Posición en la hoja de ruta</span></h3>
+<p>El proyecto está en <strong>cierre de Fase 5 y antesala de Fase 6</strong>. No hay una fase de desarrollo abierta: lo que resta de la Fase 5 son tres entregables concretos y lo que falta para producción es infraestructura, no producto.</p>
+<div class="tabla-envoltura">
+<table class="tabla">
+<thead>
+<tr><th>Área</th><th>Estado</th><th>Evidencia</th></tr>
+</thead>
+<tbody>
+<tr><td>Sitio público (11 rutas)</td><td>Cerrado</td><td>QA 29/29 y smoke tests de rutas</td></tr>
+<tr><td>Noticias dinámicas, SEO y relacionadas</td><td>Cerrado</td><td>ISR + tags + <code>sitemap.xml</code></td></tr>
+<tr><td>Comentarios</td><td>Cerrado (moderación pendiente)</td><td>Persistencia en <code>wp_comments</code></td></tr>
+<tr><td>Solicitudes y folios</td><td>Cerrado</td><td>12/12 pruebas de formulario</td></tr>
+<tr><td>Oferta académica</td><td>Cerrado</td><td>2 PNF + 7 PNFA + cursos</td></tr>
+<tr><td>Responsive</td><td>Cerrado</td><td>Verificación 1440 px y 390 px</td></tr>
+<tr><td>Accesibilidad</td><td>Parcial</td><td>Sin auditoría formal axe/WCAG</td></tr>
+<tr><td>Organigrama institucional (E-09)</td><td>Pendiente</td><td><code>fase-5-ui-ux-2026.md</code></td></tr>
+<tr><td>Hero definitivo</td><td>Pendiente</td><td><code>nextSteps.md</code> §8</td></tr>
+<tr><td>Pruebas E2E en CI</td><td>Pendiente</td><td>Playwright solo manual (31/10)</td></tr>
+<tr><td>Despliegue productivo (Fase 6)</td><td>Pendiente</td><td>Sin proxy, TLS, backups ni monitoreo</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="s7-2" class="subtitulo"><span class="subtitulo__num">7.2</span><span>Verificación ejecutada para este informe (10/11/2026)</span></h3>
+<div class="tabla-envoltura">
+<table class="tabla">
+<thead>
+<tr><th>Comprobación</th><th>Resultado</th><th>Observación</th></tr>
+</thead>
+<tbody>
+<tr><td><code>python3 scripts/seed/seed.py validate</code></td><td><strong>OK</strong></td><td>6 posts, 6 medios, 3 comentarios, 6 categorías, 18 etiquetas; checksums y manifiesto correctos</td></tr>
+<tr><td><code>docker compose config -q</code></td><td><strong>Falla sin <code>.env</code></strong></td><td><code>MYSQL_ROOT_PASSWORD</code> y <code>MYSQL_PASSWORD</code> son obligatorias; no hay <code>.env</code> en esta copia</td></tr>
+<tr><td><code>frontend/node_modules</code></td><td>Ausente</td><td>No se puede ejecutar <code>tsc</code>, <code>lint</code> ni <code>build</code> sin instalar dependencias</td></tr>
+<tr><td>Node del host</td><td><code>v20.20.2</code></td><td>Por debajo de <code>&gt;=26.13.0</code>; el build debe hacerse en el contenedor</td></tr>
+<tr><td>Docker / Compose</td><td><code>28.1.1</code> / <code>v2.36.0</code></td><td>Compatible con <code>!reset</code>/<code>!override</code> (Compose ≥ 2.24)</td></tr>
+<tr><td>Python del host</td><td><code>3.14.5</code></td><td>Compatible con la stdlib usada por <code>seed.py</code></td></tr>
+<tr><td>Git</td><td>Rama <code>develop</code>, árbol limpio, 1 commit</td><td>Historia consolidada; trazabilidad en <code>Documents/</code></td></tr>
+</tbody>
+</table>
+</div>
+<p>Esta verificación confirma dos cosas: el contenido es reproducible hoy, y el entorno <strong>no está listo para arrancar sin configuración</strong> —lo cual es correcto por diseño, pero implica que cualquier despliegue debe crear su <code>.env</code> y sus secretos antes de levantar el stack.</p>
+<h3 id="s7-3" class="subtitulo"><span class="subtitulo__num">7.3</span><span>Qué falta exactamente para cerrar la Fase 5</span></h3>
+<ol>
+<li>Sustituir el hero por la imagen institucional definida y su variante móvil.</li>
+<li>Construir el organigrama animado de <code>/nosotros</code> con el PDF oficial como única fuente.</li>
+<li>Verificar <code>/</code>, <code>/nosotros</code>, <code>/carreras</code>, <code>/cursos</code>, <code>/admisiones</code>, <code>/contacto</code> y <code>/noticias</code> a 1440 px y 390 px.</li>
+<li>Auditar accesibilidad (contraste, foco, <code>prefers-reduced-motion</code>) y peso de imágenes.</li>
+<li>Convertir la verificación Playwright en una puerta de CI, no en una revisión manual.</li>
+</ol>
+<p>Ninguno de estos puntos bloquea la publicación, salvo el de accesibilidad si la institución exige WCAG AA desde el primer día.</p>
+</section>
+<section class="seccion">
+<h2 id="s8" class="titulo-seccion"><span class="titulo-seccion__num">08</span><span>Calidad y validación</span></h2>
+<h3 id="s8-1" class="subtitulo"><span class="subtitulo__num">8.1</span><span>Evidencias acumuladas</span></h3>
+<div class="tabla-envoltura">
+<table class="tabla">
+<thead>
+<tr><th>Verificación</th><th>Última evidencia</th><th>Resultado</th></tr>
+</thead>
+<tbody>
+<tr><td>Tipos (<code>tsc --noEmit</code>)</td><td>08/11/2026</td><td>Sin errores</td></tr>
+<tr><td>Lint (<code>npm run lint</code>)</td><td>08/11/2026</td><td>Sin errores</td></tr>
+<tr><td>Build (<code>npm run build</code>)</td><td>08/11/2026</td><td>Correcto; ISR activo</td></tr>
+<tr><td>QA funcional</td><td>08/11/2026</td><td>29/29, 120 enlaces e imágenes, 0 brechas</td></tr>
+<tr><td>Formularios punta a punta</td><td>08/11/2026</td><td>12/12, folios persistidos en MariaDB</td></tr>
+<tr><td>Pentest Next.js</td><td>08/11/2026</td><td>26/26, 0 brechas</td></tr>
+<tr><td>Pentest WordPress</td><td>Configurado en CI</td><td>Manual/mensual; WPScan con token opcional</td></tr>
+<tr><td>Pentest MariaDB</td><td>Configurado en CI</td><td>Manual/mensual</td></tr>
+<tr><td>Seed</td><td>08/11/2026 y 10/11/2026</td><td><code>validate</code>, <code>import</code> idempotente y <code>verify</code> correctos</td></tr>
+<tr><td>Auditoría headless</td><td>31/10/2026</td><td>11 rutas × 2 viewports, 0 hidratación, 0 overflow, 0 <code>alt</code> faltante</td></tr>
+<tr><td>Accesibilidad formal</td><td>—</td><td><strong>No ejecutada</strong> (axe, teclado, contraste, lector)</td></tr>
+<tr><td>Rendimiento</td><td>—</td><td><strong>No medido</strong> (sin Lighthouse ni presupuesto)</td></tr>
+<tr><td>E2E automatizado</td><td>—</td><td><strong>No integrado en CI</strong></td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="s8-2" class="subtitulo"><span class="subtitulo__num">8.2</span><span>Cobertura real de las pruebas</span></h3>
+<p>La estrategia es de <strong>pirámide invertida con base en smoke tests</strong>: no hay pruebas unitarias ni de integración de componentes, pero sí pruebas de extremo a extremo de las rutas y de los formularios, ejecutadas contra el stack levantado. Es una elección razonable para un MVP, con un costo claro: cualquier regresión de lógica interna (validaciones, mapeo de datos, caché) solo se detecta si se manifiesta en HTTP o en base de datos.</p>
+<h3 id="s8-3" class="subtitulo"><span class="subtitulo__num">8.3</span><span>Puertas de calidad en CI</span></h3>
+<p><code>03-frontend.yml</code> ejecuta <code>npm ci</code>, TypeScript y ESLint con Node 26. <code>02-wordpress.yml</code> hace lint PHP y pruebas de CPT, REST, GraphQL y endurecimiento. <code>04-formulario.yml</code> envía un formulario real y verifica la persistencia en <code>wp_posts</code>/<code>wp_postmeta</code>. <code>01-despliegue.yml</code> levanta el stack de producción en el runner, siembra y ejecuta QA. <code>09-seguridad.yml</code> corre <code>npm audit</code>, <code>gitleaks</code> y validación de compose. Los pentests (<code>06</code>–<code>08</code>) son manuales y mensuales para no consumir minutos del plan gratuito.</p>
+</section>
+<section class="seccion">
+<h2 id="s9" class="titulo-seccion"><span class="titulo-seccion__num">09</span><span>Seguridad y privacidad</span></h2>
+<h3 id="s9-1" class="subtitulo"><span class="subtitulo__num">9.1</span><span>Controles implementados</span></h3>
+<div class="tabla-envoltura">
+<table class="tabla">
+<thead>
+<tr><th>Capa</th><th>Control</th><th>Implementación</th></tr>
+</thead>
+<tbody>
+<tr><td>Red (aplicación)</td><td>Rate limiting por IP y por clave</td><td><code>app/lib/rate-limit.ts</code> en todas las rutas que escriben</td></tr>
+<tr><td>Red (aplicación)</td><td>Validación de <code>Origin</code></td><td><code>origenValido()</code> acepta el host real y el sitio configurado; rechaza el resto con 403</td></tr>
+<tr><td>Red (aplicación)</td><td>Límite de cuerpo</td><td>16 KB formularios, 8 KB comentarios, 2 KB revalidación</td></tr>
+<tr><td>Aplicación</td><td>Anti-CSRF de origen cruzado</td><td>Verificación de <code>Origin</code> + token de servicio</td></tr>
+<tr><td>Aplicación</td><td>Anti-bot</td><td>Honeypot (<code>sitio_web</code>) y tiempo mínimo de 2,5 s</td></tr>
+<tr><td>Aplicación</td><td>Comparación de tokens</td><td><code>timingSafeEqual</code> con verificación de longitud</td></tr>
+<tr><td>Aplicación</td><td>Cabeceras</td><td>CSP, <code>nosniff</code>, <code>X-Frame-Options</code>, <code>Referrer-Policy</code>, <code>Permissions-Policy</code>, COOP, CORP, <code>X-Permitted-Cross-Domain-Policies</code>, <code>Origin-Agent-Cluster</code></td></tr>
+<tr><td>Aplicación</td><td>HSTS</td><td><code>max-age=31536000; includeSubDomains</code> solo en producción</td></tr>
+<tr><td>Aplicación</td><td>TRACE/TRACK</td><td><code>proxy.ts</code> responde 405 antes del handler</td></tr>
+<tr><td>WordPress</td><td>XML-RPC y pingback</td><td>Deshabilitados en <code>uneti-seguridad.php</code></td></tr>
+<tr><td>WordPress</td><td>Enumeración de usuarios</td><td><code>?author=</code> redirigido, <code>/wp/v2/users</code> oculto, sitemap sin usuarios</td></tr>
+<tr><td>WordPress</td><td>Fuerza bruta</td><td>Límite de intentos y mensajes genéricos en el login</td></tr>
+<tr><td>WordPress</td><td>Application Passwords</td><td>Deshabilitadas</td></tr>
+<tr><td>WordPress</td><td>Edición de archivos</td><td><code>DISALLOW_FILE_EDIT</code></td></tr>
+<tr><td>Servidor web</td><td>Apache</td><td>Sin listados, bloqueo de archivos sensibles y de PHP en <code>uploads</code></td></tr>
+<tr><td>PHP</td><td><code>seguridad.ini</code></td><td><code>expose_php=Off</code>, errores ocultos, cookies <code>HttpOnly</code>/<code>SameSite</code></td></tr>
+<tr><td>Base de datos</td><td>MariaDB</td><td>Sin puerto publicado, <code>local-infile=0</code>, <code>skip-name-resolve</code>, <code>root</code> solo local</td></tr>
+<tr><td>Contenedores</td><td>Endurecimiento</td><td><code>no-new-privileges</code>, <code>pids_limit</code>, healthchecks</td></tr>
+<tr><td>Datos</td><td>Minimización y retención</td><td>CPT privado, IP hasheada, borrado diario a los 365 días</td></tr>
+<tr><td>Datos</td><td>Transparencia</td><td><code>/privacidad</code>, aviso de cookies, <code>security.txt</code></td></tr>
+<tr><td>CI</td><td>Secretos</td><td><code>gitleaks</code> con historial completo</td></tr>
+<tr><td>CI</td><td>Dependencias</td><td><code>npm audit --omit=dev --audit-level=high</code></td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="s9-2" class="subtitulo"><span class="subtitulo__num">9.2</span><span>Correspondencia normativa</span></h3>
+<p>El proyecto documenta su alineación en <code>Documents/seguridad/2026-11-08-hardening.md</code>:</p>
+<ul>
+<li><strong>SOC 2 (Trust Services Criteria):</strong> gobierno y gestión de cambios, identidad y acceso, cifrado en tránsito, seguridad de aplicaciones, detección y respuesta.</li>
+<li><strong>ISO/IEC 27001:2022:</strong> controles organizacionales, de personas, físicos y tecnológicos, con evidencias y comandos de verificación.</li>
+<li><strong>ISO/IEC 27701:2019:</strong> rol de responsable del tratamiento, consentimiento explícito en formularios, finalidad, limitación de la recolección, transparencia, calidad del dato, derechos de las personas y supresión.</li>
+</ul>
+<p>Conviene leerlo con precisión: es una <strong>alineación de controles</strong>, no una certificación. No hubo auditoría externa y varios requisitos de operación (TLS en el host, respaldos, MFA, monitoreo) están declarados como pendientes dentro del propio documento.</p>
+<h3 id="s9-3" class="subtitulo"><span class="subtitulo__num">9.3</span><span>Riesgos residuales de seguridad</span></h3>
+<div class="tabla-envoltura">
+<table class="tabla">
+<thead>
+<tr><th>Riesgo</th><th>Estado actual</th><th>Mitigación recomendada</th></tr>
+</thead>
+<tbody>
+<tr><td>CSP con <code>'unsafe-inline'</code> en <code>script-src</code></td><td>Aceptado por compatibilidad con el template</td><td>Migrar a <em>nonces</em> con el proxy de Next 16</td></tr>
+<tr><td>Rate limit en memoria</td><td>Límite por proceso; se reinicia al reiniciar el contenedor</td><td>Redis compartido si se escala horizontalmente</td></tr>
+<tr><td>Sin MFA en WordPress</td><td>Login limitado y <code>wp-admin</code> restringible por red</td><td>Plugin MFA o SSO institucional</td></tr>
+<tr><td>Sin WAF ni protección volumétrica</td><td>Solo controles de aplicación</td><td>Caddy/Fail2ban o WAF institucional</td></tr>
+<tr><td>TLS terminado en el host</td><td>Documentado, no implementado</td><td>Certificado gestionado con renovación automática (§12)</td></tr>
+<tr><td>Backups</td><td>Solo <code>db_data/</code> local</td><td>Copia cifrada fuera del host y prueba de restauración</td></tr>
+<tr><td>Monitoreo</td><td>Healthchecks y CI</td><td>Alertas a correo/Telegram ante caídas</td></tr>
+<tr><td>TRACE en el proxy inverso</td><td>Next lo corta con 405</td><td>Devolver 405 también en el proxy</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+<section class="seccion">
+<h2 id="s10" class="titulo-seccion"><span class="titulo-seccion__num">10</span><span>Riesgos y deuda técnica</span></h2>
+<h3 id="s10-1" class="subtitulo"><span class="subtitulo__num">10.1</span><span>Matriz de riesgos actualizada</span></h3>
+<div class="tabla-envoltura">
+<table class="tabla">
+<thead>
+<tr><th>ID</th><th>Riesgo</th><th>Probabilidad</th><th>Impacto</th><th>Estado real</th><th>Tratamiento</th></tr>
+</thead>
+<tbody>
+<tr><td>R-01</td><td>Secretos en <code>.env</code> sin rotación ni gestor</td><td>Alta</td><td>Alto</td><td><strong>Abierto</strong></td><td>Secrets de Docker o gestor externo; rotar tokens y salts</td></tr>
+<tr><td>R-02</td><td>Imágenes fijadas por etiqueta, no por digest</td><td>Media</td><td>Medio</td><td><strong>Abierto</strong></td><td>Fijar por digest y registrar el procedimiento</td></tr>
+<tr><td>R-03</td><td>Comentarios autoaprobados y sin anti-spam</td><td>Alta</td><td>Alto</td><td><strong>Parcial</strong></td><td>El rate limit existe; falta moderación previa y CAPTCHA</td></tr>
+<tr><td>R-04</td><td>Persistencia y notificación de leads</td><td>Baja</td><td>Medio</td><td><strong>Mitigado</strong></td><td>CPT + folio + exportación CSV; falta correo/CRM</td></tr>
+<tr><td>R-05</td><td>Multimedia no reproducible fuera de <code>seed/</code></td><td>Baja</td><td>Bajo</td><td><strong>Mitigado</strong></td><td>Seed con SHA-256 y regeneración de miniaturas</td></tr>
+<tr><td>R-06</td><td>WPGraphQL actualizado fuera del repositorio</td><td>Media</td><td>Medio</td><td><strong>Abierto</strong></td><td>Está versionado y montado; falta procedimiento de actualización</td></tr>
+<tr><td>R-07</td><td>Sin pruebas E2E en CI</td><td>Alta</td><td>Alta</td><td><strong>Abierto</strong></td><td>Playwright manual; convertir en workflow</td></tr>
+<tr><td>R-08</td><td>Sin TLS, proxy ni backups</td><td>Alta</td><td>Alto en producción</td><td><strong>Abierto</strong></td><td>Fase 6 / §12</td></tr>
+<tr><td>R-09</td><td>Accesibilidad no auditada</td><td>Media</td><td>Media</td><td><strong>Abierto</strong></td><td>axe, teclado, contraste y lector de pantalla</td></tr>
+<tr><td>R-10</td><td>Rendimiento no medido</td><td>Media</td><td>Media</td><td><strong>Abierto</strong></td><td>Lighthouse móvil y presupuesto</td></tr>
+<tr><td>R-11</td><td>Caché SSE en memoria por conexión</td><td>Media</td><td>Bajo en MVP</td><td><strong>Aceptado</strong></td><td>Pub/sub solo si se escala horizontalmente</td></tr>
+<tr><td>R-12</td><td>Navegación con recarga completa</td><td>Baja</td><td>N/A</td><td><strong>Aceptado</strong></td><td>Decisión deliberada de simplicidad</td></tr>
+<tr><td>R-13</td><td>Dependencia del runtime jQuery del template</td><td>Baja</td><td>Medio</td><td><strong>Mitigado</strong></td><td>Runtime eliminado; interacciones en React</td></tr>
+<tr><td>R-14</td><td>Licencias de plantilla, imágenes y librerías sin revisar</td><td>Media</td><td>Media</td><td><strong>Abierto</strong></td><td>Auditoría legal antes de publicar; <code>LICENSE</code></td></tr>
+<tr><td>R-15</td><td>Concentración de conocimiento en pocas personas</td><td>Alta</td><td>Media</td><td><strong>Mitigación parcial</strong></td><td>Documentación, onboarding y entorno reproducible</td></tr>
+<tr><td>R-16</td><td>Sin staging ni CI/CD de despliegue</td><td>Media</td><td>Alta</td><td><strong>Parcial</strong></td><td>Hay CI de validación; falta staging y promoción</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="s10-2" class="subtitulo"><span class="subtitulo__num">10.2</span><span>Deuda técnica aceptada</span></h3>
+<ul>
+<li>La navegación no es SPA: se usa <code>&lt;a&gt;</code> con recarga completa porque el template mutaba el DOM.</li>
+<li>Las carreras y posgrados son estáticos en TypeScript: un CMS de oferta académica se evaluará cuando exista flujo editorial.</li>
+<li>Los comentarios se aprueban automáticamente para la demo. <strong>No es aceptable en producción.</strong></li>
+<li>El formulario persiste en WordPress, pero no notifica por correo ni integra CRM.</li>
+<li>Los pentests son comprobaciones automatizadas, no una auditoría profesional.</li>
+<li>La CSP mantiene <code>'unsafe-inline'</code>; el plan de nonces está documentado pero no ejecutado.</li>
+</ul>
+<h3 id="s10-3" class="subtitulo"><span class="subtitulo__num">10.3</span><span>Riesgos específicos de la puesta en producción</span></h3>
+<div class="tabla-envoltura">
+<table class="tabla">
+<thead>
+<tr><th>Riesgo</th><th>Por qué importa</th><th>Mitigación en §12</th></tr>
+</thead>
+<tbody>
+<tr><td>Ejecutar <code>next dev</code> en producción</td><td>Rendimiento bajo, mensajes de error expuestos, recarga de código</td><td>Imagen construida con <code>next build</code> + <code>next start</code></td></tr>
+<tr><td>Publicar <code>3000</code>/<code>8080</code></td><td>WordPress y Next expuestos sin proxy ni control</td><td>Publicar solo en <code>127.0.0.1</code>; Caddy en el borde</td></tr>
+<tr><td><code>NEXT_PUBLIC_*</code> ausente en el build</td><td><code>metadataBase</code>, <code>robots.txt</code>, <code>sitemap.xml</code> y las URL absolutas quedan mal</td><td>Pasarlas como <code>ARG</code> en la etapa de build</td></tr>
+<tr><td>WordPress detrás de proxy sin <code>X-Forwarded-Proto</code></td><td>Bucles de redirección y cookies inseguras</td><td>Ajuste en <code>WORDPRESS_CONFIG_EXTRA</code></td></tr>
+<tr><td><code>DISABLE_WP_CRON=true</code> sin cron del sistema</td><td>Cron de WordPress y limpieza de retención no se ejecutan</td><td>Timer de systemd cada 5–15 min</td></tr>
+<tr><td>Restaurar sin probar</td><td>Un backup no verificado no es un backup</td><td>Prueba trimestral documentada</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+<section class="seccion">
+<h2 id="s11" class="titulo-seccion"><span class="titulo-seccion__num">11</span><span>Veredicto de aptitud para producción</span></h2>
+
+<div class="veredicto" role="list" aria-label="Semáforo de aptitud">
+  <div class="veredicto__item" role="listitem" data-nivel="ok">
+    <span class="veredicto__luz" aria-hidden="true"></span>
+    <div><p class="veredicto__titulo">Funcionalidad</p><p class="veredicto__nota">11 rutas, noticias, comentarios, formularios y oferta completa.</p></div>
+  </div>
+  <div class="veredicto__item" role="listitem" data-nivel="ok">
+    <span class="veredicto__luz" aria-hidden="true"></span>
+    <div><p class="veredicto__titulo">Calidad de código</p><p class="veredicto__nota">TypeScript estricto, lint limpio y build reproducible.</p></div>
+  </div>
+  <div class="veredicto__item" role="listitem" data-nivel="medio">
+    <span class="veredicto__luz" aria-hidden="true"></span>
+    <div><p class="veredicto__titulo">Seguridad de aplicación</p><p class="veredicto__nota">Controles sólidos; quedan CSP inline, rate limit en memoria y MFA.</p></div>
+  </div>
+  <div class="veredicto__item" role="listitem" data-nivel="medio">
+    <span class="veredicto__luz" aria-hidden="true"></span>
+    <div><p class="veredicto__titulo">Privacidad</p><p class="veredicto__nota">Retención y aviso existen; falta revisión legal y licencia.</p></div>
+  </div>
+  <div class="veredicto__item" role="listitem" data-nivel="mal">
+    <span class="veredicto__luz" aria-hidden="true"></span>
+    <div><p class="veredicto__titulo">Operación</p><p class="veredicto__nota">Sin TLS, proxy, firewall, backups ni monitoreo.</p></div>
+  </div>
+  <div class="veredicto__item" role="listitem" data-nivel="medio">
+    <span class="veredicto__luz" aria-hidden="true"></span>
+    <div><p class="veredicto__titulo">Continuidad</p><p class="veredicto__nota">Seed reproducible, pero sin runbook ejecutado ni restauración probada.</p></div>
+  </div>
+</div>
+
+<h3 id="s11-1" class="subtitulo"><span class="subtitulo__num">11.1</span><span>Semáforo por dimensión</span></h3>
+<div class="tabla-envoltura">
+<table class="tabla">
+<thead>
+<tr><th>Dimensión</th><th>Nota</th><th>Justificación</th></tr>
+</thead>
+<tbody>
+<tr><td>Funcionalidad</td><td>🟢 Apto</td><td>Once rutas operativas, noticias, comentarios, formularios con folio, oferta académica completa y QA 29/29</td></tr>
+<tr><td>Calidad de código</td><td>🟢 Apto</td><td>TypeScript estricto, lint limpio, build correcto, árbol de dependencias mínimo</td></tr>
+<tr><td>Seguridad de aplicación</td><td>🟡 Apto con reservas</td><td>Controles sólidos y pentest sin brechas; quedan CSP <code>unsafe-inline</code>, rate limit en memoria y ausencia de MFA/WAF</td></tr>
+<tr><td>Privacidad y cumplimiento</td><td>🟡 Apto con reservas</td><td>Minimización, retención y aviso existen; falta revisión legal y <code>LICENSE</code></td></tr>
+<tr><td>Operación</td><td>🔴 <strong>No apto</strong></td><td>Sin TLS, proxy, firewall, backups, monitoreo ni staging; compose de desarrollo</td></tr>
+<tr><td>Continuidad</td><td>🟡 Parcial</td><td>Seed reproducible y docs extensas, pero sin runbook ejecutado ni restauración probada</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="s11-2" class="subtitulo"><span class="subtitulo__num">11.2</span><span>Bloqueadores P0 (antes de cualquier exposición pública)</span></h3>
+<div class="tabla-envoltura">
+<table class="tabla">
+<thead>
+<tr><th>#</th><th>Bloqueador</th><th>Evidencia en el repositorio</th><th>Acción mínima</th><th>Esfuerzo</th></tr>
+</thead>
+<tbody>
+<tr><td>1</td><td>Sin TLS ni proxy inverso; <code>3000</code> y <code>8080</code> publicados</td><td><code>docker-compose.yml</code> líneas 41–42 y 88–89</td><td>Caddy en el host + publicar solo en <code>127.0.0.1</code></td><td>0,5 j</td></tr>
+<tr><td>2</td><td>Sin firewall ni segmentación administrativa</td><td>No hay reglas en el repo</td><td>Firewall Proxmox + UFW; <code>wp-admin</code> por Tailscale</td><td>0,5 j</td></tr>
+<tr><td>3</td><td>Sin build inmutable</td><td>No existe <code>Dockerfile</code>; <code>docker-compose.prod.yml</code> compila al arrancar</td><td><code>frontend/Dockerfile</code> multi-stage + imagen taggeada</td><td>0,5 j</td></tr>
+<tr><td>4</td><td>Sin backups ni restauración probada</td><td><code>db_data/</code>, <code>wp_data/</code> sin cron</td><td>Script <code>mariadb-dump</code> + tar + cifrado + cron + prueba</td><td>0,5 j</td></tr>
+<tr><td>5</td><td>Sin monitoreo ni alertas</td><td>Solo healthchecks</td><td>Uptime Kuma o chequeo por timer + alerta</td><td>0,25 j</td></tr>
+<tr><td>6</td><td>Secretos sin rotación</td><td><code>.env</code>, <code>.env.example</code></td><td>Secretos con permisos <code>600</code>, rotar tokens y salts</td><td>0,25 j</td></tr>
+<tr><td>7</td><td>Licencia y créditos sin cerrar</td><td><code>README.md</code> §Licencia, <code>seed/CREDITS.md</code></td><td><code>LICENSE</code>, auditoría de plantilla e imágenes</td><td>Gestión + legal</td></tr>
+</tbody>
+</table>
+</div>
+<p>Además, dos condiciones blandas que la institución debería decidir antes del <em>go-live</em>: <strong>moderación de comentarios</strong> (hoy se aprueban solos) y <strong>accesibilidad</strong> (sin auditoría formal).</p>
+<h3 id="s11-3" class="subtitulo"><span class="subtitulo__num">11.3</span><span>Respuesta directa</span></h3>
+<p><strong>¿Está apto para subir a producción?</strong> En su estado actual, <strong>no</strong> para exposición pública en Internet. Sí está apto para un <strong>staging interno</strong> en Proxmox accesible por Tailscale, que es de hecho el paso 1 recomendado.</p>
+<p><strong>¿Cuánto falta?</strong> Entre <strong>3 y 5 jornadas técnicas</strong> para cerrar los bloqueadores 1 a 6, más <strong>1 o 2 jornadas</strong> de verificación (pruebas de formulario, pentests, restauración y checklist) y el tiempo de trámite de dominio, DNS y aprobación legal. No hace falta desarrollo de producto: hace falta infraestructura y procedimiento.</p>
+<p><strong>Condición para declarar producción.</strong> Semáforo verde en operación (proxy, TLS, firewall), backups probados, monitoreo activo, secretos rotados, <code>LICENSE</code> definida y comentarios moderados. Con eso, el riesgo residual es el normal de un portal institucional de este tamaño.</p>
+</section>
+<section class="seccion">
+<h2 id="s12" class="titulo-seccion"><span class="titulo-seccion__num">12</span><span>Cómo subirlo a producción</span></h2>
+<div class="aviso aviso--alerta"><p><strong>Estado de esta sección: Propuesta.</strong> Ninguno de los archivos de despliegue descritos existe todavía en el repositorio. Se incluyen completos para que puedan copiarse, revisarse y versionarse en la Fase 6.</p></div>
+<h3 id="s12-1" class="subtitulo"><span class="subtitulo__num">12.1</span><span>Topología recomendada</span></h3>
+<p><strong>Decisión: Proxmox VE con una VM Debian y Caddy 2 instalado en el host (no en contenedor).</strong></p>
+<div class="bloque-codigo" data-lenguaje="text"><pre><code class="lenguaje-text">Internet
+   │  80 / 443
+   ▼
+┌──────────────────────────── VM Debian 13 (Proxmox) ───────────────────────────┐
+│  Caddy 2 (systemd)  ── TLS automático, HSTS, HTTP→HTTPS, logs                 │
+│      │ 127.0.0.1:3000                          │ 127.0.0.1:8080               │
+│      ▼                                          ▼                             │
+│  ┌──────────────────────── Docker Compose ────────────────────────┐           │
+│  │  frontend (Next.js build)   wordpress (Apache + PHP 8.5)       │           │
+│  │              └──────────────► db (MariaDB, sin puerto)          │           │
+│  └────────────────────────────────────────────────────────────────┘           │
+│                                                                               │
+│  UFW: 22 (solo Tailscale), 80, 443       Proxmox FW: 8006 (solo LAN/Tailscale) │
+│  Backups: /srv/uneti/backups → NAS / otro nodo (cifrado)                      │
+└───────────────────────────────────────────────────────────────────────────────┘</code></pre></div>
+<p><strong>Por qué Caddy y no Nginx.</strong> No hay experiencia previa con Nginx en el equipo y el proyecto necesita algo que funcione el primer día. Caddy obtiene y renueva certificados de Let's Encrypt sin configuración adicional, redirige HTTP a HTTPS por defecto, se configura en un <code>Caddyfile</code> de veinte líneas y no exige módulos ni <code>certbot</code>. Nginx sigue siendo válido, pero implica gestionar certificados, <code>sites-enabled</code>, cifrados y recargas: más superficie de error para el mismo resultado.</p>
+<p><strong>Por qué Caddy en el host y no en un contenedor.</strong> Si Caddy corre en Docker, la IP remota que ve es la del <em>gateway</em> del puente, no la del cliente. Eso rompe las reglas por IP (Tailscale, <code>wp-admin</code>) y obliga a <code>network_mode: host</code> o a un sidecar. Instalado en el host, la IP real llega limpia y las reglas <code>remote_ip</code> funcionan.</p>
+<div class="tabla-envoltura">
+<table class="tabla">
+<thead>
+<tr><th>Alternativa</th><th>Cuándo elegirla</th><th>Coste</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Caddy en host</strong> (recomendada)</td><td>Caso actual: una VM, pocos servicios, equipo sin experiencia en proxy</td><td>Bajo</td></tr>
+<tr><td>Nginx Proxy Manager</td><td>Se prefiere una interfaz gráfica y certificados por clic</td><td>Medio: un contenedor más y puertos gestionados por Docker</td></tr>
+<tr><td>Traefik</td><td>Varios servicios y despliegues frecuentes por etiquetas</td><td>Alto para este tamaño</td></tr>
+<tr><td>Cloudflare Tunnel</td><td>CANTV no ofrece IP pública o hay CGNAT</td><td>Alto en soberanía: el tráfico pasa por un tercero</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="s12-2" class="subtitulo"><span class="subtitulo__num">12.2</span><span>Prerrequisitos</span></h3>
+<div class="tabla-envoltura">
+<table class="tabla">
+<thead>
+<tr><th>Requisito</th><th>Valor sugerido</th><th>Nota</th></tr>
+</thead>
+<tbody>
+<tr><td>Proxmox VE</td><td>8.x o 9.x</td><td>Con almacenamiento para snapshots</td></tr>
+<tr><td>VM</td><td>Debian 13, 4 vCPU, 8 GB RAM, 100 GB SSD</td><td>No usar LXC para Docker</td></tr>
+<tr><td>Dominio</td><td><code>uneti.edu.ve</code> con <code>www</code> y <code>cms</code></td><td>TTL 300 durante la migración</td></tr>
+<tr><td>DNS</td><td>A/AAAA de <code>www</code> y <code>cms</code> a la IP pública</td><td>Verificar propagación antes de TLS</td></tr>
+<tr><td>Puertos</td><td>80 y 443 abiertos de Internet al host</td><td>22, 3000, 8080 y 3306 cerrados</td></tr>
+<tr><td>Docker</td><td>Engine 28.x + Compose ≥ 2.24</td><td><code>!reset</code>/<code>!override</code> requieren 2.24+</td></tr>
+<tr><td>Tailscale</td><td>Cuenta institucional, instalado en el host y en los equipos de operación</td><td>Para SSH, Proxmox UI y <code>wp-admin</code></td></tr>
+<tr><td>Backups</td><td>NAS, otro nodo Proxmox o disco externo</td><td>Fuera del host y cifrado</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="s12-3" class="subtitulo"><span class="subtitulo__num">12.3</span><span>Variables de entorno de producción</span></h3>
+<p>Nunca se versionan valores. Se listan solo los nombres y su significado, con el valor de ejemplo en el <code>.env.example</code> del repositorio.</p>
+<div class="tabla-envoltura">
+<table class="tabla">
+<thead>
+<tr><th>Variable</th><th>Producción</th><th>Consumidor</th></tr>
+</thead>
+<tbody>
+<tr><td><code>COMPOSE_PROJECT_NAME</code></td><td><code>uneti-prod</code></td><td>Compose</td></tr>
+<tr><td><code>MYSQL_ROOT_PASSWORD</code> / <code>MYSQL_PASSWORD</code></td><td>Generadas con <code>openssl rand -base64 32</code></td><td>MariaDB / WordPress</td></tr>
+<tr><td><code>MYSQL_DATABASE</code> / <code>MYSQL_USER</code></td><td><code>wordpress_db</code> / <code>wp_user</code></td><td>MariaDB</td></tr>
+<tr><td><code>DB_DATA_DIR</code> / <code>WP_DATA_DIR</code></td><td><code>/srv/uneti/data/db</code> y <code>/srv/uneti/data/wp</code></td><td>Compose</td></tr>
+<tr><td><code>WORDPRESS_URL</code></td><td><code>https://cms.dominio</code></td><td>WordPress (<code>WP_HOME</code>, <code>WP_SITEURL</code>) y GraphQL</td></tr>
+<tr><td><code>SITE_URL</code> / <code>NEXT_PUBLIC_SITE_URL</code></td><td><code>https://www.dominio</code></td><td>Next (metadatos, <code>robots</code>, <code>sitemap</code>, Origin)</td></tr>
+<tr><td><code>NEXT_PUBLIC_WP_URL</code> / <code>NEXT_PUBLIC_GRAPHQL_URL</code></td><td><code>https://cms.dominio</code> y <code>…/graphql</code></td><td>Solo cliente, si se usara</td></tr>
+<tr><td><code>WP_INTERNAL_URL</code> / <code>WP_GRAPHQL_URL</code></td><td><code>http://wordpress</code> y <code>http://wordpress/graphql</code></td><td>Next (servidor)</td></tr>
+<tr><td><code>WP_FORM_TOKEN</code> / <code>UNETI_FORM_TOKEN</code></td><td>Mismo secreto en ambos lados</td><td>Next ⇄ WordPress</td></tr>
+<tr><td><code>UNETI_REVALIDATE_TOKEN</code></td><td>Secreto distinto</td><td><code>/api/revalidar</code></td></tr>
+<tr><td><code>WP_FORCE_SSL</code></td><td><code>1</code></td><td>WordPress</td></tr>
+<tr><td><code>WORDPRESS_PORT</code> / <code>FRONTEND_PORT</code></td><td><code>8080</code> / <code>3000</code></td><td>Solo enlace a loopback</td></tr>
+<tr><td><code>MARIADB_IMAGE</code> / <code>WORDPRESS_IMAGE</code> / <code>NODE_IMAGE</code></td><td>Etiquetas fijas (o digest)</td><td>Reproducibilidad</td></tr>
+</tbody>
+</table>
+</div>
+<div class="aviso"><p><strong>Importante:</strong> <code>NEXT_PUBLIC_SITE_URL</code> se inlinea en tiempo de build. Debe pasarse como <code>ARG</code>/<code>--build-arg</code> al construir la imagen; si solo se define en ejecución, <code>metadataBase</code>, <code>robots.txt</code> y <code>sitemap.xml</code> quedan apuntando al valor por defecto.</p></div>
+<h3 id="s12-4" class="subtitulo"><span class="subtitulo__num">12.4</span><span>Preparación de la infraestructura</span></h3>
+<p><strong>Paso 0 — Congelar una versión.</strong> No se despliega <code>develop</code>.</p>
+<div class="bloque-codigo" data-lenguaje="bash"><pre><code class="lenguaje-bash"># En el repositorio local
+git checkout develop &amp;&amp; git pull
+git tag -a v1.0.0-mvp -m "MVP SD-UNETI validado 2026-11-08"
+git push origin v1.0.0-mvp
+# Abrir PR develop → main y fusionar tras el CI</code></pre></div>
+<p><strong>Paso 1 — Crear la VM en Proxmox.</strong> Desde la interfaz: <em>Create VM</em>, Debian 13, 4 vCPU, 8 GB, disco 100 GB en el almacenamiento de mayor rendimiento, red en el puente con VLAN institucional. Instalar con SSH habilitado y sin entorno gráfico. Tomar un <strong>snapshot</strong> antes de instalar Docker.</p>
+<p><strong>Paso 2 — Endurecer el sistema operativo.</strong></p>
+<div class="bloque-codigo" data-lenguaje="bash"><pre><code class="lenguaje-bash">adduser operador &amp;&amp; usermod -aG sudo operador
+# Copiar la clave pública al nuevo usuario y deshabilitar el acceso por contraseña
+sudo sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config
+sudo sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd_config
+sudo systemctl restart ssh
+
+sudo apt update &amp;&amp; sudo apt upgrade -y
+sudo apt install -y ufw fail2ban unattended-upgrades curl ca-certificates
+sudo timedatectl set-timezone America/Caracas
+sudo ufw default deny incoming &amp;&amp; sudo ufw default allow outgoing
+sudo ufw allow in on tailscale0
+sudo ufw allow 80/tcp &amp;&amp; sudo ufw allow 443/tcp
+sudo ufw enable</code></pre></div>
+<div class="aviso"><p>El orden importa: instalar Tailscale <strong>antes</strong> de cerrar el puerto 22 evita perder el acceso.</p></div>
+<p><strong>Paso 3 — Tailscale y acceso administrativo.</strong></p>
+<div class="bloque-codigo" data-lenguaje="bash"><pre><code class="lenguaje-bash">curl -fsSL https://tailscale.com/install.sh | sh
+sudo tailscale up --ssh --advertise-tags=tag:uneti-prod
+# Comprobar: tailscale status  y  ssh operador@&lt;nombre-tailscale&gt;
+sudo ufw status verbose   # 22 no debe aparecer abierto al público</code></pre></div>
+<p><strong>Paso 4 — Firewall de Proxmox.</strong> En <em>Datacenter → Firewall</em>, política de entrada <code>DROP</code>; reglas: <code>22</code> solo desde la subred de administración o Tailscale, <code>8006</code> (interfaz Proxmox) solo desde LAN/Tailscale, <code>80</code> y <code>443</code> desde cualquier origen. Aplicar también al nivel de la VM.</p>
+<p><strong>Paso 5 — Docker y estructura de directorios.</strong></p>
+<div class="bloque-codigo" data-lenguaje="bash"><pre><code class="lenguaje-bash">curl -fsSL https://get.docker.com | sudo sh
+sudo usermod -aG docker operador
+sudo mkdir -p /srv/uneti/{app,data/db,data/wp,backups,secrets}
+sudo chown -R operador:operador /srv/uneti
+
+git clone --branch v1.0.0-mvp https://github.com/IVasquezRui/SD-UNETI.git /srv/uneti/app
+cd /srv/uneti/app
+cp .env.example .env &amp;&amp; chmod 600 .env</code></pre></div>
+<h3 id="s12-5" class="subtitulo"><span class="subtitulo__num">12.5</span><span>Build inmutable del frontend</span></h3>
+<p><strong>Archivo propuesto: <code>frontend/Dockerfile</code>.</strong> No existe hoy; el compose actual usa la imagen de Node y monta el código.</p>
+<div class="bloque-codigo" data-lenguaje="dockerfile"><pre><code class="lenguaje-dockerfile"># syntax=docker/dockerfile:1
+FROM node:26.13.0-slim AS deps
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci --no-audit --no-fund
+
+FROM node:26.13.0-slim AS build
+WORKDIR /app
+ENV NEXT_TELEMETRY_DISABLED=1
+ARG NEXT_PUBLIC_SITE_URL
+ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+RUN npm run build
+
+FROM node:26.13.0-slim AS runner
+WORKDIR /app
+ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 PORT=3000
+RUN groupadd --system uneti &amp;&amp; useradd --system --gid uneti --create-home uneti
+COPY --from=build --chown=uneti:uneti /app/.next ./.next
+COPY --from=build --chown=uneti:uneti /app/public ./public
+COPY --from=build --chown=uneti:uneti /app/package.json ./package.json
+COPY --from=build --chown=uneti:uneti /app/next.config.ts ./next.config.ts
+COPY --from=build --chown=uneti:uneti /app/node_modules ./node_modules
+USER uneti
+EXPOSE 3000
+HEALTHCHECK --interval=30s --timeout=5s --start-period=40s --retries=3 \
+  CMD node -e "fetch('http://127.0.0.1:3000/').then(r=&gt;process.exit(r.ok?0:1)).catch(()=&gt;process.exit(1))"
+CMD ["npm", "run", "start"]</code></pre></div>
+<p>Se copia <code>node_modules</code> completo para no depender de la resolución de TypeScript al leer <code>next.config.ts</code> en el arranque. Si se busca una imagen más pequeña, el camino es activar <code>output: "standalone"</code> en <code>next.config.ts</code> y arrancar <code>node server.js</code>; eso cambia el contrato de arranque y debe probarse en staging.</p>
+<p><strong>Archivo propuesto: <code>deploy/compose.prod.yml</code>.</strong> Se mantiene separado de <code>docker-compose.prod.yml</code> para no alterar el workflow <code>01-despliegue.yml</code>, que depende de ese override.</p>
+<div class="bloque-codigo" data-lenguaje="yaml"><pre><code class="lenguaje-yaml">name: uneti-prod
+
+services:
+  db:
+    image: ${MARIADB_IMAGE}
+    restart: unless-stopped
+    command: ["--local-infile=0", "--skip-name-resolve"]
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MARIADB_ROOT_HOST: localhost
+    volumes:
+      - /srv/uneti/data/db:/var/lib/mysql
+      - ../scripts/database/endurecer.sql:/docker-entrypoint-initdb.d/zz-uneti-endurecer.sql:ro
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+    security_opt: ["no-new-privileges:true"]
+    pids_limit: 512
+    logging: { driver: json-file, options: { max-size: "10m", max-file: "3" } }
+
+  wordpress:
+    image: ${WORDPRESS_IMAGE}
+    restart: unless-stopped
+    depends_on:
+      db: { condition: service_healthy }
+    ports: ["127.0.0.1:8080:80"]
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: ${MYSQL_USER}
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
+      UNETI_FORM_TOKEN: ${UNETI_FORM_TOKEN}
+      WP_FORCE_SSL: "1"
+      WORDPRESS_CONFIG_EXTRA: |
+        define( 'WP_HOME', '${WORDPRESS_URL}' );
+        define( 'WP_SITEURL', '${WORDPRESS_URL}' );
+        define( 'WP_MEMORY_LIMIT', '512M' );
+        define( 'DISALLOW_FILE_EDIT', true );
+        define( 'DISABLE_WP_CRON', true );
+        define( 'FS_METHOD', 'direct' );
+        if ( isset( $_SERVER['HTTP_X_FORWARDED_PROTO'] ) &amp;&amp; 'https' === $_SERVER['HTTP_X_FORWARDED_PROTO'] ) {
+            $_SERVER['HTTPS'] = 'on';
+        }
+    volumes:
+      - /srv/uneti/data/wp:/var/www/html
+      - ../scripts/wordpress/mu-plugins:/var/www/html/wp-content/mu-plugins:ro
+      - ../scripts/wordpress/apache/seguridad.conf:/etc/apache2/conf-enabled/zz-uneti-seguridad.conf:ro
+      - ../scripts/wordpress/php/seguridad.ini:/usr/local/etc/php/conf.d/zz-uneti-seguridad.ini:ro
+      - ../wp_content/plugins/wp-graphql:/var/www/html/wp-content/plugins/wp-graphql:ro
+      - ../scripts/wordpress:/opt/uneti-scripts:ro
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1/wp-login.php &gt; /dev/null || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 40s
+    security_opt: ["no-new-privileges:true"]
+    pids_limit: 512
+    logging: { driver: json-file, options: { max-size: "10m", max-file: "3" } }
+
+  frontend:
+    build:
+      context: ../frontend
+      args:
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL}
+    image: uneti-frontend:${UNETI_VERSION:-v1.0.0-mvp}
+    restart: unless-stopped
+    depends_on:
+      wordpress: { condition: service_started }
+    ports: ["127.0.0.1:3000:3000"]
+    environment:
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL}
+      WP_INTERNAL_URL: http://wordpress
+      WP_GRAPHQL_URL: http://wordpress/graphql
+      WP_FORM_TOKEN: ${UNETI_FORM_TOKEN}
+      UNETI_REVALIDATE_TOKEN: ${UNETI_REVALIDATE_TOKEN}
+    security_opt: ["no-new-privileges:true"]
+    pids_limit: 512
+    read_only: true
+    tmpfs: ["/tmp", "/app/.next/cache"]
+    logging: { driver: json-file, options: { max-size: "10m", max-file: "3" } }</code></pre></div>
+<p>Notas de diseño: no hay <code>container_name</code> (evita colisiones), la base no publica puertos, WordPress y Next escuchan solo en loopback, los volúmenes son rutas absolutas en <code>/srv/uneti/data</code> y cada servicio rota sus logs. El <code>read_only</code> del frontend exige el <code>tmpfs</code> para la caché de <code>.next</code>.</p>
+<h3 id="s12-6" class="subtitulo"><span class="subtitulo__num">12.6</span><span>Proxy inverso y TLS con Caddy</span></h3>
+<p><strong>Archivo propuesto: <code>deploy/Caddyfile</code>.</strong></p>
+<div class="bloque-codigo" data-lenguaje="caddyfile"><pre><code class="lenguaje-caddyfile">{
+    email admin@uneti.edu.ve
+    admin off
+}
+
+uneti.edu.ve {
+    redir https://www.uneti.edu.ve{uri} permanent
+}
+
+www.uneti.edu.ve {
+    encode zstd gzip
+    header {
+        -Server
+        Strict-Transport-Security "max-age=31536000; includeSubDomains"
+        X-Content-Type-Options "nosniff"
+        Referrer-Policy "strict-origin-when-cross-origin"
+    }
+    reverse_proxy 127.0.0.1:3000
+}
+
+cms.uneti.edu.ve {
+    encode zstd gzip
+    header -Server
+
+    # Único contenido público del CMS: las imágenes de las noticias
+    @uploads path /wp-content/uploads/*
+    handle @uploads {
+        reverse_proxy 127.0.0.1:8080
+    }
+
+    # Administración, REST, GraphQL y activos del panel: solo por Tailscale
+    @interno {
+        path /wp-admin/* /wp-login.php /wp-json/* /graphql /xmlrpc.php /wp-includes/* /wp-content/plugins/* /wp-content/mu-plugins/*
+        remote_ip 100.64.0.0/10
+    }
+    handle @interno {
+        reverse_proxy 127.0.0.1:8080
+    }
+
+    # Todo lo demás del CMS no se expone
+    handle {
+        respond 404
+    }
+}</code></pre></div>
+<p>Este diseño aprovecha que <strong>el navegador nunca habla con WordPress</strong>: GraphQL y la REST de comentarios los consume Next.js por la red interna de Docker. Por eso se puede bloquear <code>/graphql</code>, <code>/wp-json</code> y <code>/wp-admin</code> al público sin romper el portal; solo quedan públicas las imágenes, que el HTML referencia por <code>sourceUrl</code>.</p>
+<p><strong>Instalación y activación.</strong></p>
+<div class="bloque-codigo" data-lenguaje="bash"><pre><code class="lenguaje-bash">sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https
+curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' \
+  | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' \
+  | sudo tee /etc/apt/sources.list.d/caddy-stable.list
+sudo apt update &amp;&amp; sudo apt install -y caddy
+
+sudo cp /srv/uneti/app/deploy/Caddyfile /etc/caddy/Caddyfile
+sudo caddy validate --config /etc/caddy/Caddyfile
+sudo systemctl reload caddy
+sudo journalctl -u caddy -f        # observar la emisión del certificado
+curl -I https://www.uneti.edu.ve   # 200 + HSTS</code></pre></div>
+<p>Si el DNS aún no propaga, Caddy no podrá emitir el certificado. Probar primero con <code>--staging</code> de Let's Encrypt o dejar el DNS listo antes del corte.</p>
+<h3 id="s12-7" class="subtitulo"><span class="subtitulo__num">12.7</span><span>Configuración de WordPress en producción</span></h3>
+<div class="bloque-codigo" data-lenguaje="bash"><pre><code class="lenguaje-bash">cd /srv/uneti/app
+COMPOSE="docker compose --env-file .env -f deploy/compose.prod.yml"
+
+$COMPOSE up -d db wordpress
+$COMPOSE ps
+
+# Rotar sales y revisar integridad del núcleo
+$COMPOSE exec -T wordpress wp config shuffle-salts
+$COMPOSE exec -T wordpress wp core verify-checksums
+
+# Moderación de comentarios: no se publican sin aprobación
+$COMPOSE exec -T wordpress wp option update comment_moderation 1
+$COMPOSE exec -T wordpress wp option update comment_previously_approved 1
+$COMPOSE exec -T wordpress wp option update default_comment_status closed
+
+# Verificaciones de endurecimiento
+$COMPOSE exec -T wordpress wp plugin list
+$COMPOSE exec -T wordpress wp user list --role=administrator
+$COMPOSE exec -T wordpress wp eval 'echo defined("DISALLOW_FILE_EDIT") ? "edit-off\n" : "edit-on\n";'</code></pre></div>
+<p>Además, en el panel (<code>https://cms.uneti.edu.ve/wp-admin</code>, accesible por Tailscale):</p>
+<ol>
+<li>Cambiar el usuario <code>admin</code> por un nombre no adivinable y establecer una contraseña larga y única.</li>
+<li>Instalar un plugin de MFA (o SSO institucional) para las cuentas administradoras.</li>
+<li>Revisar que no queden plugins o temas activos innecesarios.</li>
+<li>Confirmar que la moderación de comentarios está activa y que el correo de notificación funciona (o desactivarlo si no hay SMTP).</li>
+<li>Verificar que la zona horaria y el formato de fecha coinciden con <code>America/Caracas</code>.</li>
+</ol>
+<p><strong>Cron del sistema.</strong> El compose define <code>DISABLE_WP_CRON=true</code>; sin un cron externo, la retención de 365 días y las tareas de WordPress no se ejecutan.</p>
+<div class="bloque-codigo" data-lenguaje="bash"><pre><code class="lenguaje-bash">sudo tee /etc/systemd/system/uneti-wp-cron.service &gt;/dev/null &lt;&lt;'EOF'
+[Unit]
+Description=WP-Cron de SD-UNETI
+[Service]
+Type=oneshot
+WorkingDirectory=/srv/uneti/app
+ExecStart=/usr/bin/docker compose --env-file /srv/uneti/app/.env -f deploy/compose.prod.yml exec -T wordpress wp cron event run --due-now
+EOF
+
+sudo tee /etc/systemd/system/uneti-wp-cron.timer &gt;/dev/null &lt;&lt;'EOF'
+[Unit]
+Description=Ejecuta WP-Cron cada 10 minutos
+[Timer]
+OnCalendar=*:0/10
+Persistent=true
+[Install]
+WantedBy=timers.target
+EOF
+
+sudo systemctl daemon-reload
+sudo systemctl enable --now uneti-wp-cron.timer</code></pre></div>
+<h3 id="s12-8" class="subtitulo"><span class="subtitulo__num">12.8</span><span>Primera carga de contenido y verificación</span></h3>
+<div class="bloque-codigo" data-lenguaje="bash"><pre><code class="lenguaje-bash">cd /srv/uneti/app
+COMPOSE="docker compose --env-file .env -f deploy/compose.prod.yml"
+
+$COMPOSE up -d
+$COMPOSE ps                       # los 3 servicios deben quedar healthy
+
+# El proyecto se siembra con las APIs nativas de WordPress
+python3 scripts/seed/seed.py bootstrap --project uneti-prod --service wordpress
+python3 scripts/seed/seed.py verify   --project uneti-prod --service wordpress</code></pre></div>
+<div class="aviso"><p><code>seed.py</code> invoca <code>docker compose -p &lt;proyecto&gt;</code>, por lo que el nombre del proyecto del compose de producción (<code>name: uneti-prod</code>) debe coincidir con <code>COMPOSE_PROJECT_NAME</code> y con el <code>--project</code> que se pase. El script localiza el contenedor por etiqueta de proyecto y servicio, no por archivo compose.</p></div>
+<p>Verificación funcional desde el host:</p>
+<div class="bloque-codigo" data-lenguaje="bash"><pre><code class="lenguaje-bash">for r in / /nosotros /carreras /carreras/pnf-informatica /posgrados /cursos \
+         /admisiones /contacto /noticias /noticias/uneti-abre-convocatoria-admision-2026 /privacidad; do
+  printf '%-60s %s\n' "$r" "$(curl -s -o /dev/null -w '%{http_code}' https://www.uneti.edu.ve$r)"
+done
+
+curl -s https://www.uneti.edu.ve/api/noticias | head -c 200
+curl -sI https://www.uneti.edu.ve | grep -Ei 'strict-transport|content-security|x-frame'
+curl -s -o /dev/null -w '%{http_code}\n' https://cms.uneti.edu.ve/wp-admin/   # 404 desde fuera de Tailscale</code></pre></div>
+<p>Después, con el stack arriba y desde el repositorio:</p>
+<div class="bloque-codigo" data-lenguaje="bash"><pre><code class="lenguaje-bash">bash scripts/ci/qa-frontend.sh https://www.uneti.edu.ve
+node scripts/ci/probar-formulario.mjs        # ajustar BASE_URL al dominio real
+bash scripts/ci/pentest-nextjs.sh https://www.uneti.edu.ve
+bash scripts/ci/pentest-wordpress.sh         # requiere acceso al CMS</code></pre></div>
+<h3 id="s12-9" class="subtitulo"><span class="subtitulo__num">12.9</span><span>Endurecimiento de MariaDB</span></h3>
+<div class="bloque-codigo" data-lenguaje="bash"><pre><code class="lenguaje-bash">COMPOSE="docker compose --env-file .env -f deploy/compose.prod.yml"
+
+# Sin usuarios anónimos
+$COMPOSE exec -T db mariadb -uroot -p"$MYSQL_ROOT_PASSWORD" -e \
+  "SELECT User, Host FROM mysql.user WHERE User='';"
+
+# Privilegios efectivos del usuario de WordPress
+$COMPOSE exec -T db mariadb -uroot -p"$MYSQL_ROOT_PASSWORD" -e \
+  "SHOW GRANTS FOR 'wp_user'@'%';"
+
+# local_infile debe estar OFF
+$COMPOSE exec -T db mariadb -uroot -p"$MYSQL_ROOT_PASSWORD" -e \
+  "SHOW VARIABLES LIKE 'local_infile';"
+
+# El puerto 3306 no debe estar publicado
+sudo ss -ltnp | grep 3306 || echo "3306 no expuesto"</code></pre></div>
+<p><code>wp_user</code> debe tener permisos solo sobre <code>wordpress_db</code> (sin <code>FILE</code>, <code>SUPER</code> ni <code>GRANT OPTION</code>). El script <code>scripts/database/endurecer.sql</code> ya se aplica en la primera inicialización del volumen; si el volumen se creó antes de añadirlo, hay que ejecutarlo a mano una vez.</p>
+<h3 id="s12-10" class="subtitulo"><span class="subtitulo__num">12.10</span><span>Backups y restauración</span></h3>
+<p><strong>Archivo propuesto: <code>deploy/backup.sh</code>.</strong></p>
+<div class="bloque-codigo" data-lenguaje="bash"><pre><code class="lenguaje-bash">#!/usr/bin/env bash
+set -euo pipefail
+
+RAIZ=/srv/uneti
+FECHA=$(date +%F-%H%M)
+DESTINO="$RAIZ/backups"
+COMPOSE=(docker compose --env-file "$RAIZ/app/.env" -f "$RAIZ/app/deploy/compose.prod.yml")
+source "$RAIZ/secrets/backup.env"   # MYSQL_ROOT_PASSWORD, AGE_RECIPIENT
+
+mkdir -p "$DESTINO"
+
+"${COMPOSE[@]}" exec -T db sh -c \
+  'exec mariadb-dump --single-transaction --quick --routines --triggers \
+   -uroot -p"$MYSQL_ROOT_PASSWORD" "$MYSQL_DATABASE"' \
+  | gzip -9 &gt; "$DESTINO/db-$FECHA.sql.gz"
+
+tar -C "$RAIZ/data" -czf "$DESTINO/wp-$FECHA.tar.gz" wp
+
+age -r "$AGE_RECIPIENT" -o "$DESTINO/db-$FECHA.sql.gz.age" "$DESTINO/db-$FECHA.sql.gz"
+age -r "$AGE_RECIPIENT" -o "$DESTINO/wp-$FECHA.tar.gz.age"  "$DESTINO/wp-$FECHA.tar.gz"
+rm -f "$DESTINO/db-$FECHA.sql.gz" "$DESTINO/wp-$FECHA.tar.gz"
+
+# Retención: 14 diarios, 8 semanales, 12 mensuales (simplificada)
+find "$DESTINO" -name '*.age' -mtime +14 -delete
+
+# Copia fuera del host (NAS u otro nodo)
+rsync -a --delete "$DESTINO/" backup@nas.uneti.local:/backups/sd-uneti/</code></pre></div>
+<p>Programación y prueba:</p>
+<div class="bloque-codigo" data-lenguaje="bash"><pre><code class="lenguaje-bash">chmod 700 /srv/uneti/app/deploy/backup.sh
+sudo crontab -e
+# 30 3 * * * /srv/uneti/app/deploy/backup.sh &gt;&gt; /var/log/uneti-backup.log 2&gt;&amp;1
+
+# Prueba de restauración (trimestral, en staging)
+age -d -i /root/age.key -o /tmp/db.sql.gz /srv/uneti/backups/db-2026-11-10-0330.sql.gz.age
+gunzip -c /tmp/db.sql.gz | docker compose --env-file .env -f deploy/compose.prod.yml \
+  exec -T db mariadb -uroot -p"$MYSQL_ROOT_PASSWORD" wordpress_db</code></pre></div>
+<p>Un backup que no se restaura no es un backup: la prueba debe quedar registrada con fecha, responsable y resultado.</p>
+<h3 id="s12-11" class="subtitulo"><span class="subtitulo__num">12.11</span><span>Monitoreo, alertas y logs</span></h3>
+<p><strong>Mínimo viable (recomendado para el arranque):</strong></p>
+<div class="bloque-codigo" data-lenguaje="bash"><pre><code class="lenguaje-bash"># Un contenedor de monitoreo fuera del proyecto principal
+docker run -d --name uptime-kuma --restart unless-stopped \
+  -p 127.0.0.1:3001:3001 -v /srv/uneti/uptime:/app/data louislam/uptime-kuma:1</code></pre></div>
+<p>Con Caddy publicando <code>status.uneti.edu.ve</code> solo por Tailscale, se configuran cuatro monitores:</p>
+<div class="tabla-envoltura">
+<table class="tabla">
+<thead>
+<tr><th>Monitor</th><th>Tipo</th><th>Umbral</th></tr>
+</thead>
+<tbody>
+<tr><td><code>https://www.uneti.edu.ve/</code></td><td>HTTP</td><td>200 en menos de 2 s</td></tr>
+<tr><td><code>https://www.uneti.edu.ve/api/noticias</code></td><td>HTTP con palabra clave</td><td>200 y <code>"noticias"</code></td></tr>
+<tr><td><code>https://cms.uneti.edu.ve/wp-content/uploads/</code></td><td>HTTP</td><td>200 en un archivo conocido</td></tr>
+<tr><td>Certificado TLS</td><td>HTTPS</td><td>Aviso a 14 días de expirar</td></tr>
+</tbody>
+</table>
+</div>
+<p>Alertas por correo institucional y por Telegram. Complementos:</p>
+<ul>
+<li><strong>Healthchecks de Docker</strong>: <code>docker compose ps</code> debe mostrar <code>healthy</code>; un <code>restart: unless-stopped</code> recupera caídas simples, pero no avisa.</li>
+<li><strong>Logs</strong>: cada servicio rota con <code>json-file</code> a 10 MB × 3. Caddy escribe en <code>journald</code>. Revisión semanal de <code>docker compose logs --since 24h</code> y <code>journalctl -u caddy</code>.</li>
+<li><strong>Disco</strong>: alerta al 80 %. MariaDB y <code>wp_data</code> crecen; un disco lleno tumba el portal.</li>
+<li><strong><code>fail2ban</code></strong>: vigilar <code>/var/log/auth.log</code> y los intentos de login del CMS.</li>
+</ul>
+<h3 id="s12-12" class="subtitulo"><span class="subtitulo__num">12.12</span><span>Go-live, rollback y post-lanzamiento</span></h3>
+<p><strong>Checklist de salida (firmable).</strong></p>
+
+<div class="control" data-control="go-live">
+  <div class="control__cabecera">
+    <p class="control__titulo">Progreso del go-live</p>
+    <span class="control__contador" data-contador>0 de 0 completados</span>
+    <button type="button" class="control__reiniciar" data-reiniciar>Reiniciar</button>
+  </div>
+  <div class="control__barra"><span class="control__avance" data-avance></span></div>
+</div>
+
+<ul class="lista-tareas">
+<li class="tarea"><input type="checkbox" id="tarea-1" data-tarea="tarea-1"><span>DNS de <code>www</code> y <code>cms</code> resuelve a la IP correcta (A y AAAA).</span></li>
+<li class="tarea"><input type="checkbox" id="tarea-2" data-tarea="tarea-2"><span>Certificado emitido y renovación automática verificada.</span></li>
+<li class="tarea"><input type="checkbox" id="tarea-3" data-tarea="tarea-3"><span>HTTP redirige a HTTPS y HSTS presente.</span></li>
+<li class="tarea"><input type="checkbox" id="tarea-4" data-tarea="tarea-4"><span><code>3000</code>, <code>8080</code>, <code>3306</code> y <code>8006</code> no accesibles desde Internet.</span></li>
+<li class="tarea"><input type="checkbox" id="tarea-5" data-tarea="tarea-5"><span><code>wp-admin</code> responde 404 desde fuera de Tailscale.</span></li>
+<li class="tarea"><input type="checkbox" id="tarea-6" data-tarea="tarea-6"><span>Las once rutas responden 200 y <code>/news</code> responde 301.</span></li>
+<li class="tarea"><input type="checkbox" id="tarea-7" data-tarea="tarea-7"><span>Las imágenes de noticias cargan desde <code>cms</code>.</span></li>
+<li class="tarea"><input type="checkbox" id="tarea-8" data-tarea="tarea-8"><span>Los tres formularios crean folio y se ven en <code>wp-admin</code>.</span></li>
+<li class="tarea"><input type="checkbox" id="tarea-9" data-tarea="tarea-9"><span>Los comentarios quedan pendientes de aprobación.</span></li>
+<li class="tarea"><input type="checkbox" id="tarea-10" data-tarea="tarea-10"><span><code>robots.txt</code>, <code>sitemap.xml</code>, <code>security.txt</code> y <code>/privacidad</code> publicados.</span></li>
+<li class="tarea"><input type="checkbox" id="tarea-11" data-tarea="tarea-11"><span>Backup ejecutado y restauración probada en staging.</span></li>
+<li class="tarea"><input type="checkbox" id="tarea-12" data-tarea="tarea-12"><span>Monitoreo verde y alertas de prueba recibidas.</span></li>
+<li class="tarea"><input type="checkbox" id="tarea-13" data-tarea="tarea-13"><span><code>LICENSE</code> decidida y créditos de imágenes completos.</span></li>
+<li class="tarea"><input type="checkbox" id="tarea-14" data-tarea="tarea-14"><span>Acta de aceptación con responsable y fecha.</span></li>
+</ul>
+<p><strong>Rollback.</strong></p>
+<ol>
+<li><strong>Solo frontend:</strong> <code>docker compose ... up -d --no-deps frontend</code> con <code>UNETI_VERSION</code> apuntando a la imagen anterior. Es la operación más frecuente y no toca datos.</li>
+<li><strong>Contenido:</strong> restaurar el <code>wp_data</code> y el dump previos; el código no cambia.</li>
+<li><strong>Todo:</strong> restaurar el snapshot de la VM tomado antes del despliegue.</li>
+<li><strong>DNS:</strong> si el problema es de origen, bajar el TTL a 60 s antes del corte permite revertir en minutos.</li>
+</ol>
+<p><strong>Post-lanzamiento (primeros 30 días).</strong></p>
+<ul>
+<li>Rotar todos los secretos que hayan existido en <code>.env</code> de desarrollo.</li>
+<li>Ejecutar WPScan, Nuclei y los tres pentests contra el dominio real.</li>
+<li>Revisar <code>wp-admin</code> y los logs de acceso en busca de fuerza bruta.</li>
+<li>Medir Lighthouse móvil y registrar la línea base.</li>
+<li>Programar la primera prueba de restauración y la revisión de accesibilidad.</li>
+<li>Congelar cambios de infraestructura durante la primera semana salvo incidentes.</li>
+</ul>
+<h3 id="s12-13" class="subtitulo"><span class="subtitulo__num">12.13</span><span>Puertos y errores a evitar</span></h3>
+<div class="tabla-envoltura">
+<table class="tabla">
+<thead>
+<tr><th>Puerto</th><th>Servicio</th><th>Exposición correcta</th></tr>
+</thead>
+<tbody>
+<tr><td><code>22</code></td><td>SSH</td><td>Solo Tailscale o VLAN de administración</td></tr>
+<tr><td><code>80</code></td><td>Caddy (redirección)</td><td>Internet</td></tr>
+<tr><td><code>443</code></td><td>Caddy (TLS)</td><td>Internet</td></tr>
+<tr><td><code>3000</code></td><td>Next.js</td><td><code>127.0.0.1</code></td></tr>
+<tr><td><code>8080</code></td><td>WordPress</td><td><code>127.0.0.1</code></td></tr>
+<tr><td><code>3306</code></td><td>MariaDB</td><td>Sin publicar</td></tr>
+<tr><td><code>8006</code></td><td>Proxmox VE</td><td>LAN/Tailscale</td></tr>
+<tr><td><code>3001</code></td><td>Uptime Kuma (opcional)</td><td>Tailscale</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>Errores que este runbook evita deliberadamente:</strong></p>
+<ul>
+<li>Desplegar <code>develop</code> en lugar de una etiqueta.</li>
+<li>Levantar <code>docker compose up</code> con el compose de desarrollo y dejar <code>next dev</code> en producción.</li>
+<li>Publicar <code>8080</code> «para probar» y olvidarlo.</li>
+<li>Olvidar <code>NEXT_PUBLIC_SITE_URL</code> en el build y publicar <code>sitemap.xml</code> con <code>localhost</code>.</li>
+<li>Configurar <code>WP_HOME</code> con <code>http://</code> detrás de TLS (bucles de redirección).</li>
+<li>Activar <code>DISABLE_WP_CRON</code> sin cron del sistema.</li>
+<li>Confiar en un backup que nunca se restauró.</li>
+</ul>
+</section>
+<section class="seccion">
+<h2 id="s13" class="titulo-seccion"><span class="titulo-seccion__num">13</span><span>Resumen y conclusión</span></h2>
+<h3 id="s13-1" class="subtitulo"><span class="subtitulo__num">13.1</span><span>Qué se construyó</span></h3>
+<p>SD-UNETI pasó de una plantilla estática y una propuesta de tema WordPress con Elementor a una plataforma headless completa: Next.js 16 con App Router y React 19 renderiza once rutas en español; WordPress administra noticias, medios, comentarios y solicitudes; MariaDB concentra la persistencia; y un conjunto de scripts en Python y PHP reconstruye el sitio entero desde fixtures versionados, sin dumps SQL ni archivos locales.</p>
+<p>El proyecto resolvió además tres problemas que suelen quedar abiertos en un MVP: la <strong>reproducibilidad</strong> (seed idempotente con checksums y adopción por slug), la <strong>seguridad de aplicación</strong> (CSP, tokens en tiempo constante, rate limiting, honeypot, anti-enumeración, retención de datos) y la <strong>documentación operativa</strong> (planes por fecha, QA con evidencias, ADR y un grafo de navegación para agentes).</p>
+<h3 id="s13-2" class="subtitulo"><span class="subtitulo__num">13.2</span><span>Qué tan maduro es</span></h3>
+<p>La madurez no es homogénea. En producto y en código, el proyecto está por encima de un MVP típico: tipado estricto, tres dependencias de ejecución, build reproducible, QA funcional automatizado y pentests propios. En operación, está en el punto de partida: no hay proxy, ni TLS, ni firewall, ni backups, ni monitoreo, y el compose que existe es de desarrollo.</p>
+<p>Esa asimetría es la conclusión central del informe: <strong>el riesgo del proyecto hoy no está en el código, está en la infraestructura</strong>. Publicar con el compose actual expondría WordPress y Next directamente a Internet, sin cifrado y sin respaldo, lo que convertiría un producto sólido en un incidente esperando ocurrir.</p>
+<h3 id="s13-3" class="subtitulo"><span class="subtitulo__num">13.3</span><span>Recomendación</span></h3>
+<ol>
+<li><strong>No publicar todavía.</strong> Cerrar los seis bloqueadores técnicos de §11.2 y la definición de licencia.</li>
+<li><strong>Habilitar staging primero.</strong> La misma topología de §12, accesible solo por Tailscale, permite validar proxy, TLS, backups y formularios sin exposición pública.</li>
+<li><strong>Publicar después, con etiqueta.</strong> Desplegar <code>v1.0.0-mvp</code> (no <code>develop</code>), con el checklist de §12.12 firmado y el monitoreo en verde.</li>
+<li><strong>Cerrar la Fase 5 en paralelo.</strong> Organigrama, hero y Playwright en CI no bloquean el despliegue, pero sí la calidad percibida.</li>
+<li><strong>Planificar la siguiente fase.</strong> E2E en CI, auditoría de accesibilidad, Lighthouse y moderación de comentarios son la deuda natural del próximo ciclo.</li>
+</ol>
+<h3 id="s13-4" class="subtitulo"><span class="subtitulo__num">13.4</span><span>Estimación</span></h3>
+<div class="tabla-envoltura">
+<table class="tabla">
+<thead>
+<tr><th>Bloque</th><th>Esfuerzo</th><th>Dependencias</th></tr>
+</thead>
+<tbody>
+<tr><td>Bloqueadores 1–6 de §11.2</td><td>3–5 jornadas</td><td>Acceso a Proxmox, dominio y DNS</td></tr>
+<tr><td>Verificación y checklist</td><td>1–2 jornadas</td><td>Staging operativo</td></tr>
+<tr><td>Licencia, créditos y aprobación</td><td>Gestión + legal</td><td>Decisión institucional</td></tr>
+<tr><td>Cierre de Fase 5</td><td>3–4 jornadas</td><td>Activos fotográficos y PDF del organigrama</td></tr>
+</tbody>
+</table>
+</div>
+<p>Con esos tiempos, el portal puede estar publicado en un horizonte de <strong>dos a tres semanas</strong>, siempre que el dominio y la infraestructura estén disponibles desde el inicio.</p>
+</section>
+<section class="seccion">
+<h2 id="s14" class="titulo-seccion"><span class="titulo-seccion__num">14</span><span>Anexos</span></h2>
+<h3 id="anexo-a" class="subtitulo"><span class="subtitulo__num">A</span><span>Inventario de archivos clave</span></h3>
+<div class="tabla-envoltura">
+<table class="tabla">
+<thead>
+<tr><th>Ruta</th><th>Para qué sirve</th></tr>
+</thead>
+<tbody>
+<tr><td><code>docker-compose.yml</code></td><td>Stack de desarrollo: MariaDB, WordPress y Next.js</td></tr>
+<tr><td><code>docker-compose.prod.yml</code></td><td>Override usado por el CI: compila y arranca el frontend</td></tr>
+<tr><td><code>.env.example</code></td><td>Contrato de variables de entorno (sin valores reales)</td></tr>
+<tr><td><code>frontend/next.config.ts</code></td><td>Cabeceras, redirecciones, <code>cacheLife</code> e imágenes remotas</td></tr>
+<tr><td><code>frontend/proxy.ts</code></td><td>Bloqueo de TRACE/TRACK</td></tr>
+<tr><td><code>frontend/app/lib/wordpress.ts</code></td><td>Cliente GraphQL y endpoint interno de WordPress</td></tr>
+<tr><td><code>frontend/app/lib/noticias.ts</code></td><td>Mapeo de datos y perfiles de caché</td></tr>
+<tr><td><code>frontend/app/lib/solicitudes.ts</code> / <code>solicitudes-wp.ts</code></td><td>Validación y envío con token de servicio</td></tr>
+<tr><td><code>frontend/app/lib/rate-limit.ts</code></td><td>Rate limiting y validación de <code>Origin</code></td></tr>
+<tr><td><code>frontend/app/lib/security.ts</code></td><td>Comparación constante y límite de cuerpo</td></tr>
+<tr><td><code>scripts/seed/seed.py</code></td><td><code>export</code>, <code>import</code>, <code>bootstrap</code>, <code>verify</code>, <code>validate</code></td></tr>
+<tr><td><code>scripts/wordpress/bootstrap.php</code></td><td>Instalación de WordPress y activación de WPGraphQL</td></tr>
+<tr><td><code>scripts/wordpress/seed/importar.php</code></td><td>Importación idempotente con APIs nativas</td></tr>
+<tr><td><code>scripts/wordpress/mu-plugins/uneti-solicitudes.php</code></td><td>CPT, REST, folio y notificación</td></tr>
+<tr><td><code>scripts/wordpress/mu-plugins/uneti-comentarios.php</code></td><td>API de comentarios</td></tr>
+<tr><td><code>scripts/wordpress/mu-plugins/uneti-seguridad.php</code></td><td>Endurecimiento de WordPress</td></tr>
+<tr><td><code>scripts/wordpress/mu-plugins/uneti-privacidad.php</code></td><td>Retención de 365 días y herramientas de privacidad</td></tr>
+<tr><td><code>scripts/database/endurecer.sql</code></td><td>Privilegios mínimos y <code>local_infile=OFF</code></td></tr>
+<tr><td><code>scripts/ci/*.sh</code>, <code>scripts/ci/probar-formulario.mjs</code></td><td>QA funcional y pentests</td></tr>
+<tr><td><code>.github/workflows/*</code></td><td>Diez workflows de calidad, despliegue de prueba y seguridad</td></tr>
+<tr><td><code>seed/manifest.json</code></td><td>Conteos y versión del esquema de fixtures</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="anexo-b" class="subtitulo"><span class="subtitulo__num">B</span><span>Glosario</span></h3>
+<div class="tabla-envoltura">
+<table class="tabla">
+<thead>
+<tr><th>Término</th><th>Definición</th></tr>
+</thead>
+<tbody>
+<tr><td>Headless</td><td>CMS que administra contenido sin renderizar el sitio público</td></tr>
+<tr><td>CPT</td><td><em>Custom Post Type</em> de WordPress; aquí <code>solicitud_uneti</code></td></tr>
+<tr><td>ISR</td><td><em>Incremental Static Regeneration</em>: HTML estático revalidado por tiempo o evento</td></tr>
+<tr><td>SSE</td><td><em>Server-Sent Events</em>: canal unidireccional servidor → navegador</td></tr>
+<tr><td>Folio</td><td>Identificador público de una solicitud (<code>UNETI-AAAA-NNNNNN</code>)</td></tr>
+<tr><td>Seed</td><td>Conjunto de fixtures que reconstruyen el contenido</td></tr>
+<tr><td>Idempotencia</td><td>Repetir la importación sin duplicar objetos</td></tr>
+<tr><td>ADR</td><td><em>Architecture Decision Record</em></td></tr>
+<tr><td>P0/P1/P2</td><td>Prioridad de un riesgo o tarea</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="anexo-c" class="subtitulo"><span class="subtitulo__num">C</span><span>Referencias</span></h3>
+<ul>
+<li><code>SD-UNETI/README.md</code> — visión general, arquitectura y comandos.</li>
+<li><code>SD-UNETI/Documents/PROGRESS.md</code> — estado operativo y validaciones.</li>
+<li><code>SD-UNETI/Documents/Soberanía Digital 2026.md</code> — metodología, arquitectura y ADR.</li>
+<li><code>SD-UNETI/Documents/ci-cd-2026.md</code> — workflows, presupuesto y pentests.</li>
+<li><code>SD-UNETI/Documents/seguridad/2026-11-08-hardening.md</code> — controles y mapeo normativo.</li>
+<li><code>SD-UNETI/Documents/doc-as-code_20102026.md</code> — fases 1 a 5 y diagnóstico original.</li>
+<li><code>SD-UNETI/Documents/2026-11-05/</code> y <code>SD-UNETI/Documents/2026-11-08/</code> — planes, QA e informes de implementación.</li>
+<li><code>SD-UNETI/Documents/qa-20261031.md</code> — auditoría headless y migración a Node 26.</li>
+<li><code>SD-UNETI/Documents/fase-5-ui-ux-2026.md</code> — alcance y pendientes de la Fase 5.</li>
+</ul>
+<h3 id="anexo-d" class="subtitulo"><span class="subtitulo__num">D</span><span>Historial del documento</span></h3>
+<div class="tabla-envoltura">
+<table class="tabla">
+<thead>
+<tr><th>Versión</th><th>Fecha</th><th>Cambio</th></tr>
+</thead>
+<tbody>
+<tr><td>1.0</td><td>10/11/2026</td><td>Creación del informe técnico integral, veredicto de producción y runbook Proxmox + Caddy</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+      <footer class="pie">
+        <p class="pie__firma">Hecho por Iván Vásquez <span>Documento técnico</span></p>
+        <p>Informe técnico de SD-UNETI · versión 1.0 · 10/11/2026 · commit 0658af1.</p>
+        <p>Vista generada desde <code>informe-tecnico-2026-11-10.md</code> con <code>scripts/docs/generar-informe-html.py</code>. El Markdown es la fuente de verdad.</p>
+        <p>Sin dependencias externas: tipografía del sistema, sin CDN ni analítica.</p>
+      </footer>
+    </article>
+  </main>
+
+  <aside class="rail" aria-label="Secciones de esta página">
+    <p class="rail__titulo">En esta página</p>
+    <ul class="rail__lista" data-rail></ul>
+  </aside>
+</div>
+
+<button class="volver" type="button" data-volver aria-label="Volver arriba">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5m0 0-6 6m6-6 6 6"/></svg>
+</button>
+
+<div class="buscador" role="dialog" aria-modal="true" aria-label="Buscar en el informe" data-buscador>
+  <div class="buscador__panel">
+    <div class="buscador__campo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input type="search" placeholder="Buscar sección, tabla o concepto…" aria-label="Término de búsqueda" autocomplete="off" data-campo>
+      <kbd>Esc</kbd>
+    </div>
+    <ul class="buscador__resultados" data-resultados role="listbox" aria-label="Resultados"></ul>
+  </div>
+</div>
+
+<noscript>
+  <p style="padding:16px 24px;background:#fff3cd;color:#664d03;border-bottom:1px solid #ffe69c">
+    El índice, la búsqueda y el tema necesitan JavaScript. El contenido completo sigue siendo legible sin él.
+  </p>
+</noscript>
+
+<script src="informe-tecnico-2026-11-10.js" defer></script>
+</body>
+</html>

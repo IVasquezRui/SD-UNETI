@@ -10,8 +10,8 @@ const HERO_STATS = [
 
 const HERO_SLIDES: DiapositivaHero[] = [
   {
-    desktopSrc: "/assets/images/uneti/EquipoDeDesarrolloDeSoftware.jpg",
-    alt: "Equipo de desarrollo de software de la UNETI",
+    desktopSrc: "/assets/images/uneti/NEW_IMAGES/EquipoDesarrollandoLaptops.jpg",
+    alt: "Equipo de desarrollo de software de la UNETI trabajando con laptops",
     width: 896,
     height: 1195,
     posicion: "50% 28%",

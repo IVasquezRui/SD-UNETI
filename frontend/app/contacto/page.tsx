@@ -23,6 +23,8 @@ export default function ContactoPage() {
           subtitle="Estamos listos para atenderte."
           image="/assets/images/uneti/hero-comunidad.webp"
           imagePosition="center 42%"
+          imageFit="completo"
+          imageHeight="alto"
           crumbs={[{ label: "Inicio", href: "/" }, { label: "Contacto" }]}
           particleId="contact-page-particles"
         />

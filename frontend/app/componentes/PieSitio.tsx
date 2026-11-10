@@ -7,7 +7,7 @@ const ENLACES_RAPIDOS = [
   { label: "Campus Virtual", href: CONTACTO.campus },
   { label: "Mesa de Ayuda", href: CONTACTO.helpDesk },
   { label: "Admisiones", href: "/admisiones" },
-  { label: "Contacto", href: "/contacto" },
+  { label: "Contacto", href: "/contacto#formulario-contacto" },
   { label: "Instagram", href: CONTACTO.instagram },
   { label: "Canal UNETI Educativo", href: CONTACTO.youtube },
 ];
@@ -26,8 +26,8 @@ const MOMENTOS = [
     alt: "Estudiantes de la UNETI durante un curso de formación",
   },
   {
-    src: "/assets/images/uneti/faq-estudiantes.webp",
-    alt: "Estudiante de la UNETI en el campus",
+    src: "/assets/images/uneti/DocentesDebatiendo.jpg",
+    alt: "Docentes de la UNETI debatiendo en una jornada académica",
   },
 ];
 

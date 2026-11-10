@@ -547,4 +547,87 @@ evidencia de pruebas en `Documents/2026-11-08/qa-2026-11-08.md`.
 - CI de seguridad (npm audit, gitleaks, compose) y mapa de controles SOC 2 / ISO 27001 / ISO 27701 en
   `Documents/seguridad/2026-11-08-hardening.md`.
 
+## 16. Actualización 2026-11-08 (imágenes de los PNF y parallax de Nosotros)
+
+Ronda de ajustes sobre material visual y sobre el storytelling de `/nosotros`.
+
+### PNF (Informática y Telecomunicaciones)
+
+- Portadas y galerías salen ahora de `public/assets/images/uneti/NEW_IMAGES` (`lib/carreras.ts`),
+  con **ocho fotos por PNF** en lugar de tres o cuatro. Se elimina
+  `NEW_IMAGES/PNF-T/photo_5143169628853964104_y.jpg` y su lugar lo ocupa
+  `5154555681644940483.jpg`.
+- Los archivos `portada.jpg`, `carrusel-*.jpg` y `galeria-*.jpg` de
+  `public/assets/images/carreras/` quedan como material histórico (ver `CREDITS.md`).
+- El hero del detalle de cada PNF usa `imagePosition="center 45%"` para el nuevo encuadre 16:9.
+
+### Equipo de desarrollo
+
+- `EquipoDeDesarrolloDeSoftware.jpg` se sustituye por `NEW_IMAGES/EquipoDesarrollandoLaptops.jpg`
+  (896 × 1195, mismo recorte) en el hero de la portada, en «Cómo se estudia» y en la comprobación
+  de `scripts/ci/qa-frontend.sh`.
+
+### Noticias de la portada (insight de Next.js 16)
+
+- `SeccionArticulos` deja de ser un componente `async`: la lectura se mueve a
+  `componentes/NoticiasRecientes.tsx`, envuelta en `<Suspense fallback={<EsqueletoArticulos />}>`.
+  El shell estático de `/` publica la cabecera de la sección y un esqueleto con la retícula real
+  (`.uneti-esqueleto-*`); las tarjetas se transmiten en cuanto WordPress responde. `/` pasa a
+  prerenderizado parcial y desaparece el insight `instant-shell-url-data`.
+
+### Parallax de `/nosotros`
+
+- `HistoriaParallax` se rediseña: la tarjeta de imágenes **viaja** hasta el paso que se está
+  leyendo (`--story-y`, medido en cada cambio de paso y en `resize`), las capas internas derivan
+  con el scroll (`--story-drift`) y la imagen activa hace un zoom lento. Se retira la barra de
+  progreso (`.uneti-story__barra`) y la fila pasa a `align-items-stretch` para tener recorrido.
+- Se conservan el `IntersectionObserver` de pasos, el contador `01 / 04`, las imágenes por paso en
+  móvil y `prefers-reduced-motion`.
+
+## 17. Actualización 2026-11-08 (imágenes, iconos y enlaces de contacto)
+
+### PNF en Telecomunicaciones
+
+- La galería cambia `5154555681644940480.jpg` por `5154555681644940486.jpg`, de modo que no queda
+  ninguna fotografía repetida entre los dos PNF.
+
+### PNFA-OPSAT
+
+- `lib/posgrados.ts` declaraba `bi bi-satellite`, un glifo **ausente** en
+  `public/assets/css/icon.min.css`: la auditoría de los 92 iconos Bootstrap del portal confirmó que
+  era el único sin definir, y por eso el logo no se dibujaba. Se sustituye por `bi bi-broadcast`,
+  que sí existe y conserva el lenguaje minimalista del resto de programas.
+
+### Insights de Next.js
+
+- `/noticias` deja de esperar las publicaciones en la raíz: la lectura pasa a
+  `componentes/ListadoNoticias.tsx`, envuelta en `<Suspense fallback={<EsqueletoArticulos />}>`.
+  Desaparecen `instant-shell-url-data` y `blocking-prerender-dynamic`, y la ruta se prerenderiza
+  parcialmente.
+- El tercer aviso del overlay era un *hydration mismatch* provocado por el atributo
+  `bis_skin_checked` que inyecta una extensión del navegador: no existe en el repositorio y no se
+  reproduce con un perfil limpio, así que no afecta a producción.
+
+### Heroes
+
+- `TituloPagina` acepta `imageFit` (`cover` | `completo`) e `imageHeight` (`normal` | `alto`). Con
+  `completo` la fotografía se muestra entera (`object-fit: contain`) sobre una copia desenfocada que
+  rellena el encuadre: sin recortes y sin huecos.
+- Se aplica en `/posgrados` (para que se vea qué hace el estudiante), `/contacto` y `/cursos`; este
+  último estrena `RectorConferencia1.jpg` en lugar de `cursos-hero.webp`. La altura del hero sube a
+  540 px (400 px en móvil).
+
+### Preguntas frecuentes
+
+- `faq-estudiantes.webp` se sustituye por `DocentesDebatiendo.jpg` en la portada, en `/nosotros` y
+  en el prefooter. `cursos-hero.webp` queda sin uso.
+
+### Enlaces de contacto
+
+- Cabecera, pie, navegación rápida, rutas de «Tu ruta», tarjetas y CTAs apuntan a
+  `/contacto#formulario-contacto`, y los `redirects` de `next.config.ts` conservan el ancla.
+  `main section[id]` ya definía `scroll-margin-top`, así que el formulario queda visible bajo la
+  cabecera fija.
+
+
 

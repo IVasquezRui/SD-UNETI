@@ -16,8 +16,8 @@ export default function ModalidadHibrida() {
           <Reveal className="col-lg-6">
             <div className="uneti-modality__media">
               <ParallaxImagen
-                src="/assets/images/uneti/EquipoDeDesarrolloDeSoftware.jpg"
-                alt="Equipo de desarrollo de software de la UNETI durante una práctica"
+                src="/assets/images/uneti/NEW_IMAGES/EquipoDesarrollandoLaptops.jpg"
+                alt="Equipo de desarrollo de software de la UNETI trabajando con laptops durante una práctica"
                 velocidad={0.06}
               />
               <div className="uneti-modality__sello">

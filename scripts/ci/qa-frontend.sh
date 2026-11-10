@@ -34,7 +34,7 @@ POSGRADOS="$TMP/posgrados.html"
 CURSOS="$TMP/cursos.html"
 
 # Hero de la portada: solo las dos últimas imágenes (punto 17)
-if grep -q 'EquipoDeDesarrolloDeSoftware.jpg' "$INICIO" && grep -q 'DiLorenzoEnseña.jpg' "$INICIO"; then
+if grep -q 'EquipoDesarrollandoLaptops.jpg' "$INICIO" && grep -q 'DiLorenzoEnseña.jpg' "$INICIO"; then
   registrar_ok "El hero del inicio usa las dos últimas imágenes del equipo"
 else
   registrar_fallo "El hero del inicio no contiene las dos imágenes esperadas"

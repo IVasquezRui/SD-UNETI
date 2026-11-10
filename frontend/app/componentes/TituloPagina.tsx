@@ -17,6 +17,15 @@ type PropiedadesTituloPagina = {
   particleId?: string;
   /** Sustituye el fondo estático por una capa con parallax. */
   parallax?: boolean;
+  /**
+   * `cover` (por defecto) recorta la foto para llenar el hero.
+   * `completo` muestra la fotografía entera sobre una copia desenfocada que
+   * rellena el resto: útil con fotos verticales o cuadradas donde el recorte
+   * dejaría fuera al sujeto.
+   */
+  imageFit?: "cover" | "completo";
+  /** Altura extra para heroes con fotografías poco panorámicas. */
+  imageHeight?: "normal" | "alto";
 };
 
 export default function TituloPagina({
@@ -28,14 +37,17 @@ export default function TituloPagina({
   children,
   particleId = "page-title-particles",
   parallax = false,
+  imageFit = "cover",
+  imageHeight = "normal",
 }: PropiedadesTituloPagina) {
   const fondo = image ?? "/assets/images/uneti/nosotros-principal.webp";
+  const mostrarCompleto = imageFit === "completo" && !parallax;
 
   return (
     <section
-      className="uneti-page-header"
+      className={`uneti-page-header${imageHeight === "alto" ? " uneti-page-header--alto" : ""}`}
       style={
-        parallax
+        parallax || mostrarCompleto
           ? undefined
           : {
               backgroundPosition: imagePosition,
@@ -43,6 +55,23 @@ export default function TituloPagina({
             }
       }
     >
+      {mostrarCompleto && (
+        <div className="uneti-page-header__encuadre" aria-hidden="true">
+          <div
+            className="uneti-page-header__desenfoque"
+            style={{ backgroundImage: `url(${fondo})` }}
+          ></div>
+          <img
+            className="uneti-page-header__media uneti-page-header__media--completo"
+            src={fondo}
+            alt=""
+            style={{ objectPosition: imagePosition }}
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+          />
+        </div>
+      )}
       {parallax && <FondoParallaxCabecera src={fondo} posicion={imagePosition} />}
       <div className="uneti-page-header__overlay" aria-hidden="true"></div>
       <ParticulasDecorativas id={particleId} className="uneti-page-header__particles" />

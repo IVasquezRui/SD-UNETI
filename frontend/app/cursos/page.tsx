@@ -21,8 +21,10 @@ export default function CursosPage() {
         <TituloPagina
           title="Cursos UNETI"
           subtitle="Formación corta en las tecnologías que están transformando al país."
-          image="/assets/images/uneti/cursos-hero.webp"
-          imagePosition="center 42%"
+          image="/assets/images/uneti/RectorConferencia1.jpg"
+          imagePosition="center 35%"
+          imageFit="completo"
+          imageHeight="alto"
           crumbs={[{ label: "Inicio", href: "/" }, { label: "Cursos" }]}
           particleId="cursos-page-particles"
         />
@@ -111,7 +113,7 @@ export default function CursosPage() {
                     </span>
                   </a>
                   <a
-                    href="/contacto"
+                    href="/contacto#formulario-contacto"
                     className="btn btn-large btn-link btn-hover-animation-switch text-dark-gray fw-600"
                   >
                     <span>
