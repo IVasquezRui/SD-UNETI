@@ -1,0 +1,12 @@
+Proyecto Soberanía Digital 2026 (SD-UNETI)
+Copyright (C) 2026 Universidad Nacional Experimental de las Telecomunicaciones e Informática (UNETI)
+
+Este programa es software libre: usted puede redistribuirlo y/o modificarlo bajo los términos de la Licencia Pública General GNU publicada por la Free Software Foundation, ya sea la versión 3 de la Licencia, o (a su elección) cualquier versión posterior.
+
+ALCANCE, VISIÓN Y MISIÓN DE LA LICENCIA GPL v3 EN ESTE PROYECTO:
+
+- Alcance: Aplica a todo el código fuente del Portal Web Institucional (Frontend Next.js y configuraciones Headless/Docker), garantizando que las adaptaciones para el sector educativo universitario permanezcan abiertas y auditables.
+- Visión: Consolidar a la UNETI como referente nacional e internacional en el desarrollo e implementación de plataformas web bajo esquemas de Soberanía Digital y Software Libre.
+- Misión: Dar cumplimiento a los lineamientos de la Ley de Infogobierno de la República Bolivariana de Venezuela, promoviendo el acceso libre al conocimiento tecnológico y garantizando que cualquier desarrollo derivado de este trabajo por parte de terceros sea compartido obligatoriamente con la comunidad bajo estos mismos términos de libertad (Copyleft).
+
+El texto completo de la licencia está disponible en el archivo LICENSE.
