@@ -101,7 +101,7 @@ export function validarSolicitud(
   } else if (tipo === "admision" || tipo === "posgrado") {
     errores.cedula =
       tipo === "posgrado"
-        ? "La cédula es obligatoria para la solicitud de posgrado."
+        ? "La cédula es obligatoria para la solicitud de postgrado."
         : "La cédula es obligatoria para la solicitud de admisión.";
   }
 
@@ -114,7 +114,7 @@ export function validarSolicitud(
     if (!programasPermitidos.includes(programaCrudo)) {
       errores.programa =
         tipo === "posgrado"
-          ? "Selecciona uno de los posgrados disponibles."
+          ? "Selecciona uno de los postgrados disponibles."
           : "Selecciona uno de los PNF disponibles.";
     } else {
       programa = programaCrudo;
@@ -122,7 +122,7 @@ export function validarSolicitud(
   } else if (tipo === "admision" || tipo === "posgrado") {
     errores.programa =
       tipo === "posgrado"
-        ? "Selecciona el posgrado de tu interés."
+        ? "Selecciona el postgrado de tu interés."
         : "Selecciona el PNF de tu interés.";
   }
 

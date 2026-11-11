@@ -17,7 +17,7 @@ export const PAGINAS_RAPIDAS: PaginaRapida[] = [
   { href: "/", etiqueta: "Inicio", icono: "bi bi-house-door" },
   { href: "/nosotros", etiqueta: "Nosotros", icono: "bi bi-people" },
   { href: "/carreras", etiqueta: "Carreras", icono: "bi bi-mortarboard" },
-  { href: "/posgrados", etiqueta: "Posgrados", icono: "bi bi-award" },
+  { href: "/posgrados", etiqueta: "Postgrados", icono: "bi bi-award" },
   { href: "/cursos", etiqueta: "Cursos", icono: "bi bi-journal-code" },
   { href: "/noticias", etiqueta: "Noticias", icono: "bi bi-newspaper" },
   { href: "/admisiones", etiqueta: "Admisiones", icono: "bi bi-clipboard-check" },
@@ -72,10 +72,10 @@ export const SECCIONES_RAPIDAS: Record<string, SeccionRapida[]> = {
   "/carreras": [
     { id: "oferta", etiqueta: "Oferta académica", icono: "bi bi-mortarboard" },
     { id: "ventajas", etiqueta: "Ventajas", icono: "bi bi-stars" },
-    { id: "posgrados", etiqueta: "Posgrados", icono: "bi bi-award" },
+    { id: "posgrados", etiqueta: "Postgrados", icono: "bi bi-award" },
   ],
   "/posgrados": [
-    { id: "oferta", etiqueta: "Oferta de posgrados", icono: "bi bi-award" },
+    { id: "oferta", etiqueta: "Oferta de postgrados", icono: "bi bi-award" },
     ...POSGRADOS.map((posgrado) => ({
       id: posgrado.slug,
       etiqueta: posgrado.nombre,

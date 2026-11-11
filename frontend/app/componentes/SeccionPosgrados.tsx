@@ -10,7 +10,7 @@ export default function SeccionPosgrados() {
           <div className="col-lg-8">
             <span className="uneti-section-eyebrow mb-15px">Formación avanzada</span>
             <h2 className="alt-font text-dark-gray fw-600 ls-minus-3px mb-15px">
-              Posgrados: Especializaciones, Maestrías y Doctorado
+              Postgrados: Especializaciones, Maestrías y Doctorado
             </h2>
             <p className="mb-0">
               Siete Programas Nacionales de Formación Avanzada (PNFA) para profundizar en
@@ -35,8 +35,8 @@ export default function SeccionPosgrados() {
               className="btn btn-large btn-dark-gray btn-rounded btn-box-shadow btn-switch-text"
             >
               <span>
-                <span className="btn-double-text" data-text="Ver todos los posgrados">
-                  Ver todos los posgrados
+                <span className="btn-double-text" data-text="Ver todos los postgrados">
+                  Ver todos los postgrados
                 </span>
                 <span>
                   <i className="fa-solid fa-arrow-right"></i>
