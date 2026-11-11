@@ -8,7 +8,7 @@ Uso:
     python3 scripts/docs/generar-informe-html.py
 
 Salida:
-    Documents/informe-tecnico-2026-11-10.html
+    DocumentacionTecnica/informe-tecnico-2026-11-10.html
 """
 
 from __future__ import annotations
@@ -19,8 +19,8 @@ import sys
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parents[2]
-ORIGEN = RAIZ / "Documents" / "informe-tecnico-2026-11-10.md"
-DESTINO = RAIZ / "Documents" / "informe-tecnico-2026-11-10.html"
+ORIGEN = RAIZ / "DocumentacionTecnica" / "informe-tecnico-2026-11-10.md"
+DESTINO = RAIZ / "DocumentacionTecnica" / "informe-tecnico-2026-11-10.html"
 
 AUTOR = "Iván Vásquez"
 VERSION = "1.0"
