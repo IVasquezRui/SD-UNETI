@@ -1,44 +1,57 @@
-# 🇻🇪 Proyecto Soberanía Digital 2026-2030 — UNETI
+# 🇻🇪 Portal Web Soberanía Digital 2026 -- UNETI
 
-[![MVP](https://img.shields.io/badge/estado-MVP%20v1.0-0B5FFF)](Documents/PROGRESS.md)
-[![Seed portable](https://github.com/IVasquezRui/SD-UNETI/actions/workflows/seed.yml/badge.svg)](https://github.com/IVasquezRui/SD-UNETI/actions/workflows/seed.yml)
-[![Despliegue](https://github.com/IVasquezRui/SD-UNETI/actions/workflows/01-despliegue.yml/badge.svg)](https://github.com/IVasquezRui/SD-UNETI/actions/workflows/01-despliegue.yml)
-[![Frontend](https://github.com/IVasquezRui/SD-UNETI/actions/workflows/03-frontend.yml/badge.svg)](https://github.com/IVasquezRui/SD-UNETI/actions/workflows/03-frontend.yml)
-[![Formulario](https://github.com/IVasquezRui/SD-UNETI/actions/workflows/04-formulario.yml/badge.svg)](https://github.com/IVasquezRui/SD-UNETI/actions/workflows/04-formulario.yml)
+[![Estado](https://img.shields.io/badge/estado-Producci%C3%B3n-0B5FFF)](DocumentacionTecnica/informe-tecnico-2026-11-10.md)
 [![Next.js](https://img.shields.io/badge/Next.js-16.4.3-000000)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19.3.1-61DAFB)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-3178C6)](https://www.typescriptlang.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-26.13.0%20LTS-339933)](https://nodejs.org/)
 [![WordPress](https://img.shields.io/badge/WordPress-7.1.4-21759B)](https://wordpress.org/)
 [![WPGraphQL](https://img.shields.io/badge/WPGraphQL-2.26.0-E10098)](https://www.wpgraphql.com/)
+[![MariaDB](https://img.shields.io/badge/MariaDB-11.8.9-003545)](https://mariadb.org/)
 [![Docker](https://img.shields.io/badge/Docker%20Compose-3%20servicios-2496ED)](docker-compose.yml)
-[![Licencia](https://img.shields.io/badge/licencia-por%20definir-lightgrey)](Documents/Soberanía%20Digital%202026.md)
+[![GPL v3](https://img.shields.io/badge/GPL%20v3-orange)](LICENSE)
 
-Portal institucional de la **Universidad Nacional Experimental de las Telecomunicaciones e Informática (UNETI)**, construido como una arquitectura *headless*: Next.js renderiza la experiencia pública y WordPress administra el contenido institucional. El objetivo es una plataforma rápida, accesible, segura y **reproducible desde un clon limpio**, sin depender de un dump SQL ni de archivos locales no versionados.
+Portal institucional de la **Universidad Nacional Experimental de las Telecomunicaciones e Informática (UNETI)**, construido como una plataforma *headless*: Next.js renderiza la experiencia pública y WordPress administra el contenido institucional. El sistema está **completo y preparado para despliegue en producción**, con contenido reproducible desde un clon limpio, seguridad endurecida y un procedimiento de salida a producción documentado paso a paso.
 
 ## Arquitectura
 
 ```text
 Navegador
    │
-   ├── HTML / SSE ─────────────► Next.js :3000
-   │                                │
-   │                                ├── WPGraphQL ──────────► WordPress :8080
-   │                                │                          │
-   │                                ├── REST comentarios ─────┤
-   │                                │                          │
-   │                                └── POST /api/admisiones ─┤
-   │                                       (token servidor)   ▼
+   ├── HTML / SSE ──────────────► Next.js :3000
+   │                                 │
+   │                                 ├── WPGraphQL ─────────► WordPress :8080
+   │                                 │                         │
+   │                                 ├── REST comentarios ────┤
+   │                                 │                         │
+   │                                 └── POST solicitudes ────┤
+   │                                      (token de servidor)  ▼
    └─────────────────────────────────────────────────────► MariaDB :3306
                                                                │
-                                    wp_posts + wp_postmeta ◄───┘
-                                    (CPT solicitud_uneti)
+                                        wp_posts · wp_postmeta · wp_comments
+                                        CPT solicitud_uneti · estado_solicitud
 ```
 
 - **Frontend:** Next.js 16 con App Router, React 19, TypeScript y el sistema visual del template `demo-elearning`.
 - **Backend CMS:** WordPress headless con WPGraphQL; no renderiza el sitio público.
 - **Persistencia:** MariaDB para posts, medios, taxonomías, comentarios nativos (`wp_comments`) y solicitudes (`solicitud_uneti`).
-- **Formularios:** el frontend valida y envía a un endpoint REST propio de WordPress, que guarda la solicitud como CPT privado con metadatos y estado.
+- **Formularios:** el frontend valida y envía a un endpoint REST propio de WordPress, que guarda la solicitud como CPT privado con metadatos, folio y estado.
 - **Contenido reproducible:** `seed/` contiene fixtures JSON, imágenes originales y un manifiesto con checksums.
-- **Infraestructura:** Docker Compose con imágenes fijadas por etiqueta.
+- **Infraestructura:** Docker Compose con imágenes fijadas por etiqueta y endurecimiento aplicado en Apache, PHP, WordPress y MariaDB.
+
+## Estado del proyecto
+
+| Área | Estado |
+|---|---|
+| Sitio público | 11 rutas operativas: inicio, nosotros, carreras, detalle de PNF, postgrados, cursos, admisiones, contacto, noticias, detalle de noticia y privacidad |
+| Contenido dinámico | Noticias desde WPGraphQL con ISR (5 min), SEO, relacionadas y actualización en vivo por SSE |
+| Comentarios | Persistidos en `wp_comments`, con moderación y rate limiting |
+| Solicitudes | Admisión PNF, postgrados y contacto con folio `UNETI-AAAA-NNNNNN`, honeypot y tokens de servicio |
+| Oferta académica | 2 PNF, 7 PNFA de postgrado y cursos cortos, con detalle curricular |
+| Calidad | TypeScript estricto, ESLint, build reproducible y QA automatizado |
+| Seguridad | CSP, HSTS, COOP/CORP, límites de cuerpo, rate limiting, anti-enumeración y retención de datos a 365 días |
+| CI | 10 workflows de validación, QA y pentesting |
+| Despliegue | Guía universal y presentación operativa en `DespliegueProducción/` |
 
 ## Stack
 
@@ -50,50 +63,76 @@ Navegador
 | Estilos | Template `demo-elearning` + `uneti.css` | — |
 | CMS | WordPress | `7.1.4` (PHP 8.5) |
 | API de contenido | WPGraphQL | `2.26.0` |
-| Solicitudes | CPT + REST + CSV | `solicitud_uneti` |
+| API propia | REST de WordPress (mu-plugins) | — |
 | Base de datos | MariaDB | `11.8.9` |
 | Orquestación | Docker Compose | 3 servicios |
+| Automatización | Python (solo stdlib) | `scripts/seed/seed.py` |
+
+## Rutas y endpoints
+
+| Ruta | Contenido |
+|---|---|
+| `/` | Portada institucional |
+| `/nosotros` | Historia, modelo híbrido, sedes y esencia |
+| `/carreras` | Oferta PNF y resumen de postgrados |
+| `/carreras/[slug]` | Detalle de cada PNF |
+| `/posgrados` | Postgrados (PNFA) con malla y requisitos |
+| `/cursos` | Cursos cortos con CTA a WhatsApp |
+| `/admisiones` | Proceso y formulario de admisión |
+| `/contacto` | Sedes, mapas y formulario de contacto |
+| `/noticias` | Listado con ISR |
+| `/noticias/[slug]` | Detalle, relacionadas y comentarios |
+| `/privacidad` | Aviso de privacidad |
+
+Endpoints propios del frontend:
+
+| Endpoint | Función |
+|---|---|
+| `POST /api/admisiones` | Solicitud de admisión PNF |
+| `POST /api/posgrados` | Solicitud de postgrado |
+| `POST /api/contacto` | Mensaje de contacto |
+| `GET /api/noticias` | Listado de noticias |
+| `GET /api/noticias/stream` | Cambios en vivo (SSE) |
+| `GET/POST /api/noticias/[slug]/comentarios` | Comentarios |
+| `POST /api/revalidar` | Revalidación ISR con token |
+
+Endpoints de WordPress: `POST /wp-json/uneti/v1/solicitudes`, `GET|POST /wp-json/uneti/v1/comentarios/{slug}` y `/graphql`.
+
+## Estructura del repositorio
+
+```text
+SD-UNETI/
+├── frontend/                 Aplicación Next.js (App Router)
+├── scripts/
+│   ├── seed/seed.py          export · import · bootstrap · verify · validate
+│   ├── wordpress/            bootstrap, importador, mu-plugins y endurecimiento
+│   ├── ci/                   QA funcional y pentests
+│   └── docs/                 generador del informe HTML
+├── seed/                     Fixtures JSON, imágenes y manifiesto con checksums
+├── wp_content/               WPGraphQL versionado y recursos del CMS
+├── demo-elearning/           Template original de referencia
+├── DocumentacionTecnica/     Informe técnico (.md y vista HTML/CSS/JS)
+├── DespliegueProducción/     Guía de producción y presentación operativa
+├── Documents/                Estado del proyecto y documentos históricos
+├── .github/                  10 workflows + acción compuesta
+├── docker-compose.yml        Entorno de desarrollo
+├── docker-compose.prod.yml   Override de build para CI
+├── LICENSE                   GNU General Public License v3.0
+├── NOTICE                    Declaración institucional de soberanía tecnológica
+└── README.md
+```
 
 ## Inicio rápido
 
-### Requisitos
-
-- Git.
-- Docker Engine con Docker Compose v2.
-- Python 3.10+ (solo biblioteca estándar).
-- Opcional: Node.js `26.13.0` LTS y npm si se ejecuta el frontend fuera de Docker.
-
-### Levantar el entorno
+Requisitos: Git, Docker y Docker Compose.
 
 ```bash
 git clone https://github.com/IVasquezRui/SD-UNETI.git
 cd SD-UNETI
-
-cp .env.example .env
-# Edita .env: contraseñas, correo del administrador, URL pública y UNETI_FORM_TOKEN.
-# Genera secretos con: openssl rand -hex 32
-
+cp .env.example .env        # ajusta credenciales y URL
 docker compose up -d
 python3 scripts/seed/seed.py bootstrap
 ```
-
-`bootstrap` instala WordPress si la base está vacía, activa WPGraphQL, importa las 6 noticias con sus imágenes y comentarios, y ejecuta `verify`. El proceso es idempotente: puede repetirse sin duplicar contenido.
-
-El usuario administrador por defecto es `admin`; la contraseña es la que definas en `WORDPRESS_ADMIN_PASSWORD` dentro de `.env`. No hay credenciales productivas versionadas.
-
-### Frontend fuera de Docker
-
-Requiere Node.js `26.13.0` LTS y npm.
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-El build de producción (`npm run build`) debe ejecutarse con WordPress arriba y el seed importado: `generateStaticParams` necesita las noticias publicadas para prerenderizar los detalles.
-
-### URLs locales
 
 | Servicio | URL |
 |---|---|
@@ -101,120 +140,77 @@ El build de producción (`npm run build`) debe ejecutarse con WordPress arriba y
 | WordPress | `http://localhost:8080` |
 | Administración | `http://localhost:8080/wp-admin` |
 | WPGraphQL | `http://localhost:8080/graphql` |
-| API de comentarios | `http://localhost:8080/wp-json/uneti/v1/comentarios/{slug}` |
-| API de solicitudes | `http://localhost:8080/wp-json/uneti/v1/solicitudes` |
-| Panel de solicitudes | `http://localhost:8080/wp-admin/edit.php?post_type=solicitud_uneti` |
+| REST de comentarios | `http://localhost:8080/wp-json/uneti/v1/comentarios/{slug}` |
 
-## Seed portable
+## Contenido y seed portable
 
-`seed/` es la fuente de verdad del contenido demo. No hay `database/init.sql`: la base se crea vacía y el contenido se restaura con las APIs nativas de WordPress.
+El contenido vive en `seed/` y se reconstruye con las APIs nativas de WordPress. No se usa ningún dump SQL.
 
 ```bash
-# Validar fixtures, referencias y checksums (no requiere Docker)
-python3 scripts/seed/seed.py validate
-
-# Importar de forma idempotente
-python3 scripts/seed/seed.py import
-
-# Reemplazar originales y regenerar miniaturas
+python3 scripts/seed/seed.py validate    # valida fixtures y checksums sin Docker
+python3 scripts/seed/seed.py bootstrap   # instala WordPress, activa WPGraphQL, importa y verifica
+python3 scripts/seed/seed.py import      # importación idempotente
+python3 scripts/seed/seed.py verify      # GraphQL, comentarios e imágenes
+python3 scripts/seed/seed.py export      # exporta el WordPress actual a seed/
 python3 scripts/seed/seed.py import --refresh-media
-
-# Comprobar GraphQL, comentarios e imágenes
-python3 scripts/seed/seed.py verify
-
-# Exportar el WordPress actual a seed/
-python3 scripts/seed/seed.py export
 ```
 
-Detalles de esquema, privacidad, placeholders e idempotencia: [`seed/README.md`](seed/README.md).
+La importación usa marcas `_uneti_seed_*` y adopta objetos existentes por slug, archivo o autor + contenido. El seed no incluye usuarios reales, hashes, sesiones, IPs ni correos personales.
 
-## Comandos de desarrollo
+## Calidad, CI y seguridad
 
-```bash
-# Frontend dentro de Docker (modo desarrollo)
-docker compose up -d frontend
-
-# Tipos, lint y build de producción en un contenedor efímero
-docker compose stop frontend
-docker compose run --rm --no-deps frontend sh -c 'npm ci --no-audit --no-fund && npm run build'
-docker compose start frontend
-```
-
-> No fijes `NODE_ENV` en el servicio `frontend`. `next dev` y `next build` gestionan ese valor; forzarlo globalmente provoca un fallo de prerender en `/_global-error`.
-
-## Estructura del proyecto
-
-```text
-.
-├── frontend/                  Next.js: rutas, componentes, hooks y cliente GraphQL
-├── scripts/
-│   ├── seed/seed.py           Orquestador Python: validate, export, import, bootstrap, verify
-│   └── wordpress/             Bootstrap PHP, importador/exportador y mu-plugin de comentarios
-├── seed/                      Fixtures JSON, imágenes originales, manifiesto y créditos
-├── wp_content/plugins/        WPGraphQL versionado y montado en el contenedor
-├── database/                  Documentación; sin dump SQL
-├── docker-compose.yml         MariaDB + WordPress + Next.js
-├── Documents/                 Arquitectura, ADR, estado y plan doc-as-code
-└── lookdown/                  Grafo local para agentes (excluido de Git)
-```
-
-## Modelo de contenido
-
-- **Noticias:** posts publicados en WordPress, con excerpt, contenido HTML, imagen destacada, categorías, etiquetas y autor genérico.
-- **Medios:** originales en `seed/media/AAAA/MM/`; WordPress genera las variantes y miniaturas.
-- **Comentarios:** almacenados en `wp_comments`; el frontend los consume por la API REST propia y los publica con moderación nativa.
-- **Solicitudes:** el CPT privado `solicitud_uneti` guarda admisiones y mensajes de contacto en `wp_posts`/`wp_postmeta`, con estado en la taxonomía `estado_solicitud` y exportación CSV.
-- **Carreras:** contenido estático en TypeScript para los PNF en Informática y Telecomunicaciones.
-- **Tiempo real:** SSE con respaldo por polling para reflejar noticias nuevas sin WebSockets.
-
-## Reproducibilidad y privacidad
-
-- `seed/manifest.json` registra conteos y SHA-256 de los originales.
-- La importación usa marcas `_uneti_seed_*` y adopta objetos existentes por slug, archivo o autor + contenido.
-- El seed no incluye usuarios reales, hashes, sesiones, IPs ni correos personales.
-- Los secretos viven en `.env` (ignorado por Git). Para producción deben migrarse a Docker secrets o a un gestor externo.
-- Si el repositorio se compartió con un `init.sql` histórico, rota la contraseña de WordPress e invalida las sesiones.
-
-## Integración continua
-
-Los workflows viven en `.github/workflows/` y están separados por responsabilidad para mantener el consumo dentro del plan gratuito:
+Workflows de GitHub Actions:
 
 | Workflow | Propósito |
 |---|---|
-| `seed.yml` | Fixtures, bootstrap, idempotencia y `verify`. |
-| `01-despliegue.yml` | Levanta los contenedores con `.env`, siembra y ejecuta QA local. |
-| `02-wordpress.yml` | Lint PHP, CPT, REST, WPGraphQL y endurecimiento. |
-| `03-frontend.yml` | `npm ci`, TypeScript y ESLint con Node 26. |
-| `04-formulario.yml` | Envío real del formulario y verificación en `wp_posts`/`wp_postmeta`. |
-| `05-qa.yml` | QA manual contra una URL pública ya desplegada. |
-| `06-pentest-nextjs.yml` | Cabeceras, archivos expuestos, API y Nuclei. |
-| `07-pentest-wordpress.yml` | Enumeración, XML-RPC, archivos sensibles, WPScan y Nuclei. |
-| `08-pentest-mariadb.yml` | Exposición del puerto, privilegios, acceso remoto y `local_infile`. |
+| `seed.yml` | Fixtures, bootstrap, idempotencia y `verify` |
+| `01-despliegue.yml` | Levanta los contenedores, siembra y ejecuta QA |
+| `02-wordpress.yml` | Lint PHP, CPT, REST, WPGraphQL y endurecimiento |
+| `03-frontend.yml` | `npm ci`, TypeScript y ESLint con Node 26 |
+| `04-formulario.yml` | Envío real del formulario y verificación en base de datos |
+| `05-qa.yml` | QA manual contra una URL pública |
+| `06-pentest-nextjs.yml` | Cabeceras, archivos expuestos, API y Nuclei |
+| `07-pentest-wordpress.yml` | Enumeración, XML-RPC, WPScan y Nuclei |
+| `08-pentest-mariadb.yml` | Puerto, privilegios, acceso remoto y `local_infile` |
+| `09-seguridad.yml` | `npm audit`, gitleaks y validación de compose |
 
-Los pentests se ejecutan manualmente y una vez al mes (días 1, 8 y 15) para no consumir minutos en cada push. Los reportes se publican como artefacto y en el resumen del job. El detalle y el presupuesto están en [`Documents/ci-cd-2026.md`](Documents/ci-cd-2026.md).
+Controles destacados: CSP y HSTS, COOP/CORP, límite de cuerpo por ruta, rate limiting, honeypot, tokens comparados en tiempo constante, XML-RPC y enumeración de usuarios bloqueados, y retención automática de solicitudes a los 365 días. El detalle está en `Documents/seguridad/2026-11-08-hardening.md`.
 
 ## Documentación
 
-- [`Documents/Soberanía Digital 2026.md`](Documents/Soberanía%20Digital%202026.md): arquitectura, ADR, calidad, seguridad y roadmap.
-- [`Documents/PROGRESS.md`](Documents/PROGRESS.md): estado del MVP y validaciones ejecutadas.
-- [`Documents/solicitudes-wordpress-2026.md`](Documents/solicitudes-wordpress-2026.md): CPT, endpoint, administración y exportación.
-- [`Documents/ci-cd-2026.md`](Documents/ci-cd-2026.md): workflows, presupuesto del plan gratuito y pentests.
-- [`Documents/doc-as-code_20102026.md`](Documents/doc-as-code_20102026.md): plan del seed portable y criterios de aceptación.
-- [`Documents/nextSteps.md`](Documents/nextSteps.md): siguientes fases.
-- [`Documents/informe-tecnico-2026-11-10.md`](Documents/informe-tecnico-2026-11-10.md): informe técnico integral (tecnologías, metodología, fases, veredicto de producción y runbook Proxmox + Caddy).
-- [`Documents/informe-tecnico-2026-11-10.html`](Documents/informe-tecnico-2026-11-10.html): vista navegable del informe (hecha por Iván Vásquez) con índice, búsqueda, tema claro/oscuro y checklist del go-live.
+- [`DocumentacionTecnica/informe-tecnico-2026-11-10.md`](DocumentacionTecnica/informe-tecnico-2026-11-10.md): informe técnico integral.
+- [`DocumentacionTecnica/informe-tecnico-2026-11-10.html`](DocumentacionTecnica/informe-tecnico-2026-11-10.html): vista navegable con índice, búsqueda, tema y checklist.
+- [`DespliegueProducción/Pasos-A-Produccion-UNETI-PROXMOX.md`](DespliegueProducción/Pasos-A-Produccion-UNETI-PROXMOX.md): guía universal de despliegue en Proxmox.
+- [`DespliegueProducción/index.html`](DespliegueProducción/index.html): presentación operativa del despliegue.
+- [`Documents/PROGRESS.md`](Documents/PROGRESS.md): estado del proyecto y validaciones.
+- [`Documents/Soberanía Digital 2026.md`](Documents/Soberanía%20Digital%202026.md): metodología y arquitectura.
+- [`Documents/ci-cd-2026.md`](Documents/ci-cd-2026.md): workflows, presupuesto y pentests.
 - [`seed/README.md`](seed/README.md): contrato de los fixtures.
-- [`seed/CREDITS.md`](seed/CREDITS.md): procedencia y licencia de las imágenes.
+
+## Despliegue a producción
+
+El procedimiento completo está en [`DespliegueProducción/`](DespliegueProducción/): guía en Markdown y presentación HTML5 para el ingeniero de montaje. Cubre Docker Compose, instalación nativa, despliegue híbrido, Proxmox, usuarios y claves, TLS, seed, backups, monitoreo, go-live y rollback.
 
 ## Contribución
 
-1. Crea una rama desde `main`.
-2. Mantén los cambios de contenido en `seed/` y los cambios de presentación en `frontend/`.
+1. Crea una rama desde `develop`.
+2. Mantén los cambios de contenido en `seed/` y los de presentación en `frontend/`.
 3. Ejecuta `python3 scripts/seed/seed.py validate`, `npx tsc --noEmit`, `npm run lint` y `npm run build` con WordPress arriba.
 4. Valida los scripts con `bash -n scripts/ci/*.sh` y `node --check scripts/ci/*.mjs`.
 5. No incluyas secretos, volúmenes (`db_data/`, `wp_data/`), reportes de pentest ni artefactos de build.
-5. Actualiza la documentación y los créditos de imágenes cuando incorpores activos.
+6. Actualiza la documentación y los créditos de imágenes cuando incorpores activos.
 
-## Licencia
+## 📄 Licencia y Soberanía Tecnológica
 
-La licencia del código y de los activos institucionales está **pendiente de definición formal**. Antes de publicar el repositorio deben añadirse el archivo `LICENSE`, la auditoría de licencias de la plantilla `demo-elearning` y los créditos de todas las imágenes. El proyecto aspira a un modelo de Gobierno Abierto y Soberanía Tecnológica; esta declaración no sustituye la revisión legal.
+Este proyecto se distribuye bajo la **GNU General Public License v3.0 (GPL v3)**, una licencia de software libre con *copyleft* que garantiza que las adaptaciones para el sector educativo universitario permanezcan abiertas y auditables.
+
+- [`LICENSE`](LICENSE): texto íntegro de la GNU General Public License v3.0.
+- [`NOTICE`](NOTICE): declaración institucional de alcance, visión y misión de la GPL v3 en SD-UNETI.
+
+La elección responde a los principios de **Soberanía Digital** de la UNETI y a los lineamientos de la Ley de Infogobierno de la República Bolivariana de Venezuela: acceso libre al conocimiento tecnológico y obligación de compartir los desarrollos derivados bajo los mismos términos de libertad.
+
+## Créditos
+
+**Hecho por → Iván Vásquez**
+
+
