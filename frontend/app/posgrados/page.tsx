@@ -8,7 +8,7 @@ import TituloPagina from "../componentes/TituloPagina";
 import { NIVELES_POSGRADO, POSGRADOS } from "../lib/posgrados";
 
 export const metadata: Metadata = {
-  title: "Posgrados | UNETI",
+  title: "Postgrados | UNETI",
   description:
     "Especializaciones, maestrías y doctorado de la UNETI: siete Programas Nacionales de Formación Avanzada (PNFA) en telecomunicaciones, informática y tecnologías emergentes.",
 };
@@ -32,13 +32,13 @@ export default function PosgradosPage() {
       <EncabezadoSitio />
       <main>
         <TituloPagina
-          title="Posgrados"
+          title="Postgrados"
           subtitle="Especializaciones, maestrías y doctorado para la Venezuela Digital."
           image="/assets/images/uneti/NEW_IMAGES/Posgrados/robotica/photo_5143169628853964102_y.jpg"
           imagePosition="center 40%"
           imageFit="completo"
           imageHeight="alto"
-          crumbs={[{ label: "Inicio", href: "/" }, { label: "Posgrados" }]}
+          crumbs={[{ label: "Inicio", href: "/" }, { label: "Postgrados" }]}
           particleId="posgrados-page-particles"
         />
 
@@ -97,7 +97,7 @@ export default function PosgradosPage() {
               <div className="col-lg-8">
                 <span className="uneti-section-eyebrow mb-15px">Admisión y egreso</span>
                 <h2 className="alt-font text-dark-gray fw-600 ls-minus-3px mb-0">
-                  Requisitos generales de los posgrados
+                  Requisitos generales de los postgrados
                 </h2>
               </div>
             </div>
@@ -147,7 +147,7 @@ export default function PosgradosPage() {
               <div className="col-lg-8">
                 <span className="uneti-section-eyebrow mb-15px">Solicitud en línea</span>
                 <h2 className="alt-font text-dark-gray fw-600 ls-minus-3px mb-15px">
-                  Admisiones Posgrados
+                  Admisiones Postgrados
                 </h2>
                 <p className="mb-0">
                   Completa la solicitud en tres pasos. Al enviarla recibirás un número de ticket

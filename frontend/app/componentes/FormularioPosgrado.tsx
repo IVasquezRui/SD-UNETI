@@ -45,7 +45,7 @@ const DATOS_INICIALES: Datos = {
 
 const PASOS = [
   { numero: 1, titulo: "Datos personales", descripcion: "Cuéntanos cómo contactarte." },
-  { numero: 2, titulo: "Interés académico", descripcion: "Elige el posgrado que quieres cursar." },
+  { numero: 2, titulo: "Interés académico", descripcion: "Elige el postgrado que quieres cursar." },
   {
     numero: 3,
     titulo: "Confirma y envía",
@@ -413,7 +413,7 @@ export default function FormularioPosgrado() {
           {paso === 2 && (
             <>
               <fieldset className="uneti-programas uneti-programas--posgrado">
-                <legend className="uneti-campo__label">Posgrado de interés (PNFA) *</legend>
+                <legend className="uneti-campo__label">Postgrado de interés (PNFA) *</legend>
                 <div className="row g-3">
                   {POSGRADOS.map((posgrado) => {
                     const programa = programaDePosgrado(posgrado);
@@ -528,7 +528,7 @@ export default function FormularioPosgrado() {
                   <dd>{datos.telefono}</dd>
                 </div>
                 <div className="uneti-admision__resumen-ancho">
-                  <dt>Posgrado</dt>
+                  <dt>Postgrado</dt>
                   <dd
                     style={
                       posgradoElegido

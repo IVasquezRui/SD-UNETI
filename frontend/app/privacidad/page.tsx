@@ -17,7 +17,7 @@ const DATOS = [
 ];
 
 const FINALIDADES = [
-  "Gestionar solicitudes de admisión a los PNF y a los posgrados (PNFA), así como los mensajes de contacto.",
+  "Gestionar solicitudes de admisión a los PNF y a los postgrados (PNFA), así como los mensajes de contacto.",
   "Responder consultas y dar seguimiento con el número de ticket asignado.",
   "Publicar comentarios en las noticias cuando el usuario lo solicita.",
   "Prevenir abuso, spam y accesos no autorizados al portal.",
@@ -99,7 +99,7 @@ export default function PrivacidadPage() {
                   Conservación y destino de los datos
                 </h3>
                 <p className="mb-20px">
-                  Las solicitudes de admisión, posgrado y contacto se conservan durante un máximo de
+                  Las solicitudes de admisión, postgrado y contacto se conservan durante un máximo de
                   doce (12) meses desde su recepción, salvo que deban mantenerse para una actuación
                   administrativa en curso. Los comentarios permanecen mientras la noticia esté
                   publicada. Los registros técnicos de seguridad se conservan por periodos breves y

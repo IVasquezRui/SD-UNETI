@@ -17,7 +17,7 @@ export function mensajeCurso(titulo: string): string {
 }
 
 export function mensajePosgrado(nombre: string): string {
-  return `Hola UNETI, quiero solicitar información sobre el posgrado: ${nombre}`;
+  return `Hola UNETI, quiero solicitar información sobre el postgrado: ${nombre}`;
 }
 
 export function mensajeCursos(): string {
