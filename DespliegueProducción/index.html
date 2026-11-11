@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<!-- Presentación operativa de despliegue · Hecho por Iván Vásquez -->
+<html lang="es" data-tema="claro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Despliegue a producción — UNETI en Proxmox</title>
+<meta name="description" content="Presentación operativa paso a paso para desplegar SD-UNETI en producción sobre Proxmox: Docker, instalación nativa, TLS, seed, backups y go-live.">
+<meta name="author" content="Iván Vásquez">
+<meta name="theme-color" content="#002f6c">
+<link rel="icon" href="../frontend/public/assets/images/uneti/logo.png">
+<link rel="stylesheet" href="estilos.css">
+<script>
+  (function () {
+    try {
+      var guardado = localStorage.getItem('uneti-prod-tema');
+      document.documentElement.dataset.tema = guardado === 'oscuro' ? 'oscuro' : 'claro';
+    } catch (error) {
+      document.documentElement.dataset.tema = 'claro';
+    }
+  })();
+</script>
+</head>
+<body data-ruta="todas">
+
+<div class="progreso" aria-hidden="true"><span data-progreso></span></div>
+
+<header class="barra">
+  <button class="boton-icono boton-menu" type="button" data-menu aria-label="Abrir índice" aria-expanded="false" aria-controls="indice">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+  </button>
+
+  <a class="marca" href="#portada">
+    <span class="marca__placa">
+      <img src="../frontend/public/assets/images/uneti/logo.png" alt="UNETI" width="92" height="28">
+    </span>
+    <span class="marca__texto">
+      <span class="marca__titulo">Despliegue a producción</span>
+      <span class="marca__sub">SD-UNETI · Proxmox</span>
+    </span>
+  </a>
+
+  <div class="barra__acciones">
+    <label class="selector">
+      <span>Ruta</span>
+      <select data-ruta-select aria-label="Ruta de despliegue">
+        <option value="todas">Todas</option>
+        <option value="docker">Docker</option>
+        <option value="nativo">Nativo</option>
+        <option value="hibrido">Híbrido</option>
+      </select>
+    </label>
+
+    <button class="boton-icono" type="button" data-tema aria-label="Cambiar tema" title="Cambiar tema">
+      <svg class="icono-luna" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      <svg class="icono-sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg>
+    </button>
+
+    <button class="boton-icono" type="button" data-imprimir aria-label="Imprimir o guardar como PDF" title="Imprimir / PDF">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="7" rx="1"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="marco">
+  <aside class="indice" id="indice" aria-label="Índice de pasos">
+    <p class="indice__titulo">Pasos del despliegue</p>
+    <ol data-indice></ol>
+  </aside>
+
+  <main class="escenario" id="contenido">
+    <section class="diapositiva activa" id="portada" data-titulo="Portada" data-ruta="todas">
+      <div class="portada-dia">
+        <span class="portada-dia__logo">
+          <img src="../frontend/public/assets/images/uneti/logo@2x.png" alt="Universidad Nacional Experimental de las Telecomunicaciones e Informática" width="156" height="48">
+        </span>
+        <p class="portada-dia__etiqueta">SD-UNETI · Guía operativa</p>
+        <h1>Despliegue a producción en Proxmox</h1>
+        <p class="portada-dia__lead">Pasos, credenciales, comandos y verificaciones para montar el Portal Web Soberanía Digital 2026 en una VM institucional.</p>
+        <div class="portada-dia__chips">
+          <span class="chip"><b>Versión</b> 1.0</span>
+          <span class="chip"><b>Fecha</b> 11/11/2026</span>
+          <span class="chip"><b>Rutas</b> Docker · Nativo · Híbrido</span>
+        </div>
+        <div class="kpis">
+          <div class="kpi"><b>3</b><span>Rutas de montaje</span></div>
+          <div class="kpi"><b>15</b><span>Bloques de trabajo</span></div>
+          <div class="kpi"><b>14</b><span>Puntos de go-live</span></div>
+          <div class="kpi"><b>8</b><span>Claves y tokens</span></div>
+        </div>
+        <p class="portada-dia__firma">Hecho por → <strong>Iván Vásquez</strong></p>
+      </div>
+      <div class="aviso">
+        <p><strong>Regla de oro:</strong> esta presentación contiene nombres de variables y usuarios, <strong>nunca contraseñas reales</strong>. Cada valor se genera en el servidor y se guarda con permisos <code>600</code>.</p>
+      </div>
+    </section>
+
+    <section class="diapositiva" id="decision" data-titulo="Elegir la topología" data-ruta="todas">
+      <span class="etiqueta">Paso 01</span>
+      <h2>Elegir la topología</h2>
+      <p>La misma aplicación admite tres formas de montaje. La recomendada es <strong>Docker Compose sobre una VM</strong>; las otras dos cubren restricciones institucionales.</p>
+      <div class="tabla-envoltura">
+        <table class="tabla">
+          <thead><tr><th>Ruta</th><th>Cuándo usarla</th><th>Complejidad</th><th>Reproducibilidad</th></tr></thead>
+          <tbody>
+            <tr><td>A · Docker</td><td>Caso normal; actualización por imagen</td><td>Media</td><td>Alta</td></tr>
+            <tr><td>B · Nativo</td><td>No se permite Docker</td><td>Alta</td><td>Media</td></tr>
+            <tr><td>C · Híbrido</td><td>WordPress en Docker y Next nativo</td><td>Media-alta</td><td>Media</td></tr>
+            <tr><td>LXC</td><td>Ahorro de recursos</td><td>Media</td><td>Media</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="aviso">
+        <p><strong>Recomendación:</strong> VM Debian 13 de 4 vCPU y 8 GB, Docker Compose para el stack y <strong>Caddy en el host</strong> como proxy TLS. Caddy dentro de Docker no ve la IP real del cliente y rompe las reglas de Tailscale y de <code>wp-admin</code>.</p>
+      </div>
+    </section>
+
+    <section class="diapositiva" id="requisitos" data-titulo="Requisitos de la VM" data-ruta="todas">
+      <span class="etiqueta">Paso 02</span>
+      <h2>Requisitos de la VM</h2>
+      <div class="tabla-envoltura">
+        <table class="tabla">
+          <thead><tr><th>Recurso</th><th>Mínimo</th><th>Recomendado</th></tr></thead>
+          <tbody>
+            <tr><td>vCPU</td><td>2</td><td>4</td></tr>
+            <tr><td>RAM</td><td>4 GB</td><td>8 GB</td></tr>
+            <tr><td>Disco</td><td>40 GB</td><td>100 GB SSD</td></tr>
+            <tr><td>Red</td><td>IP fija</td><td>VLAN institucional + IP pública</td></tr>
+            <tr><td>Puertos</td><td>80 / 443</td><td>80 / 443 (3000, 8080 y 3306 en loopback)</td></tr>
+            <tr><td>Dominio</td><td>—</td><td><code>www.dominio</code> y <code>cms.dominio</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Software: Debian 13, Docker 28.x + Compose ≥ 2.24 (ruta A), Node.js 26.13.0 LTS (rutas B y C), PHP 8.5 con Apache, MariaDB 11.8, Caddy 2 o Nginx + certbot, Tailscale y Python 3.10+.</p>
+    </section>
+
+    <section class="diapositiva" id="credenciales" data-titulo="Usuarios, claves y secretos" data-ruta="todas">
+      <span class="etiqueta">Paso 03</span>
+      <h2>Usuarios, claves y secretos</h2>
+      <p>Todo lo que hay que crear antes de desplegar. <strong>Ningún valor real se guarda en el repositorio.</strong></p>
+      <div class="tabla-envoltura">
+        <table class="tabla">
+          <thead><tr><th>Usuario / clave</th><th>Dónde se usa</th><th>Generación</th></tr></thead>
+          <tbody>
+            <tr><td><code>root</code> (Proxmox)</td><td>Consola del hipervisor</td><td>Al instalar Proxmox</td></tr>
+            <tr><td><code>operador</code></td><td>VM Debian con <code>sudo</code></td><td><code>adduser operador</code></td></tr>
+            <tr><td>Clave SSH ed25519</td><td>Acceso a VM y Proxmox</td><td><code>ssh-keygen -t ed25519 -a 100</code></td></tr>
+            <tr><td><code>MYSQL_ROOT_PASSWORD</code></td><td>MariaDB</td><td><code>openssl rand -base64 32</code></td></tr>
+            <tr><td><code>wp_user</code> / <code>MYSQL_PASSWORD</code></td><td>WordPress → MariaDB</td><td><code>openssl rand -base64 32</code></td></tr>
+            <tr><td><code>WORDPRESS_ADMIN_USER</code></td><td>Panel de WordPress</td><td>Nombre no adivinable</td></tr>
+            <tr><td><code>WORDPRESS_ADMIN_PASSWORD</code></td><td>Panel de WordPress</td><td><code>openssl rand -base64 24</code></td></tr>
+            <tr><td><code>UNETI_FORM_TOKEN</code></td><td>Next.js ⇄ WordPress</td><td><code>openssl rand -hex 32</code></td></tr>
+            <tr><td><code>UNETI_REVALIDATE_TOKEN</code></td><td><code>/api/revalidar</code></td><td><code>openssl rand -hex 32</code></td></tr>
+            <tr><td>Auth key de Tailscale</td><td>Unir la VM a la tailnet</td><td>Panel de Tailscale</td></tr>
+            <tr><td>Clave <code>age</code></td><td>Cifrado de backups</td><td><code>age-keygen -o /root/age.key</code></td></tr>
+            <tr><td>Token de GitHub</td><td>Clonar el repositorio privado</td><td>Fine-grained PAT de solo lectura</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="bloque" data-lenguaje="bash"><pre><code>adduser operador &amp;&amp; usermod -aG sudo operador
+ssh-keygen -t ed25519 -a 100 -C "operador@uneti-prod"
+ssh-copy-id -i ~/.ssh/id_ed25519.pub operador@IP_VM
+
+openssl rand -base64 32   # MYSQL_ROOT_PASSWORD
+openssl rand -base64 32   # MYSQL_PASSWORD
+openssl rand -base64 24   # WORDPRESS_ADMIN_PASSWORD
+openssl rand -hex 32      # UNETI_FORM_TOKEN
+openssl rand -hex 32      # UNETI_REVALIDATE_TOKEN
+
+age-keygen -o /root/age.key &amp;&amp; chmod 600 /root/age.key</code></pre></div>
+      <div class="aviso aviso--peligro">
+        <p>Guardar los secretos en un gestor institucional y en un archivo <code>600</code>. Rotarlos si el repositorio se compartió o hubo un incidente. Separar siempre staging de producción.</p>
+      </div>
+    </section>
+
+    <section class="diapositiva" id="proxmox" data-titulo="Preparar Proxmox" data-ruta="todas">
+      <span class="etiqueta">Paso 04</span>
+      <h2>Preparar Proxmox</h2>
+      <p>Crear la VM con Debian 13, IP fija y agente invitado. Antes de instalar nada, tomar un snapshot y un respaldo del hipervisor.</p>
+      <div class="bloque" data-lenguaje="bash"><pre><code>qm create 210 --name uneti-prod --memory 8192 --cores 4 --sockets 1 \
+  --net0 virtio,bridge=vmbr0,tag=10 \
+  --scsihw virtio-scsi-pci --scsi0 local-lvm:100 \
+  --ide2 local:iso/debian-13-netinst.iso,media=cdrom \
+  --boot order=scsi0 --ostype l26 --agent enabled=1
+qm start 210
+
+# Red dentro de la VM
+ip -4 addr show
+ip route
+ping -c 3 1.1.1.1 &amp;&amp; curl -I https://deb.debian.org
+
+# Snapshot y respaldo antes de tocar el sistema
+qm snapshot 210 antes-de-instalar-docker
+vzdump 210 --storage backup --mode snapshot --compress zstd</code></pre></div>
+      <div class="aviso">
+        <p>Programar <code>vzdump</code> diario en <em>Datacenter → Backup</em> con retención de 7 diarios y 4 semanales.</p>
+      </div>
+    </section>
+
+    <section class="diapositiva" id="hardening" data-titulo="Endurecer la VM" data-ruta="todas">
+      <span class="etiqueta">Paso 05</span>
+      <h2>Endurecer la VM</h2>
+      <p>Usuario con <code>sudo</code>, SSH solo con claves, firewall, Tailscale y actualizaciones automáticas. <strong>Conectar Tailscale antes de cerrar el puerto 22.</strong></p>
+      <div class="bloque" data-lenguaje="bash"><pre><code>adduser operador &amp;&amp; usermod -aG sudo operador
+sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config
+sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd_config
+systemctl restart ssh
+
+apt update &amp;&amp; apt full-upgrade -y
+apt install -y ufw fail2ban unattended-upgrades curl ca-certificates gnupg age rsync
+timedatectl set-timezone America/Caracas
+
+curl -fsSL https://tailscale.com/install.sh | sh
+tailscale up --ssh --advertise-tags=tag:uneti-prod
+
+ufw default deny incoming
+ufw default allow outgoing
+ufw allow in on tailscale0
+ufw allow 80/tcp
+ufw allow 443/tcp
+ufw enable &amp;&amp; ufw status verbose</code></pre></div>
+      <div class="tabla-envoltura">
+        <table class="tabla">
+          <thead><tr><th>Puerto</th><th>Servicio</th><th>Exposición</th></tr></thead>
+          <tbody>
+            <tr><td>22</td><td>SSH</td><td>Solo Tailscale o VLAN de administración</td></tr>
+            <tr><td>80 / 443</td><td>Proxy</td><td>Internet</td></tr>
+            <tr><td>3000 / 8080</td><td>Next.js / WordPress</td><td><code>127.0.0.1</code></td></tr>
+            <tr><td>3306</td><td>MariaDB</td><td>Sin publicar</td></tr>
+            <tr><td>8006</td><td>Proxmox VE</td><td>LAN / Tailscale</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="diapositiva" id="docker-instalar" data-titulo="Docker · preparar el stack" data-ruta="docker">
+      <span class="etiqueta etiqueta--docker">Ruta A · Docker</span>
+      <h2>Instalar Docker y preparar el stack</h2>
+      <div class="bloque" data-lenguaje="bash"><pre><code>curl -fsSL https://get.docker.com | sh
+usermod -aG docker operador &amp;&amp; newgrp docker
+docker version &amp;&amp; docker compose version
+
+mkdir -p /srv/uneti/{app,data/db,data/wp,backups,secrets}
+chown -R operador:operador /srv/uneti
+
+git clone https://TOKEN@github.com/IVasquezRui/SD-UNETI.git /srv/uneti/app
+cd /srv/uneti/app &amp;&amp; git checkout main
+
+cp .env.example .env &amp;&amp; chmod 600 .env &amp;&amp; nano .env</code></pre></div>
+      <div class="tabla-envoltura">
+        <table class="tabla">
+          <thead><tr><th>Variable</th><th>Valor de producción</th></tr></thead>
+          <tbody>
+            <tr><td><code>COMPOSE_PROJECT_NAME</code></td><td><code>uneti-prod</code></td></tr>
+            <tr><td><code>DB_DATA_DIR</code> / <code>WP_DATA_DIR</code></td><td><code>/srv/uneti/data/db</code> y <code>/srv/uneti/data/wp</code></td></tr>
+            <tr><td><code>WORDPRESS_URL</code></td><td><code>https://cms.dominio</code></td></tr>
+            <tr><td><code>SITE_URL</code></td><td><code>https://www.dominio</code></td></tr>
+            <tr><td><code>WP_FORCE_SSL</code></td><td><code>1</code></td></tr>
+            <tr><td><code>UNETI_FORM_TOKEN</code> / <code>UNETI_REVALIDATE_TOKEN</code></td><td>Secretos distintos</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="diapositiva" id="docker-build" data-titulo="Docker · build inmutable" data-ruta="docker">
+      <span class="etiqueta etiqueta--docker">Ruta A · Docker</span>
+      <h2>Build inmutable y compose de producción</h2>
+      <p>Crear <code>frontend/Dockerfile</code> y <code>deploy/compose.prod.yml</code>. El compose de producción publica solo en loopback y deja la base sin puerto.</p>
+      <div class="bloque" data-lenguaje="dockerfile"><pre><code>FROM node:26.13.0-slim AS deps
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci --no-audit --no-fund
+
+FROM node:26.13.0-slim AS build
+WORKDIR /app
+ARG NEXT_PUBLIC_SITE_URL
+ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+RUN npm run build
+
+FROM node:26.13.0-slim AS runner
+WORKDIR /app
+ENV NODE_ENV=production PORT=3000
+RUN groupadd --system uneti &amp;&amp; useradd --system --gid uneti --create-home uneti
+COPY --from=build --chown=uneti:uneti /app/.next ./.next
+COPY --from=build --chown=uneti:uneti /app/public ./public
+COPY --from=build --chown=uneti:uneti /app/package.json ./package.json
+COPY --from=build --chown=uneti:uneti /app/next.config.ts ./next.config.ts
+COPY --from=build --chown=uneti:uneti /app/node_modules ./node_modules
+USER uneti
+CMD ["npm", "run", "start"]</code></pre></div>
+      <div class="aviso">
+        <p><code>NEXT_PUBLIC_SITE_URL</code> se fija en el build: pasarla como <code>args</code> del compose o con <code>--build-arg</code>. Si se define solo al ejecutar, <code>sitemap.xml</code> y los metadatos quedan mal.</p>
+      </div>
+      <p>El compose completo (servicios <code>db</code>, <code>wordpress</code> y <code>frontend</code>, healthchecks, límites y logs) está en el documento Markdown, sección 5.5.</p>
+    </section>
+
+    <section class="diapositiva" id="docker-arranque" data-titulo="Docker · arranque y seed" data-ruta="docker">
+      <span class="etiqueta etiqueta--docker">Ruta A · Docker</span>
+      <h2>Arranque y seed</h2>
+      <div class="bloque" data-lenguaje="bash"><pre><code>cd /srv/uneti/app
+COMPOSE="docker compose --env-file .env -f deploy/compose.prod.yml"
+
+$COMPOSE build
+$COMPOSE up -d
+$COMPOSE ps          # los 3 servicios deben quedar healthy
+
+python3 scripts/seed/seed.py bootstrap --project uneti-prod --service wordpress
+python3 scripts/seed/seed.py verify   --project uneti-prod --service wordpress</code></pre></div>
+      <h3>Qué hace el bootstrap</h3>
+      <ol>
+        <li>Instala WordPress si la base está vacía.</li>
+        <li>Activa WPGraphQL.</li>
+        <li>Importa los fixtures de <code>seed/</code> con las APIs nativas.</li>
+        <li>Verifica GraphQL, comentarios e imágenes.</li>
+      </ol>
+      <div class="aviso">
+        <p><code>seed.py</code> usa <code>docker compose -p uneti-prod</code>. El nombre del proyecto debe coincidir con <code>name:</code> del compose y con <code>COMPOSE_PROJECT_NAME</code>.</p>
+      </div>
+    </section>
+
+    <section class="diapositiva" id="nativo-base" data-titulo="Nativo · paquetes y base de datos" data-ruta="nativo">
+      <span class="etiqueta etiqueta--nativo">Ruta B · Nativo</span>
+      <h2>Paquetes base y MariaDB</h2>
+      <div class="bloque" data-lenguaje="bash"><pre><code># Node.js 26 LTS
+curl -fsSL https://deb.nodesource.com/setup_26.x | bash -
+apt install -y nodejs
+
+# PHP 8.5 (Sury)
+curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.org/php/apt.gpg
+echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" \
+  > /etc/apt/sources.list.d/sury-php.list
+apt update
+apt install -y apache2 php8.5 php8.5-cli php8.5-mysql php8.5-curl php8.5-gd \
+  php8.5-mbstring php8.5-xml php8.5-zip php8.5-intl libapache2-mod-php8.5
+a2enmod rewrite headers expires
+
+# MariaDB 11.8
+curl -LsS https://r.mariadb.com/downloads/mariadb_repo_setup | bash -s -- --mariadb-server-version=11.8
+apt install -y mariadb-server
+mariadb-secure-installation</code></pre></div>
+      <div class="bloque" data-lenguaje="sql"><pre><code>CREATE DATABASE IF NOT EXISTS wordpress_db
+  CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER IF NOT EXISTS 'wp_user'@'localhost' IDENTIFIED BY 'CAMBIAR_MYSQL_PASSWORD';
+GRANT ALL PRIVILEGES ON wordpress_db.* TO 'wp_user'@'localhost';
+FLUSH PRIVILEGES;</code></pre></div>
+      <p>Comprobar que no hay usuarios anónimos y que <code>local_infile</code> está en <code>OFF</code>.</p>
+    </section>
+
+    <section class="diapositiva" id="nativo-wordpress" data-titulo="Nativo · WordPress y plugins" data-ruta="nativo">
+      <span class="etiqueta etiqueta--nativo">Ruta B · Nativo</span>
+      <h2>WordPress, WPGraphQL y mu-plugins</h2>
+      <div class="bloque" data-lenguaje="bash"><pre><code>mkdir -p /srv/uneti /opt/uneti-scripts
+git clone https://TOKEN@github.com/IVasquezRui/SD-UNETI.git /srv/uneti/app
+cd /tmp
+curl -fsSLO https://wordpress.org/wordpress-7.1.4.tar.gz
+tar -xzf wordpress-7.1.4.tar.gz
+rsync -a /tmp/wordpress/ /var/www/html/
+
+cp -r /srv/uneti/app/wp_content/plugins/wp-graphql /var/www/html/wp-content/plugins/
+mkdir -p /var/www/html/wp-content/mu-plugins
+rsync -a /srv/uneti/app/scripts/wordpress/mu-plugins/ /var/www/html/wp-content/mu-plugins/
+rsync -a /srv/uneti/app/scripts/wordpress/ /opt/uneti-scripts/
+
+cp /srv/uneti/app/scripts/wordpress/apache/seguridad.conf /etc/apache2/conf-available/uneti-seguridad.conf
+a2enconf uneti-seguridad
+cp /srv/uneti/app/scripts/wordpress/php/seguridad.ini /etc/php/8.5/apache2/conf.d/99-uneti.ini
+cp /srv/uneti/app/scripts/wordpress/php/seguridad.ini /etc/php/8.5/cli/conf.d/99-uneti.ini
+
+chown -R www-data:www-data /var/www/html
+find /var/www/html -type d -exec chmod 755 {} \;
+find /var/www/html -type f -exec chmod 644 {} \;</code></pre></div>
+      <div class="aviso">
+        <p>WordPress debe quedar en <code>/var/www/html</code>: los scripts <code>bootstrap.php</code>, <code>importar.php</code> y <code>verify.php</code> resuelven esa ruta.</p>
+      </div>
+    </section>
+
+    <section class="diapositiva" id="nativo-servicios" data-titulo="Nativo · servicios y seed" data-ruta="nativo">
+      <span class="etiqueta etiqueta--nativo">Ruta B · Nativo</span>
+      <h2>Apache, Next.js y seed</h2>
+      <div class="bloque" data-lenguaje="bash"><pre><code># Apache solo en loopback
+echo "Listen 127.0.0.1:8080" > /etc/apache2/conf-available/uneti-listen.conf
+a2enconf uneti-listen &amp;&amp; a2dissite 000-default
+
+# Next.js nativo
+useradd --system --create-home --home-dir /opt/uneti --shell /usr/sbin/nologin uneti
+chown -R uneti:uneti /srv/uneti/app/frontend
+cd /srv/uneti/app/frontend
+sudo -u uneti npm ci --no-audit --no-fund
+sudo -u uneti env NEXT_PUBLIC_SITE_URL="https://www.dominio" npm run build
+
+# Seed nativo
+rm -rf /tmp/uneti-seed-import
+cp -r /srv/uneti/app/seed /tmp/uneti-seed-import
+chown -R www-data:www-data /tmp/uneti-seed-import
+sudo -u www-data php /opt/uneti-scripts/bootstrap.php --title=UNETI \
+  --admin-user=CAMBIAR_USUARIO --admin-password=CAMBIAR_CLAVE --admin-email=admin@dominio
+sudo -u www-data php /opt/uneti-scripts/seed/importar.php --input=/tmp/uneti-seed-import
+sudo -u www-data php /opt/uneti-scripts/seed/verify.php   --input=/tmp/uneti-seed-import
+
+# Cron de WordPress
+echo "*/10 * * * * www-data curl -s -H 'Host: cms.dominio' 'http://127.0.0.1:8080/wp-cron.php?doing_wp_cron' >/dev/null 2>&1" \
+  > /etc/cron.d/uneti-wp</code></pre></div>
+      <div class="aviso">
+        <p>El servicio <code>uneti-frontend.service</code> usa <code>/etc/uneti/frontend.env</code> con permisos <code>600</code> y <code>Restart=always</code>. El archivo completo está en la sección 6.5 del Markdown.</p>
+      </div>
+    </section>
+
+    <section class="diapositiva" id="hibrido" data-titulo="Ruta híbrida" data-ruta="hibrido">
+      <span class="etiqueta etiqueta--hibrido">Ruta C · Híbrido</span>
+      <h2>WordPress en Docker y Next nativo</h2>
+      <p>Útil cuando se quiere WordPress versionado en contenedores y el frontend en el sistema operativo.</p>
+      <div class="bloque" data-lenguaje="bash"><pre><code>cd /srv/uneti/app
+docker compose --env-file .env -f deploy/compose.prod.yml up -d db wordpress
+curl -I http://127.0.0.1:8080/wp-login.php
+
+# El frontend nativo apunta al WordPress containerizado
+# /etc/uneti/frontend.env
+WP_INTERNAL_URL=http://127.0.0.1:8080
+WP_GRAPHQL_URL=http://127.0.0.1:8080/graphql
+
+cd /srv/uneti/app/frontend
+sudo -u uneti env NEXT_PUBLIC_SITE_URL="https://www.dominio" npm run build
+systemctl restart uneti-frontend
+
+python3 scripts/seed/seed.py bootstrap --project uneti-prod --service wordpress</code></pre></div>
+      <div class="aviso">
+        <p>No uses <code>http://wordpress</code> en el frontend nativo: ese nombre solo resuelve dentro de la red de Docker.</p>
+      </div>
+    </section>
+
+    <section class="diapositiva" id="tls" data-titulo="DNS, TLS y proxy" data-ruta="todas">
+      <span class="etiqueta">Paso 06</span>
+      <h2>DNS, TLS y proxy inverso</h2>
+      <div class="tabla-envoltura">
+        <table class="tabla">
+          <thead><tr><th>Registro</th><th>Tipo</th><th>Valor</th><th>TTL</th></tr></thead>
+          <tbody>
+            <tr><td><code>dominio</code></td><td>A / AAAA</td><td>IP pública de la VM</td><td>300</td></tr>
+            <tr><td><code>www.dominio</code></td><td>A / AAAA</td><td>IP pública de la VM</td><td>300</td></tr>
+            <tr><td><code>cms.dominio</code></td><td>A / AAAA</td><td>IP pública de la VM</td><td>300</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="bloque" data-lenguaje="caddyfile"><pre><code>{
+    email admin@dominio
+    admin off
+}
+
+dominio {
+    redir https://www.dominio{uri} permanent
+}
+
+www.dominio {
+    encode zstd gzip
+    header {
+        -Server
+        Strict-Transport-Security "max-age=31536000; includeSubDomains"
+        X-Content-Type-Options "nosniff"
+        Referrer-Policy "strict-origin-when-cross-origin"
+    }
+    reverse_proxy 127.0.0.1:3000
+}
+
+cms.dominio {
+    encode zstd gzip
+    header -Server
+
+    @uploads path /wp-content/uploads/*
+    handle @uploads { reverse_proxy 127.0.0.1:8080 }
+
+    @interno {
+        path /wp-admin/* /wp-login.php /wp-json/* /graphql /xmlrpc.php /wp-includes/* /wp-content/plugins/* /wp-content/mu-plugins/*
+        remote_ip 100.64.0.0/10
+    }
+    handle @interno { reverse_proxy 127.0.0.1:8080 }
+
+    handle { respond 404 }
+}</code></pre></div>
+      <div class="bloque" data-lenguaje="bash"><pre><code>caddy validate --config /etc/caddy/Caddyfile
+systemctl reload caddy
+journalctl -u caddy -f        # emisión del certificado
+curl -I https://www.dominio</code></pre></div>
+      <div class="aviso">
+        <p>Alternativa con Nginx + certbot en la sección 8.3 del documento. El CMS solo publica <code>/wp-content/uploads/*</code>; administración, REST y GraphQL quedan detrás de Tailscale.</p>
+      </div>
+    </section>
+
+    <section class="diapositiva" id="seed" data-titulo="Seed y contenido" data-ruta="todas">
+      <span class="etiqueta">Paso 07</span>
+      <h2>Seed y contenido</h2>
+      <div class="tabla-envoltura">
+        <table class="tabla">
+          <thead><tr><th>Acción</th><th>Docker</th><th>Nativo</th></tr></thead>
+          <tbody>
+            <tr><td>Validar fixtures</td><td colspan="2"><code>python3 scripts/seed/seed.py validate</code></td></tr>
+            <tr><td>Instalar + importar</td><td><code>seed.py bootstrap</code></td><td><code>bootstrap.php</code> + <code>importar.php</code></td></tr>
+            <tr><td>Importar</td><td><code>seed.py import</code></td><td><code>importar.php --input=/tmp/uneti-seed-import</code></td></tr>
+            <tr><td>Verificar</td><td><code>seed.py verify</code></td><td><code>verify.php --input=/tmp/uneti-seed-import</code></td></tr>
+            <tr><td>Exportar</td><td><code>seed.py export</code></td><td><code>export.php --output=/tmp/uneti-seed-export</code></td></tr>
+            <tr><td>Regenerar medios</td><td><code>seed.py import --refresh-media</code></td><td><code>importar.php --refresh-media</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Idempotencia</h3>
+      <ul>
+        <li>Posts por <code>_uneti_seed_key</code> y, si no existe, por slug.</li>
+        <li>Adjuntos por <code>_uneti_seed_archivo</code> o nombre de archivo.</li>
+        <li>Comentarios por <code>_uneti_seed_key</code> o autor + contenido.</li>
+        <li>Una segunda importación no duplica nada.</li>
+      </ul>
+      <div class="aviso">
+        <p>Exportar antes de cada release y revisar que no haya usuarios reales, hashes, sesiones, IPs ni correos personales antes de versionar <code>seed/</code>.</p>
+      </div>
+    </section>
+
+    <section class="diapositiva" id="verificacion" data-titulo="Verificación y pentests" data-ruta="todas">
+      <span class="etiqueta">Paso 08</span>
+      <h2>Verificación y pentests</h2>
+      <div class="bloque" data-lenguaje="bash"><pre><code>BASE=https://www.dominio
+for r in / /nosotros /carreras /carreras/pnf-informatica /carreras/pnf-telecomunicaciones \
+         /posgrados /cursos /admisiones /contacto /noticias /privacidad; do
+  printf '%-45s %s\n' "$r" "$(curl -s -o /dev/null -w '%{http_code}' "$BASE$r")"
+done
+
+curl -sI https://www.dominio | grep -Ei 'strict-transport|content-security|x-frame'
+curl -s -o /dev/null -w '%{http_code}\n' https://cms.dominio/wp-admin/    # 404 fuera de Tailscale
+curl -s -o /dev/null -w '%{http_code}\n' https://cms.dominio/graphql      # 404 fuera de Tailscale
+
+cd /srv/uneti/app
+bash scripts/ci/qa-frontend.sh https://www.dominio
+node scripts/ci/probar-formulario.mjs
+bash scripts/ci/pentest-nextjs.sh https://www.dominio
+bash scripts/ci/pentest-wordpress.sh
+bash scripts/ci/pentest-mariadb.sh</code></pre></div>
+      <h3>Criterios de aceptación</h3>
+      <ul>
+        <li>11 rutas en 200 y heredadas en 301; <code>/api/noticias</code> con 6 noticias.</li>
+        <li>Tres formularios con folio visible en <code>wp-admin</code>.</li>
+        <li>Comentarios pendientes de aprobación.</li>
+        <li><code>wp-admin</code>, <code>/graphql</code> y <code>/wp-json</code> inaccesibles desde Internet.</li>
+        <li>Pentests en <code>POSITIVO (0 brechas)</code>.</li>
+      </ul>
+    </section>
+
+    <section class="diapositiva" id="backups" data-titulo="Backups y restauración" data-ruta="todas">
+      <span class="etiqueta">Paso 09</span>
+      <h2>Backups y restauración</h2>
+      <p>Backup diario de base de datos y <code>wp_data</code>, cifrado con <code>age</code>, retención de 14 días y copia fuera del host.</p>
+      <div class="bloque" data-lenguaje="bash"><pre><code># Docker
+docker compose --env-file .env -f deploy/compose.prod.yml exec -T db sh -c \
+  'exec mariadb-dump --single-transaction --quick --routines --triggers \
+   -uroot -p"$MYSQL_ROOT_PASSWORD" "$MYSQL_DATABASE"' | gzip -9 > db.sql.gz
+tar -C /srv/uneti/data -czf wp.tar.gz wp
+age -r "$AGE_RECIPIENT" -o db.sql.gz.age db.sql.gz
+age -r "$AGE_RECIPIENT" -o wp.tar.gz.age  wp.tar.gz
+rsync -a /srv/uneti/backups/ backup@nas.dominio:/backups/sd-uneti/
+
+# Respaldo del hipervisor
+vzdump 210 --storage backup --mode snapshot --compress zstd \
+  --prune-backups keep-daily=7,keep-weekly=4,keep-monthly=12</code></pre></div>
+      <h3>Prueba de restauración (trimestral)</h3>
+      <div class="bloque" data-lenguaje="bash"><pre><code>age -d -i /root/age.key -o /tmp/db.sql.gz /srv/uneti/backups/db-FECHA.sql.gz.age
+gunzip -c /tmp/db.sql.gz | docker compose --env-file .env -f deploy/compose.prod.yml \
+  exec -T db mariadb -uroot -p"$MYSQL_ROOT_PASSWORD" wordpress_db</code></pre></div>
+      <div class="aviso aviso--peligro">
+        <p><strong>Un backup que no se restaura no es un backup.</strong> Registrar fecha, responsable, archivo restaurado y resultado.</p>
+      </div>
+    </section>
+
+    <section class="diapositiva" id="monitoreo" data-titulo="Monitoreo y logs" data-ruta="todas">
+      <span class="etiqueta">Paso 10</span>
+      <h2>Monitoreo y logs</h2>
+      <div class="bloque" data-lenguaje="bash"><pre><code>docker run -d --name uptime-kuma --restart unless-stopped \
+  -p 127.0.0.1:3001:3001 -v /srv/uneti/uptime:/app/data louislam/uptime-kuma:1</code></pre></div>
+      <div class="tabla-envoltura">
+        <table class="tabla">
+          <thead><tr><th>Monitor</th><th>Umbral</th></tr></thead>
+          <tbody>
+            <tr><td><code>https://www.dominio/</code></td><td>200 en menos de 2 s</td></tr>
+            <tr><td><code>/api/noticias</code></td><td>200 con palabra clave</td></tr>
+            <tr><td>Imagen pública del CMS</td><td>200 en un archivo conocido</td></tr>
+            <tr><td>Certificado TLS</td><td>Aviso a 14 días</td></tr>
+            <tr><td>Disco</td><td>Alerta al 80 %</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="bloque" data-lenguaje="bash"><pre><code>docker compose --env-file .env -f deploy/compose.prod.yml ps
+docker compose --env-file .env -f deploy/compose.prod.yml logs --since 24h --tail 200
+journalctl -u caddy --since "24 hours ago"
+journalctl -u uneti-frontend --since "24 hours ago"
+df -h /</code></pre></div>
+      <p>Alertas por correo institucional y Telegram. Revisión semanal de logs y de intentos de acceso SSH.</p>
+    </section>
+
+    <section class="diapositiva" id="golive" data-titulo="Go-live: checklist" data-ruta="todas">
+      <span class="etiqueta">Paso 11</span>
+      <h2>Go-live: checklist de salida</h2>
+      <div class="control" data-control="golive">
+        <div class="control__cabecera">
+          <p class="control__titulo">Progreso del despliegue</p>
+          <span class="control__contador" data-contador>0 de 0 completados</span>
+          <button type="button" class="control__reiniciar" data-reiniciar>Reiniciar</button>
+        </div>
+        <div class="control__barra"><span class="control__avance" data-avance></span></div>
+      </div>
+      <ul class="lista-tareas">
+        <li><input type="checkbox" id="gl-1" data-tarea="gl-1"><label for="gl-1">DNS de <code>www</code>, <code>cms</code> y el dominio raíz resuelve correctamente.</label></li>
+        <li><input type="checkbox" id="gl-2" data-tarea="gl-2"><label for="gl-2">Certificado emitido y renovación automática verificada.</label></li>
+        <li><input type="checkbox" id="gl-3" data-tarea="gl-3"><label for="gl-3">HTTP redirige a HTTPS y HSTS presente.</label></li>
+        <li><input type="checkbox" id="gl-4" data-tarea="gl-4"><label for="gl-4"><code>3000</code>, <code>8080</code>, <code>3306</code> y <code>8006</code> no accesibles desde Internet.</label></li>
+        <li><input type="checkbox" id="gl-5" data-tarea="gl-5"><label for="gl-5"><code>wp-admin</code>, <code>/graphql</code> y <code>/wp-json</code> responden 404 fuera de Tailscale.</label></li>
+        <li><input type="checkbox" id="gl-6" data-tarea="gl-6"><label for="gl-6">Las 11 rutas responden 200 y las heredadas 301.</label></li>
+        <li><input type="checkbox" id="gl-7" data-tarea="gl-7"><label for="gl-7">Las imágenes de noticias cargan desde <code>cms.dominio</code>.</label></li>
+        <li><input type="checkbox" id="gl-8" data-tarea="gl-8"><label for="gl-8">Los tres formularios crean folio y se ven en <code>wp-admin</code>.</label></li>
+        <li><input type="checkbox" id="gl-9" data-tarea="gl-9"><label for="gl-9">Los comentarios quedan pendientes de aprobación.</label></li>
+        <li><input type="checkbox" id="gl-10" data-tarea="gl-10"><label for="gl-10"><code>robots.txt</code>, <code>sitemap.xml</code>, <code>security.txt</code> y <code>/privacidad</code> publicados.</label></li>
+        <li><input type="checkbox" id="gl-11" data-tarea="gl-11"><label for="gl-11">Backup ejecutado y restauración probada en staging.</label></li>
+        <li><input type="checkbox" id="gl-12" data-tarea="gl-12"><label for="gl-12">Monitoreo en verde y alertas de prueba recibidas.</label></li>
+        <li><input type="checkbox" id="gl-13" data-tarea="gl-13"><label for="gl-13"><code>LICENSE</code> y <code>NOTICE</code> presentes; créditos de imágenes completos.</label></li>
+        <li><input type="checkbox" id="gl-14" data-tarea="gl-14"><label for="gl-14">Acta de aceptación con responsable y fecha.</label></li>
+      </ul>
+      <div class="aviso">
+        <p>El progreso se guarda en el navegador. Puedes cerrar la presentación y continuar después.</p>
+      </div>
+    </section>
+
+    <section class="diapositiva" id="rollback" data-titulo="Rollback" data-ruta="todas">
+      <span class="etiqueta">Paso 12</span>
+      <h2>Rollback</h2>
+      <div class="tabla-envoltura">
+        <table class="tabla">
+          <thead><tr><th>Escenario</th><th>Acción</th></tr></thead>
+          <tbody>
+            <tr><td>Solo frontend</td><td><code>UNETI_VERSION=&lt;anterior&gt; docker compose ... up -d --no-deps frontend</code></td></tr>
+            <tr><td>Contenido dañado</td><td>Restaurar <code>wp_data</code> y el dump previos</td></tr>
+            <tr><td>Fallo total</td><td>Restaurar el snapshot de Proxmox</td></tr>
+            <tr><td>DNS</td><td>TTL a 60 s antes del corte</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="bloque" data-lenguaje="bash"><pre><code>cd /srv/uneti/app
+git tag -a v1.0.0-prod -m "Despliegue producción UNETI $(date +%F)"
+git push origin v1.0.0-prod
+
+# Volver a la imagen anterior
+UNETI_VERSION=v0.9.0 docker compose --env-file .env \
+  -f deploy/compose.prod.yml up -d --no-deps frontend</code></pre></div>
+      <p><strong>Primeros 30 días:</strong> rotar secretos, ejecutar WPScan/Nuclei, revisar intentos de acceso, medir Lighthouse y programar la primera restauración.</p>
+    </section>
+
+    <section class="diapositiva" id="mantenimiento" data-titulo="Mantenimiento" data-ruta="todas">
+      <span class="etiqueta">Paso 13</span>
+      <h2>Mantenimiento</h2>
+      <div class="tabla-envoltura">
+        <table class="tabla">
+          <thead><tr><th>Tarea</th><th>Frecuencia</th><th>Referencia</th></tr></thead>
+          <tbody>
+            <tr><td>Actualizar WordPress y plugins</td><td>Mensual</td><td>Panel de WordPress</td></tr>
+            <tr><td>Actualizar WPGraphQL</td><td>Por release</td><td><code>wp_content/plugins/wp-graphql</code></td></tr>
+            <tr><td>Dependencias del frontend</td><td>Mensual</td><td><code>npm audit</code> y PR a <code>develop</code></td></tr>
+            <tr><td>Rotar tokens</td><td>Trimestral</td><td><code>.env</code> + reinicio</td></tr>
+            <tr><td>Revisar backups</td><td>Mensual</td><td>Tamaño, fecha y restauración</td></tr>
+            <tr><td>Parches del sistema</td><td>Semanal</td><td><code>unattended-upgrades</code></td></tr>
+            <tr><td>Revisar accesos</td><td>Trimestral</td><td>WordPress, Tailscale y SSH</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Ventana recomendada: martes o miércoles, 22:00–00:00 (America/Caracas), con snapshot previo y rollback probado.</p>
+    </section>
+
+    <section class="diapositiva" id="anexos" data-titulo="Anexos y problemas frecuentes" data-ruta="todas">
+      <span class="etiqueta">Paso 14</span>
+      <h2>Anexos y problemas frecuentes</h2>
+      <div class="tabla-envoltura">
+        <table class="tabla">
+          <thead><tr><th>Síntoma</th><th>Causa</th><th>Solución</th></tr></thead>
+          <tbody>
+            <tr><td>502 en el portal</td><td>Next caído o mal puerto</td><td>Revisar <code>systemctl status uneti-frontend</code> y <code>PORT</code></td></tr>
+            <tr><td>Bucle en <code>wp-admin</code></td><td><code>WP_HOME</code> en http</td><td><code>WORDPRESS_URL</code> a https y <code>X-Forwarded-Proto</code></td></tr>
+            <tr><td>GraphQL devuelve null</td><td>WPGraphQL no activo</td><td>Verificar plugin y volumen</td></tr>
+            <tr><td>Imágenes 404</td><td>Uploads no público</td><td>Permitir <code>/wp-content/uploads/*</code></td></tr>
+            <tr><td>Formulario 503</td><td>Token distinto</td><td>Igualar <code>UNETI_FORM_TOKEN</code> y <code>WP_FORM_TOKEN</code></td></tr>
+            <tr><td>Formulario 403</td><td>Origen no permitido</td><td>Revisar <code>NEXT_PUBLIC_SITE_URL</code></td></tr>
+            <tr><td>Cambios no visibles</td><td>ISR en caché</td><td><code>POST /api/revalidar</code></td></tr>
+            <tr><td>Certificado no emitido</td><td>DNS o puerto 80</td><td><code>dig</code> y <code>journalctl -u caddy</code></td></tr>
+            <tr><td>Cron no corre</td><td><code>DISABLE_WP_CRON</code></td><td>Crear el cron del sistema</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="aviso">
+        <p>Puertos, variables y rutas de referencia están en la sección 15 del documento Markdown.</p>
+      </div>
+    </section>
+
+    <section class="diapositiva" id="cierre" data-titulo="Cierre y referencias" data-ruta="todas">
+      <span class="etiqueta">Fin</span>
+      <h2>Cierre y referencias</h2>
+      <p>El despliegue está completo cuando el checklist de go-live está al 100 %, el monitoreo está en verde y existe un acta firmada.</p>
+      <ul>
+        <li><a href="Pasos-A-Produccion-UNETI-PROXMOX.md">Guía completa en Markdown</a></li>
+        <li><a href="../DocumentacionTecnica/informe-tecnico-2026-11-10.html">Informe técnico del proyecto</a></li>
+        <li><a href="../README.md">README del repositorio</a></li>
+        <li><a href="../LICENSE">Licencia GPL v3</a> · <a href="../NOTICE">NOTICE institucional</a></li>
+      </ul>
+      <div class="aviso">
+        <p>Documento operativo mantenido por la UNETI. Cualquier desviación debe registrarse en el control de cambios del proyecto.</p>
+      </div>
+      <p style="margin-top:28px"><strong>Hecho por → Iván Vásquez</strong></p>
+    </section>
+
+
+
+
+
+
+
+
+
+
+
+  </main>
+</div>
+
+<nav class="controles" aria-label="Navegación de la presentación">
+  <button class="controles__boton" type="button" data-anterior>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 19 8 12l7-7"/></svg>
+    <span>Anterior</span>
+  </button>
+  <span class="contador" data-contador>01 / 23</span>
+  <button class="controles__boton" type="button" data-siguiente>
+    <span>Siguiente</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+  </button>
+</nav>
+
+<script src="app.js" defer></script>
+</body>
+</html>
