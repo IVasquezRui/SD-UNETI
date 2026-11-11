@@ -37,7 +37,7 @@ const DATOS_INICIALES: Datos = {
 const MOTIVOS = [
   { valor: "Información académica", icono: "bi bi-info-circle" },
   { valor: "Admisiones PNF", icono: "bi bi-mortarboard" },
-  { valor: "Posgrados", icono: "bi bi-award" },
+  { valor: "Postgrados", icono: "bi bi-award" },
   { valor: "Cursos", icono: "bi bi-journal-code" },
   { valor: "Campus Virtual", icono: "bi bi-laptop" },
   { valor: "Otro", icono: "bi bi-three-dots" },

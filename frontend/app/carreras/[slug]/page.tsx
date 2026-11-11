@@ -392,7 +392,7 @@ export default async function DetalleCarreraPage({ params }: PropiedadesCarrera)
                 <div className="col-12 text-center mb-4">
                   <span className="uneti-section-eyebrow mb-10px">Formación avanzada</span>
                   <h3 className="alt-font text-dark-gray fw-600 ls-minus-1px mb-0">
-                    Posgrados (PNFA) que también puedes explorar
+                    Postgrados (PNFA) que también puedes explorar
                   </h3>
                 </div>
                 <div className="col-12">
