@@ -93,7 +93,7 @@ Software en la VM:
 | Correo ACME | Caddy / Let's Encrypt | Proxy | `admin@dominio` |
 | Auth key de Tailscale | Unir la VM a la tailnet | Operador | Panel de Tailscale |
 | Clave `age` | Cifrado de backups | Operador | `age-keygen -o /root/age.key` |
-| Token de GitHub | Clonar el repositorio privado | Operador | Fine-grained PAT (solo lectura) |
+| Token de GitHub | Operaciones autenticadas con GitHub (repositorio público: no requerido para clonar) | Operador | Fine-grained PAT |
 
 ### 2.2 Generación y resguardo
 
@@ -220,8 +220,8 @@ docker compose version
 sudo mkdir -p /srv/uneti/{app,data/db,data/wp,backups,secrets}
 sudo chown -R operador:operador /srv/uneti
 
-# Repositorio privado: usa un token de solo lectura
-git clone https://<TOKEN>@github.com/IVasquezRui/SD-UNETI.git /srv/uneti/app
+# Repositorio público: clon directo vía HTTPS
+git clone https://github.com/IVasquezRui/SD-UNETI.git /srv/uneti/app
 cd /srv/uneti/app
 git checkout main
 ```
@@ -450,7 +450,8 @@ sudo mariadb -u root -e "SHOW VARIABLES LIKE 'local_infile';"
 ```bash
 sudo mkdir -p /srv/uneti /opt/uneti-scripts
 sudo chown -R operador:operador /srv/uneti
-git clone https://<TOKEN>@github.com/IVasquezRui/SD-UNETI.git /srv/uneti/app
+# Repositorio público
+git clone https://github.com/IVasquezRui/SD-UNETI.git /srv/uneti/app
 cd /srv/uneti/app
 
 # WordPress 7.1.4
