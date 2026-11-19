@@ -7,10 +7,38 @@ dist/
 # Entornos y datos volátiles de Docker
 .env
 .env.*
+*.env
 !.env.example
 wp_data/
 db_data/
 lookdown/
+
+# Secretos, certificados y llaves privadas
+*.pem
+*.key
+*.pfx
+*.p12
+*.crt
+*.cer
+*.age
+id_rsa*
+id_ed25519*
+secrets/
+.secrets/
+
+# Respaldos y volcados de bases de datos (nunca versionar en repo público)
+*.sql
+*.sql.gz
+*.dump
+*.sqlite
+*.sqlite3
+*.db
+*.bak
+*.backup
+*.old
+*.orig
+# Excepción explícita para scripts DDL de inicialización/endurecimiento del repo:
+!scripts/database/endurecer.sql
 
 # Temporales del seed
 .seed-stage-*/
@@ -25,9 +53,14 @@ __pycache__/
 frontend/public/assets/images/uneti_new/
 frontend/public/assets/images/UNETI-STUDENTS/
 
-# Reglas locales del asistente (pueden contener credenciales)
-.clinerules
+# Reglas y configuraciones locales de asistentes (pueden contener credenciales)
+.clinerules*
+*cline*
 Documents/reglasclineextension.txt
+.claude/
+.copilot/
+.continue/
+.gemini/
 
 # Reportes de QA/pentest generados localmente y logs de despliegue
 reportes/
